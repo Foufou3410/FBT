@@ -4,6 +4,25 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+namespace WpfApplication1.Model
+{
+    class Class1
+    {
+    }
+}
+
+
+
+
+
+
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
 namespace Fbt
 {
     class MainWindowView
@@ -56,7 +75,7 @@ namespace Fbt
             public double price { get; set; }
 
             public double[] deltas { get; set; }
-            
+
 
         }
 
@@ -78,19 +97,19 @@ namespace Fbt
 
 
         public List<PriceAndDeltas> ComputeDeltasAndPrice(List<DateTime> dates, PricingLibrary.FinancialProducts.VanillaCall option, List<double> spots, List<double> volatilities)
-            {
+        {
             var result = new List<PriceAndDeltas>();
             var pricer = new PricingLibrary.Computations.Pricer();
             var i = 0;
             foreach (DateTime d in dates)
-                {
+            {
                 var res = pricer.PriceCall(option, d, 365, spots[i], volatilities[i]);
                 i++;
-                result.Add(new PriceAndDeltas(d, res.Price, res.Deltas));             
-                }
+                result.Add(new PriceAndDeltas(d, res.Price, res.Deltas));
+            }
             return result;
 
-            }
+        }
 
 
         public List<PricePortefeuille> ComputePricePortefeuille(List<DateTime> dates, List<PriceAndDeltas> deltas, List<double> spots, double tauxSansRisque)
@@ -114,6 +133,6 @@ namespace Fbt
 
     }
 
-   
+
 
 }
