@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace Fbt
 {
     class MainWindowView
@@ -31,10 +32,13 @@ namespace Fbt
         public string ViewPayOff
         {
            
-           get { Console.WriteLine("dans get"); return opt.GetPayoff(dic).ToString(); }
+           get {return opt.GetPayoff(dic).ToString(); }
         }
 
         #endregion Public Properties
 
     }
+
 }
+
+
