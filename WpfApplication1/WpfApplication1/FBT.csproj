@@ -89,6 +89,9 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="CheckingFBT.cs" />
+    <Compile Include="IFBT.cs" />
+    <Compile Include="FBTInfo.cs" />
     <Compile Include="MainWindowView.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -97,6 +100,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Model\WRE.cs" />
+    <Compile Include="Model\Class1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
