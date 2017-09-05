@@ -89,6 +89,9 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="CheckingFBT.cs" />
+    <Compile Include="IFBT.cs" />
+    <Compile Include="FBTInfo.cs" />
     <Compile Include="MainWindowView.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -96,6 +99,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Model\Class1.cs" />
     <Compile Include="Model\Initializer\HardCodeInitializer.cs" />
     <Compile Include="Model\Initializer\IInitializer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
