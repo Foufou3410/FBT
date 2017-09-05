@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace Fbt
 {
-    class Program
+    class MainWindowView
     {
-        static void Test(string[] args)
+        public MainWindowView()
         {
-            Console.WriteLine("coucou");
+            Console.WriteLine("Demarrer");
         }
     }
 }
