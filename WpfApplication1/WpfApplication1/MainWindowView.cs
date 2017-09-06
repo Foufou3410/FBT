@@ -22,24 +22,25 @@ namespace Fbt
 
             var debut = new DateTime(2017, 9, 6);
             var duree = 365;
+            var pas = 2;
 
-
+            var opt = init.initOptionsUnivers(debut, duree-1);
             var dataFeedProvider = new MyDataFeed();
-            var spot = dataFeedProvider.GenerateDataFeed(debut, duree);
+            var spot = dataFeedProvider.GenerateDataFeed(debut, duree-1, opt);
 
             
 
-            var riskFreeRate = init.initRiskFreeRate();
-            var opt = init.initOptionsUnivers(debut, duree);
-            var dates = init.getDatesOfSimuData(debut, duree);
-            var vol = init.getVolatilityOfSimuData(duree);
+            var riskFreeRate = init.initRiskFreeRate(pas);
+            
+            var dates = init.getDatesOfSimuData(debut, duree-1, pas);
+            var vol = init.getVolatilityOfSimuData(duree-1, pas);
 
             Console.WriteLine(dates.Count);
             Console.WriteLine(vol.Count);
             Console.WriteLine(spot.Count);
 
-            var res = calculator.computeDeltasAndPrice(dates, opt, spot, vol);
-            var port = calculator.computePricePortfolio(dates, res, spot, riskFreeRate);
+            var res = calculator.computeDeltasAndPrice(dates, opt, spot, vol, pas);
+            var port = calculator.computePricePortfolio(dates, res, spot, riskFreeRate, pas);
             var j = res.Count;
             
 
@@ -60,7 +61,7 @@ namespace Fbt
             Console.WriteLine("At Maturity:");
             Console.WriteLine("Maturity Date: " + opt.Maturity);
             var dic = new Dictionary<string, decimal>();
-            dic.Add(opt.UnderlyingShare.Id, init.getSpotAtMaturity());
+            dic.Add(opt.UnderlyingShare.Id, (decimal)spot[j]);
             Console.WriteLine("Payoff: " + opt.GetPayoff(dic) +"\n");
             Console.WriteLine("End");
 
