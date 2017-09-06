@@ -17,7 +17,7 @@ namespace FBT.Model.Initializer
             return opt;
         }
 
-        public List<DateTime> getDatesOfSimuData(DateTime debut, double duree, int pas)
+        public List<DateTime> getRebalancingDates(DateTime debut, double duree, int pas)
         {
             var dates = new List<DateTime>();
             var current = debut;
