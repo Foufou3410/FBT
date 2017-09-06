@@ -4,28 +4,40 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WpfApplication1.Model.FinancialModel;
 using WpfApplication1.Model.Initializer;
 
 namespace Fbt
 {
     class MainWindowView
     {
-        private IOption opt;
-        private Dictionary<String, decimal> dic;
-        private IInitializer init;
 
         #region Public Constructors
 
         public MainWindowView()
         {
             Console.WriteLine("Demarrer");
-            init = new HardCodeInitializer();
-            opt = init.initOptionsUnivers();
-            dic = new Dictionary<String, decimal>() { {"1", 38.1m }};
+            var init = new HardCodeInitializer();
+            var calculator = new FinancialComputation();
+            var opt = init.initOptionsUnivers();
+            var dates = init.getDatesOfSimuData();
+            var vol = init.getVolatilityOfSimuData();
+            var spot = init.getSpotOfSimuData();
+            var res = calculator.computeDeltasAndPrice(dates, opt, spot, vol);
+            var port = calculator.computePricePortfolio(dates, res, spot, 0.01);
+            var j = res.Count;
+
+            for (int i = 0; i < j; i++)
+            {
+                Console.WriteLine("Date: " + res[i].Date);
+                Console.WriteLine("Option price: " + res[i].Price);
+                Console.WriteLine("Portfolio price:" + port[i].Price + "\n");
+            }
+            Console.WriteLine("End");
         }
         #endregion Public Constructors
 
-        #region Public Properties
+        /*#region Public Properties
 
         public string ViewPayOff
         {
@@ -33,7 +45,7 @@ namespace Fbt
            get { Console.WriteLine("dans get"); return opt.GetPayoff(dic).ToString(); }
         }
 
-        #endregion Public Properties
+        #endregion Public Properties*/
 
     }
 }

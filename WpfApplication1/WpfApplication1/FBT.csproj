@@ -99,9 +99,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Model\Class1.cs" />
+    <Compile Include="Model\FinancialModel\PriceAndDelta.cs" />
+    <Compile Include="Model\FinancialModel\PricePortfolio.cs" />
+    <Compile Include="Model\FinancialModel\FinancialComputation.cs" />
     <Compile Include="Model\Initializer\HardCodeInitializer.cs" />
-    <Compile Include="Model\Initializer\IInitializer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
