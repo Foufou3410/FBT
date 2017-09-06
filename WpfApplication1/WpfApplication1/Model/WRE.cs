@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 
 namespace AppelWRE
 {
-    class WRE
+    public class WRE
     {
         // import WRE dlls
         [DllImport("wre-ensimag-c-4.1.dll", EntryPoint = "WREmodelingCov", CallingConvention = CallingConvention.Cdecl)]
@@ -53,5 +53,6 @@ namespace AppelWRE
                 Console.Write("\n");
             }
         }
+        
     }
 }
