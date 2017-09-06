@@ -27,6 +27,8 @@ namespace Fbt
             var res = calculator.computeDeltasAndPrice(dates, opt, spot, vol);
             var port = calculator.computePricePortfolio(dates, res, spot, 0.01);
             var j = res.Count;
+            
+
 
             Console.WriteLine("Demarrer \n");
             for (int i = 0; i < j; i++)
