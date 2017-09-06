@@ -16,22 +16,26 @@ namespace Fbt
 
         public MainWindowView()
         {
-            Console.WriteLine("Demarrer");
             var init = new HardCodeInitializer();
             var calculator = new FinancialComputation();
+
             var opt = init.initOptionsUnivers();
             var dates = init.getDatesOfSimuData();
             var vol = init.getVolatilityOfSimuData();
             var spot = init.getSpotOfSimuData();
+
             var res = calculator.computeDeltasAndPrice(dates, opt, spot, vol);
             var port = calculator.computePricePortfolio(dates, res, spot, 0.01);
             var j = res.Count;
 
+            Console.WriteLine("Demarrer \n");
             for (int i = 0; i < j; i++)
             {
                 Console.WriteLine("Date: " + res[i].Date);
                 Console.WriteLine("Option price: " + res[i].Price);
-                Console.WriteLine("Portfolio price:" + port[i].Price + "\n");
+                Console.WriteLine("Portfolio price:" + port[i].Price);
+                var trackErr = res[i].Price - port[i].Price;
+                Console.WriteLine("Tracking error: " + trackErr + "\n" );
             }
             Console.WriteLine("End");
         }
