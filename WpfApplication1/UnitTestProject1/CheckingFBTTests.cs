@@ -1,10 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using WpfApplication1;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace WpfApplication1.Tests
 {
@@ -14,7 +9,18 @@ namespace WpfApplication1.Tests
         [TestMethod()]
         public void WithdrawTest()
         {
-            Assert.Fail();
+            CheckingFBT fb = new CheckingFBT(5d);
+            Assert.AreEqual(fb.m_balance, 5d);
+            fb.Withdraw(4d);
+            Assert.AreEqual(fb.m_balance, 1d);
+        }
+
+        [TestMethod()]
+        [ExpectedException(typeof(ArgumentException),"Withdrawal exceeds balance!")]
+        public void WithdrawCS()
+        {
+            CheckingFBT fb = new CheckingFBT(5d);
+            fb.Withdraw(6d);
         }
     }
 }
