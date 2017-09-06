@@ -6,10 +6,10 @@ namespace WpfApplication1.Tests
     [TestClass()]
     public class CheckingFBTTests
     {
+        CheckingFBT fb = new CheckingFBT(5d);
         [TestMethod()]
         public void WithdrawTest()
         {
-            CheckingFBT fb = new CheckingFBT(5d);
             Assert.AreEqual(fb.m_balance, 5d);
             fb.Withdraw(4d);
             Assert.AreEqual(fb.m_balance, 1d);
@@ -19,7 +19,6 @@ namespace WpfApplication1.Tests
         [ExpectedException(typeof(ArgumentException),"Withdrawal exceeds balance!")]
         public void WithdrawCS()
         {
-            CheckingFBT fb = new CheckingFBT(5d);
             fb.Withdraw(6d);
         }
     }

@@ -39,7 +39,7 @@ namespace WpfApplication1.Model.Initializer.Tests
         [TestMethod()]
         public void initRiskFreeRateTest()
         {
-            var riskFreeRate = init.initRiskFreeRate();
+            var riskFreeRate = init.initRiskFreeRate(2);
             Console.Write(riskFreeRate);
         }
     }
