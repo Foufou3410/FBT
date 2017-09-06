@@ -22,17 +22,18 @@ namespace Fbt
 
             var debut = new DateTime(2017, 9, 6);
             var duree = 365;
+            var pas = 2;
 
-
+            var opt = init.initOptionsUnivers(debut, duree);
             var dataFeedProvider = new MyDataFeed();
-            var spot = dataFeedProvider.GenerateDataFeed(debut, duree);
+            var spot = dataFeedProvider.GenerateDataFeed(debut, duree, opt);
 
             
 
-            var riskFreeRate = init.initRiskFreeRate();
-            var opt = init.initOptionsUnivers(debut, duree);
-            var dates = init.getDatesOfSimuData(debut, duree);
-            var vol = init.getVolatilityOfSimuData(duree);
+            var riskFreeRate = init.initRiskFreeRate(pas);
+            
+            var dates = init.getDatesOfSimuData(debut, duree, pas);
+            var vol = init.getVolatilityOfSimuData(duree, pas);
 
             Console.WriteLine(dates.Count);
             Console.WriteLine(vol.Count);
@@ -60,7 +61,7 @@ namespace Fbt
             Console.WriteLine("At Maturity:");
             Console.WriteLine("Maturity Date: " + opt.Maturity);
             var dic = new Dictionary<string, decimal>();
-            dic.Add(opt.UnderlyingShare.Id, init.getSpotAtMaturity());
+            dic.Add(opt.UnderlyingShare.Id, (decimal)spot[j]);
             Console.WriteLine("Payoff: " + opt.GetPayoff(dic) +"\n");
             Console.WriteLine("End");
 
