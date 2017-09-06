@@ -1,14 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace WpfApplication1
 {
     public class CheckingFBT
     {
-        double m_balance;
+        public double m_balance;
+
+        public CheckingFBT(double current_balance)
+        {
+            m_balance = current_balance;
+        }
+
         public void Withdraw(double amount)
         {
             if (m_balance >= amount)
