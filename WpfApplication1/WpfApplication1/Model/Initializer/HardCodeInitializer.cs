@@ -7,7 +7,7 @@ using PricingLibrary.FinancialProducts;
 
 namespace FBT.Model.Initializer
 {
-    class HardCodeInitializerVanilla
+    class HardCodeInitializer
     {
         public VanillaCall initOptionsUnivers(DateTime debut, double duree)
         {

@@ -4,16 +4,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using WpfApplication1.Model.Initializer;
+using FBT.Model.Initializer;
 
-namespace WpfApplication1.Model.FinancialModel
+namespace FBT.Model.FinancialModel
 {
     class MyDataFeed
     {
         public List<double> GenerateDataFeed(DateTime debut, double duree)
         {
 
-            var init = new HardCodeInitializer();
+            //var init = new HardCodeInitializer();
             var sousJacent = new Share("BNP", "1");
             var date = debut.AddDays(duree);
             var opt = new VanillaCall("optionBNP", sousJacent, date, 33);

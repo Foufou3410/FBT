@@ -16,7 +16,7 @@ namespace FBT
 
         public MainWindowView()
         {
-            var init = new HardCodeInitializerVanilla();
+            var init = new HardCodeInitializer();
             var calculator = new FinancialComputation();
 
 
