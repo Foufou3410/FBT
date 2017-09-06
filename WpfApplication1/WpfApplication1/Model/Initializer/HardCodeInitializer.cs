@@ -30,15 +30,6 @@ namespace WpfApplication1.Model.Initializer
             return dates;
         }
 
-        /*public decimal getSpotAtMaturity()
-        {
-            return 35m;
-        }*/
-
-        /*public List<double> getSpotOfSimuData()
-        {
-            return new List<double>() { 30, 32, 29, 30 };
-        }*/
 
         public List<double> getVolatilityOfSimuData(double duree, int pas)
         {
