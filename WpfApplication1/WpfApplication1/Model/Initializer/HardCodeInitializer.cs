@@ -7,7 +7,7 @@ using PricingLibrary.FinancialProducts;
 
 namespace WpfApplication1.Model.Initializer
 {
-    class HardCodeInitializer
+    public class HardCodeInitializer : IInitializer
     {
         public VanillaCall initOptionsUnivers()
         {
