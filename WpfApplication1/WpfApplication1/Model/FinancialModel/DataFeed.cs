@@ -10,13 +10,10 @@ namespace FBT.Model.FinancialModel
 {
     class MyDataFeed
     {
-        public List<double> GenerateDataFeed(DateTime debut, double duree)
+        public List<double> GenerateDataFeed(DateTime debut, double duree, IOption opt)
         {
 
-            //var init = new HardCodeInitializer();
-            var sousJacent = new Share("BNP", "1");
-            var date = debut.AddDays(duree);
-            var opt = new VanillaCall("optionBNP", sousJacent, date, 33);
+            var init = new HardCodeInitializer();
             var simulateMarket = new PricingLibrary.Utilities.MarketDataFeed.SimulatedDataFeedProvider();
             var datafeed = simulateMarket.GetDataFeed(opt, debut);
             var spots = new List<double>();
