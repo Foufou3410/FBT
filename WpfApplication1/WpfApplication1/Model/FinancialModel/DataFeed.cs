@@ -8,7 +8,7 @@ using WpfApplication1.Model.Initializer;
 
 namespace WpfApplication1.Model.FinancialModel
 {
-    class MyDataFeed
+    public class MyDataFeed
     {
         public List<double> GenerateDataFeed(DateTime debut, double duree, IOption opt)
         {

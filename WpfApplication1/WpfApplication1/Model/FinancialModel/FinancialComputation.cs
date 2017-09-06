@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace WpfApplication1.Model.FinancialModel
 {
-    class FinancialComputation
+    public class FinancialComputation
     {
         public List<PriceAndDelta> computeDeltasAndPrice(List<DateTime> dates, VanillaCall option, List<double> spots, List<double> volatilities, int pas)
         {

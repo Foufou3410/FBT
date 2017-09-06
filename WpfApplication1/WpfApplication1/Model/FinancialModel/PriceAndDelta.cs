@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace WpfApplication1.Model.FinancialModel
 {
-    class PriceAndDelta
+    public class PriceAndDelta
     {
         public PriceAndDelta(DateTime d, double p, double[] del)
         {
