@@ -93,8 +93,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="CheckingFBT.cs" />
-    <Compile Include="IFBT.cs" />
-    <Compile Include="FBTInfo.cs" />
     <Compile Include="MainWindowView.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
