@@ -11,6 +11,7 @@ namespace WpfApplication1.Model.Initializer.Tests
     [TestClass()]
     public class HardCodeInitializerTests
     {
+        HardCodeInitializer init = new HardCodeInitializer();
         [TestMethod()]
         public void initOptionsUniversTest()
         {
@@ -38,7 +39,8 @@ namespace WpfApplication1.Model.Initializer.Tests
         [TestMethod()]
         public void initRiskFreeRateTest()
         {
-            throw new NotImplementedException();
+            var riskFreeRate = init.initRiskFreeRate();
+            Console.Write(riskFreeRate);
         }
     }
 }

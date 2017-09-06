@@ -14,7 +14,8 @@ namespace WpfApplication1.ViewModel.InitializerViewModel.Tests
         [TestMethod()]
         public void HardCodeInitializerViewModelTest()
         {
-            throw new NotImplementedException();
+            var init = new HardCodeInitializerViewModel();
+            Assert.AreEqual(init.Name, "HardCode");
         }
     }
 }
