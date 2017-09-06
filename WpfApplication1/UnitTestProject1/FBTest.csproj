@@ -51,8 +51,9 @@
   </Choose>
   <ItemGroup>
     <Compile Include="CheckingFBTTests.cs" />
-    <Compile Include="UnitTest1.cs" />
+    <Compile Include="Model\Initializer\HardCodeInitializerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModel\InitializerViewModel\HardCodeInitializerViewModelTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\WpfApplication1\FBT.csproj">

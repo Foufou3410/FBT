@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using PricingLibrary.FinancialProducts;
 
 namespace WpfApplication1.Model.Initializer
 {
-    class HardCodeInitializer
+    public class HardCodeInitializer : IInitializer
     {
         public VanillaCall initOptionsUnivers(DateTime debut, double duree)
         {
