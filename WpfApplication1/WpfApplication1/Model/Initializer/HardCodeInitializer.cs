@@ -22,6 +22,11 @@ namespace WpfApplication1.Model.Initializer
             return new List<DateTime>() { new DateTime(2017, 9, 24), new DateTime(2017, 9, 25), new DateTime(2017, 9, 26), new DateTime(2017, 9, 27) };
         }
 
+        public decimal getSpotAtMaturity()
+        {
+            return 35m;
+        }
+
         public List<double> getSpotOfSimuData()
         {
             return new List<double>() { 30, 32, 29, 30 };
