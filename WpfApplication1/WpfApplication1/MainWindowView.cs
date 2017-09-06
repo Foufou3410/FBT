@@ -19,13 +19,14 @@ namespace Fbt
             var init = new HardCodeInitializer();
             var calculator = new FinancialComputation();
 
+            var riskFreeRate = init.initRiskFreeRate();
             var opt = init.initOptionsUnivers();
             var dates = init.getDatesOfSimuData();
             var vol = init.getVolatilityOfSimuData();
             var spot = init.getSpotOfSimuData();
 
             var res = calculator.computeDeltasAndPrice(dates, opt, spot, vol);
-            var port = calculator.computePricePortfolio(dates, res, spot, 0.01);
+            var port = calculator.computePricePortfolio(dates, res, spot, riskFreeRate);
             var j = res.Count;
             
 
@@ -39,6 +40,7 @@ namespace Fbt
                 var trackErr = res[i].Price - port[i].Price;
                 Console.WriteLine("Tracking error: " + trackErr + "\n" );
             }
+
             Console.WriteLine("End");
         }
         #endregion Public Constructors

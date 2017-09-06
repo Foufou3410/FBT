@@ -31,5 +31,10 @@ namespace WpfApplication1.Model.Initializer
         {
             return new List<double>() { 0.1, 0.08, 0.09, 0.1 };
         }
+
+        public double initRiskFreeRate()
+        {
+            return 0.01;
+        }
     }
 }
