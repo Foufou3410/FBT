@@ -32,6 +32,7 @@ namespace Fbt
 
 
             Console.WriteLine("Demarrer \n");
+            Console.WriteLine("Financial product: " + opt.Name + "\n");
             for (int i = 0; i < j; i++)
             {
                 Console.WriteLine("Date: " + res[i].Date);
@@ -39,10 +40,15 @@ namespace Fbt
                 Console.WriteLine("Portfolio value:" + port[i].Price);
                 var trackErr = res[i].Price - port[i].Price;
                 Console.WriteLine("Tracking error: " + trackErr);
-                Console.WriteLine("Share Value:" + port[i].valShare);
-                Console.WriteLine("Unrisky rate money:" + port[i].valSansRisque + "\n");
+                Console.WriteLine("Composition of the portfolio: ");
+                Console.WriteLine("   Value in the underlying share " + opt.UnderlyingShare.Name + ": " + port[i].valShare);
+                Console.WriteLine("   Value invested at a free risk rate:" + port[i].valSansRisque + "\n");
             }
-
+            Console.WriteLine("At Maturity:");
+            Console.WriteLine("Maturity Date: " + opt.Maturity);
+            var dic = new Dictionary<string, decimal>();
+            dic.Add(opt.UnderlyingShare.Id, init.getSpotAtMaturity());
+            Console.WriteLine("Payoff: " + opt.GetPayoff(dic) +"\n");
             Console.WriteLine("End");
         }
         #endregion Public Constructors
@@ -52,7 +58,7 @@ namespace Fbt
         public string ViewPayOff
         {
            
-           get { Console.WriteLine("dans get"); return opt.GetPayoff(dic).ToString(); }
+           get { return opt.GetPayoff(dic).ToString(); }
         }
 
         #endregion Public Properties*/

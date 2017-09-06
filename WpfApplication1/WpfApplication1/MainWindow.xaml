@@ -12,6 +12,5 @@
         <Button Command="{Binding CalculateCmd}" Margin="209,21,198,261">Calculer</Button>
         <TextBlock Text="{Binding ViewPayOff}" Margin="209,107,73,188" Background="White" VerticalAlignment="Center" ></TextBlock>
         <TextBlock Text="{Binding ViewPort}" Margin="209,173,73,122" Background="White" VerticalAlignment="Center"></TextBlock>
-
     </Grid>
 </Window>
