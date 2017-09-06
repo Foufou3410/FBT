@@ -39,6 +39,8 @@ namespace Fbt
                 Console.WriteLine("Portfolio price:" + port[i].Price);
                 var trackErr = res[i].Price - port[i].Price;
                 Console.WriteLine("Tracking error: " + trackErr + "\n" );
+                Console.WriteLine("Share Value:" + port[i].valShare);
+                Console.WriteLine("Unrisky rate money:" + port[i].valSansRisque + "\n");
             }
 
             Console.WriteLine("End");

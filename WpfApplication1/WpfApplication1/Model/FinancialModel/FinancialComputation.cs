@@ -29,11 +29,12 @@ namespace WpfApplication1.Model.FinancialModel
             var result = new List<PricePortfolio>();
             var i = 1;
             var valPortefeuille = deltas[0].Price;
-            result.Add(new PricePortfolio(dates[i], valPortefeuille));
+            result.Add(new PricePortfolio(dates[i], valPortefeuille, deltas[0].Deltas[0]*spots[0], valPortefeuille- deltas[0].Deltas[0] * spots[0]));
             for (i=1; i<dates.Count; i++)
             {
+                Console.WriteLine(deltas[i].Deltas[0]);
                 valPortefeuille = deltas[i].Deltas[0] * spots[i] + (deltas[i - 1].Deltas[0] * spots[i] + (valPortefeuille - deltas[i - 1].Deltas[0] * spots[i - 1]) * (1 + tauxSansRisque) - deltas[i].Deltas[0] * spots[i]);
-                result.Add(new PricePortfolio(dates[i], valPortefeuille));
+                result.Add(new PricePortfolio(dates[i], valPortefeuille, deltas[i].Deltas[0] * spots[i], valPortefeuille - deltas[i].Deltas[0] * spots[i]));
 
             }
             return result;
