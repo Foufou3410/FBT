@@ -33,7 +33,9 @@ namespace Fbt
             {
                 Console.WriteLine("Date: " + res[i].Date);
                 Console.WriteLine("Option price: " + res[i].Price);
-                Console.WriteLine("Portfolio price:" + port[i].Price + "\n");
+                Console.WriteLine("Portfolio price:" + port[i].Price);
+                Console.WriteLine("Share Value:" + port[i].valShare);
+                Console.WriteLine("Unrisky rate money:" + port[i].valSansRisque + "\n");
             }
             Console.WriteLine("End");
         }
