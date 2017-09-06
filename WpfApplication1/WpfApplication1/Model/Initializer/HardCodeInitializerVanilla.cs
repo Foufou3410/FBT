@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using PricingLibrary.FinancialProducts;
 
-namespace WpfApplication1.Model.Initializer
+namespace FBT.Model.Initializer
 {
-    class HardCodeInitializer
+    class HardCodeInitializerVanilla
     {
         public VanillaCall initOptionsUnivers()
         {

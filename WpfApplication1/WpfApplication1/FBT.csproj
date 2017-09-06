@@ -89,9 +89,6 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="CheckingFBT.cs" />
-    <Compile Include="IFBT.cs" />
-    <Compile Include="FBTInfo.cs" />
     <Compile Include="MainWindowView.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -102,7 +99,7 @@
     <Compile Include="Model\FinancialModel\PriceAndDelta.cs" />
     <Compile Include="Model\FinancialModel\PricePortfolio.cs" />
     <Compile Include="Model\FinancialModel\FinancialComputation.cs" />
-    <Compile Include="Model\Initializer\HardCodeInitializer.cs" />
+    <Compile Include="Model\Initializer\HardCodeInitializerVanilla.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

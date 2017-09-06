@@ -1,12 +1,12 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using WpfApplication1;
+using FBT;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WpfApplication1.Tests
+namespace FBT.Tests
 {
     [TestClass()]
     public class CheckingFBTTests

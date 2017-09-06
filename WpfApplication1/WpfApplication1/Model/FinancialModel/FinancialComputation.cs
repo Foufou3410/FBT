@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WpfApplication1.Model.FinancialModel
+namespace FBT.Model.FinancialModel
 {
     class FinancialComputation
     {

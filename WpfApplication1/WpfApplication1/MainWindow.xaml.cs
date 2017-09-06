@@ -1,4 +1,4 @@
-﻿using Fbt;
+﻿using FBT;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace WpfApplication1
+namespace FBT
 {
     /// <summary>
     /// Logique d'interaction pour MainWindow.xaml

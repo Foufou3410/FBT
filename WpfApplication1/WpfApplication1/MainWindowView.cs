@@ -4,10 +4,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using WpfApplication1.Model.FinancialModel;
-using WpfApplication1.Model.Initializer;
+using FBT.Model.FinancialModel;
+using FBT.Model.Initializer;
 
-namespace Fbt
+namespace FBT
 {
     class MainWindowView
     {
@@ -16,7 +16,7 @@ namespace Fbt
 
         public MainWindowView()
         {
-            var init = new HardCodeInitializer();
+            var init = new HardCodeInitializerVanilla();
             var calculator = new FinancialComputation();
 
             var riskFreeRate = init.initRiskFreeRate();
