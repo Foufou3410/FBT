@@ -24,23 +24,23 @@ namespace Fbt
             var duree = 365;
             var pas = 2;
 
-            var opt = init.initOptionsUnivers(debut, duree);
+            var opt = init.initOptionsUnivers(debut, duree-1);
             var dataFeedProvider = new MyDataFeed();
-            var spot = dataFeedProvider.GenerateDataFeed(debut, duree, opt);
+            var spot = dataFeedProvider.GenerateDataFeed(debut, duree-1, opt);
 
             
 
             var riskFreeRate = init.initRiskFreeRate(pas);
             
-            var dates = init.getDatesOfSimuData(debut, duree, pas);
-            var vol = init.getVolatilityOfSimuData(duree, pas);
+            var dates = init.getDatesOfSimuData(debut, duree-1, pas);
+            var vol = init.getVolatilityOfSimuData(duree-1, pas);
 
             Console.WriteLine(dates.Count);
             Console.WriteLine(vol.Count);
             Console.WriteLine(spot.Count);
 
-            var res = calculator.computeDeltasAndPrice(dates, opt, spot, vol);
-            var port = calculator.computePricePortfolio(dates, res, spot, riskFreeRate);
+            var res = calculator.computeDeltasAndPrice(dates, opt, spot, vol, pas);
+            var port = calculator.computePricePortfolio(dates, res, spot, riskFreeRate, pas);
             var j = res.Count;
             
 
