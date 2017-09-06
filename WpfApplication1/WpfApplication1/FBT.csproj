@@ -96,6 +96,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Model\FinancialModel\DataFeed.cs" />
     <Compile Include="Model\FinancialModel\PriceAndDelta.cs" />
     <Compile Include="Model\FinancialModel\PricePortfolio.cs" />
     <Compile Include="Model\FinancialModel\FinancialComputation.cs" />

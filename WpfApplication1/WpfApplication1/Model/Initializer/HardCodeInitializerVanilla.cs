@@ -9,17 +9,25 @@ namespace FBT.Model.Initializer
 {
     class HardCodeInitializerVanilla
     {
-        public VanillaCall initOptionsUnivers()
+        public VanillaCall initOptionsUnivers(DateTime debut, double duree)
         {
             var sousJacent = new Share("BNP", "1");
-            var date = new DateTime(2018, 6, 24);
-            var opt = new VanillaCall("optionBNP", sousJacent, date, 33);
+            var date = debut.AddDays(duree);
+            var opt = new VanillaCall("optionBNP", sousJacent, date, 8);
             return opt;
         }
 
-        public List<DateTime> getDatesOfSimuData()
+        public List<DateTime> getDatesOfSimuData(DateTime debut, double duree)
         {
-            return new List<DateTime>() { new DateTime(2017, 9, 24), new DateTime(2017, 9, 25), new DateTime(2017, 9, 26), new DateTime(2017, 9, 27) };
+            var dates = new List<DateTime>();
+            var current = debut;
+            dates.Add(debut);
+            for (var i=1; i < duree; i++)
+            {
+                current = current.AddDays(1);
+                dates.Add(current);
+            }
+            return dates;
         }
 
         public decimal getSpotAtMaturity()
@@ -27,19 +35,26 @@ namespace FBT.Model.Initializer
             return 35m;
         }
 
-        public List<double> getSpotOfSimuData()
+        /*public List<double> getSpotOfSimuData()
         {
             return new List<double>() { 30, 32, 29, 30 };
-        }
+        }*/
 
-        public List<double> getVolatilityOfSimuData()
+        public List<double> getVolatilityOfSimuData(double duree)
         {
-            return new List<double>() { 0.1, 0.08, 0.09, 0.1 };
+            var vol = new List<double>();
+            for (var i = 0; i < duree; i++)
+            {
+                vol.Add(0.4);
+            }
+            return vol;
         }
 
         public double initRiskFreeRate()
         {
-            return 0.01;
+            var span = PricingLibrary.Utilities.DayCount.ConvertToDouble(1, 365);
+            var free = PricingLibrary.Utilities.MarketDataFeed.RiskFreeRateProvider.GetRiskFreeRateAccruedValue(span);
+            return free;
         }
     }
 }
