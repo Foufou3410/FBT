@@ -8,7 +8,7 @@ using FBT.Model.Initializer;
 
 namespace FBT.Model.FinancialModel
 {
-    class MyDataFeed
+    public class MyDataFeed
     {
         public List<double> GenerateDataFeed(DateTime debut, IOption opt)
         {

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FBT.Model.FinancialModel
 {
-    class PriceAndDelta
+    public class PriceAndDelta
     {
         public PriceAndDelta(DateTime d, double p, double[] del)
         {

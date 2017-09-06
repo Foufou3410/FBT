@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using PricingLibrary.FinancialProducts;
 
 namespace FBT.Model.Initializer
 {
-    class HardCodeInitializer
+    public class HardCodeInitializer : IInitializer
     {
         public VanillaCall initOptionsUnivers(DateTime debut, double duree)
         {
@@ -30,15 +27,6 @@ namespace FBT.Model.Initializer
             return dates;
         }
 
-        /*public decimal getSpotAtMaturity()
-        {
-            return 35m;
-        }*/
-
-        /*public List<double> getSpotOfSimuData()
-        {
-            return new List<double>() { 30, 32, 29, 30 };
-        }*/
 
         public List<double> getVolatilityOfSimuData(double duree, int pas)
         {
