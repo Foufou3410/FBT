@@ -19,11 +19,24 @@ namespace Fbt
             var init = new HardCodeInitializer();
             var calculator = new FinancialComputation();
 
+
+            var debut = new DateTime(2017, 9, 6);
+            var duree = 365;
+
+
+            var dataFeedProvider = new MyDataFeed();
+            var spot = dataFeedProvider.GenerateDataFeed(debut, duree);
+
+            
+
             var riskFreeRate = init.initRiskFreeRate();
-            var opt = init.initOptionsUnivers();
-            var dates = init.getDatesOfSimuData();
-            var vol = init.getVolatilityOfSimuData();
-            var spot = init.getSpotOfSimuData();
+            var opt = init.initOptionsUnivers(debut, duree);
+            var dates = init.getDatesOfSimuData(debut, duree);
+            var vol = init.getVolatilityOfSimuData(duree);
+
+            Console.WriteLine(dates.Count);
+            Console.WriteLine(vol.Count);
+            Console.WriteLine(spot.Count);
 
             var res = calculator.computeDeltasAndPrice(dates, opt, spot, vol);
             var port = calculator.computePricePortfolio(dates, res, spot, riskFreeRate);
@@ -50,6 +63,13 @@ namespace Fbt
             dic.Add(opt.UnderlyingShare.Id, init.getSpotAtMaturity());
             Console.WriteLine("Payoff: " + opt.GetPayoff(dic) +"\n");
             Console.WriteLine("End");
+
+
+            
+
+
+
+
         }
         #endregion Public Constructors
 
