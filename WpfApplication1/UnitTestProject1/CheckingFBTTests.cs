@@ -39,7 +39,7 @@ namespace WpfApplication1.Tests
 
             Console.WriteLine("Demarrer \n");
             Console.WriteLine("Financial product: " + opt.Name + "\n");
-            for (int i = j-2; i < j; i++)
+            for (int i =0; i < j; i++)
             {
                 Console.WriteLine("Date: " + res[i].Date);
                 Console.WriteLine("Option price: " + res[i].Price);
