@@ -7,12 +7,11 @@ using System.Threading.Tasks;
 using AppelWRE;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
-using WpfApplication1.Model.FinancialModel;
-using WpfApplication1.Model.Initializer;
 
+using FBT.Model.FinancialModel;
+using FBT.Model.Initializer;
 
-
-namespace Fbt
+namespace FBT
 {
     class MainWindowView
     {

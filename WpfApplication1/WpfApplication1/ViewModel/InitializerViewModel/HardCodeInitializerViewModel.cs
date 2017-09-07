@@ -1,7 +1,7 @@
-﻿using WpfApplication1.Model;
-using WpfApplication1.Model.Initializer;
+﻿using FBT.Model;
+using FBT.Model.Initializer;
 
-namespace WpfApplication1.ViewModel.InitializerViewModel
+namespace FBT.ViewModel.InitializerViewModel
 {
     public class HardCodeInitializerViewModel : IInitializerViewModel
     {

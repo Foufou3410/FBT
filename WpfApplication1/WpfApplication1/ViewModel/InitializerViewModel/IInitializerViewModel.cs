@@ -1,6 +1,6 @@
-﻿using WpfApplication1.Model.Initializer;
+﻿using FBT.Model.Initializer;
 
-namespace WpfApplication1.ViewModel.InitializerViewModel
+namespace FBT.ViewModel.InitializerViewModel
 {
     public interface IInitializerViewModel
     {
