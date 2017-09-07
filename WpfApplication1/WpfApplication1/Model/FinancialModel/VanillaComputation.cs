@@ -21,17 +21,32 @@ namespace FBT.Model.FinancialModel
             vanilla = v;
             spots = new Dictionary<DateTime, double>();
 
-            var simulateMarket = new SimulatedDataFeedProvider();
-            var dataFeed = simulateMarket.GetDataFeed(vanilla, debTest);
-            foreach (DataFeed d in dataFeed)
-            {
-                spots.Add(d.Date, (double)d.PriceList[vanilla.UnderlyingShare.Id]);
-            }
+            generateDataFeed(debTest, true);
         }
         #endregion
 
         #region Public Methods
+        public void generateDataFeed(DateTime debTest, bool isSimulated)
+        {
+            if (isSimulated)
+            //Case simulated data
+            {
+                var simulateMarket = new SimulatedDataFeedProvider();
+                var dataFeed = simulateMarket.GetDataFeed(vanilla, debTest);
+                foreach (DataFeed d in dataFeed)
+                {
+                    spots.Add(d.Date, (double)d.PriceList[vanilla.UnderlyingShare.Id]);
+                }
+            }
+            else
+            //Case historical data
+            {
+
+            }
+        }
+
         public List<PriceProdFin> computePrice (List<DateTime> dates)
+        //TODO: renvoyer une erreur si le spot est vide
         {
             var res = new List<PriceProdFin>();
             var pricer = new Pricer();
@@ -46,6 +61,7 @@ namespace FBT.Model.FinancialModel
 
         public List<PricePortfolio> computeValuePortfolio(List<DateTime> dates, List<DateTime> rebalancingDates,  double riskFreeRate)
         //The first date of dates and of rebalancingDates must be the same
+        //TODO: renvoyer une erreur si le spot est vide
         {
             var res = new List<PricePortfolio>();
             var deltas = computeRebalPriceAndDeltas(rebalancingDates);
@@ -75,6 +91,7 @@ namespace FBT.Model.FinancialModel
 
         #region Private Methods
         private Dictionary<DateTime, PriceAndDelta> computeRebalPriceAndDeltas(List<DateTime> rebalancingDates)
+        //TODO: renvoyer une erreur si le spot est vide
         {
             var res = new Dictionary<DateTime, PriceAndDelta>();
             var pricer = new Pricer();
