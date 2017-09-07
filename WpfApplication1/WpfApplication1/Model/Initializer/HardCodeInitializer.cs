@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using PricingLibrary.FinancialProducts;
+using AppelWRE;
 
 namespace FBT.Model.Initializer
 {
@@ -53,6 +54,27 @@ namespace FBT.Model.Initializer
             var span = PricingLibrary.Utilities.DayCount.ConvertToDouble(pas, 365);
             var free = PricingLibrary.Utilities.MarketDataFeed.RiskFreeRateProvider.GetRiskFreeRateAccruedValue(span);
             return free;
+        }
+
+        public List<double> computeListVolatility(int window, List<double> spots, int duree)
+        {
+            var result = new List<double>();
+            for (var j = window; j < duree; j++)
+            {
+                double[,] tab = new double[window, 1];
+                for (var k = 1; k < window; k++)
+                {
+                    tab[k - 1, 0] = Math.Log(spots[j - window + k] / spots[j - window + k - 1]);
+                }
+
+                var B = Math.Sqrt(PricingLibrary.Utilities.DayCount.ConvertToDouble(1, 365));
+
+                double[,] myVol = WRE.computeVolatility(tab);
+                result.Add(myVol[0, 0] / B);
+            }
+
+            return result;
+
         }
     }
 }
