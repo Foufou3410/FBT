@@ -1,4 +1,5 @@
-﻿using PricingLibrary.Computations;
+﻿using AppelWRE;
+using PricingLibrary.Computations;
 using PricingLibrary.FinancialProducts;
 using PricingLibrary.Utilities.MarketDataFeed;
 using System;
@@ -15,22 +16,50 @@ namespace FBT.Model.FinancialModel
 
         public Dictionary<DateTime, double> spots { get; }
 
+        public Dictionary<DateTime, double> volatility { get; }
+
         #region Public Constructor
-        public VanillaComputation(VanillaCall v, DateTime debTest)
+        public VanillaComputation(VanillaCall v, DateTime debTest, int window)
         {
             vanilla = v;
             spots = new Dictionary<DateTime, double>();
+            var spotsList = new List<double>();
+            var dateList = new List<DateTime>();
 
             var simulateMarket = new SimulatedDataFeedProvider();
             var dataFeed = simulateMarket.GetDataFeed(vanilla, debTest);
             foreach (DataFeed d in dataFeed)
             {
                 spots.Add(d.Date, (double)d.PriceList[vanilla.UnderlyingShare.Id]);
+                spotsList.Add((double)d.PriceList[vanilla.UnderlyingShare.Id]);
+                dateList.Add(d.Date);
             }
+
+            volatility = computeListVolatility(window, spotsList, dateList);
         }
         #endregion
 
         #region Public Methods
+
+        public Dictionary<DateTime, double> computeListVolatility(int window, List<double> spotsList, List<DateTime> dates)
+        {
+            var result = new Dictionary<DateTime, double>();
+
+            for (var currentDate = window; currentDate < dates.Count; currentDate++)
+            {
+                double[,] tab = new double[window - 1, 1];
+                for (var k = 1; k < window; k++)
+                {
+                    tab[k - 1, 0] = Math.Log(spotsList[currentDate - window + k] / spotsList[currentDate - window + k - 1]);
+                }
+
+                var B = Math.Sqrt(PricingLibrary.Utilities.DayCount.ConvertToDouble(1, 365));
+                double[,] myVol = WRE.computeVolatility(tab);
+                result.Add(dates[currentDate], myVol[0, 0] / B);
+            }
+            return result;
+        }
+
         public List<PriceProdFin> computePrice (List<DateTime> dates)
         {
             var res = new List<PriceProdFin>();
@@ -38,7 +67,7 @@ namespace FBT.Model.FinancialModel
 
             foreach (DateTime day in dates)
             {
-                var priceList = pricer.PriceCall(vanilla, day, 365, spots[day], 0.4);
+                var priceList = pricer.PriceCall(vanilla, day, 365, spots[day], volatility[day]);
                 res.Add(new PriceProdFin(day, priceList.Price));
             }
             return res;
@@ -81,7 +110,7 @@ namespace FBT.Model.FinancialModel
 
             foreach (DateTime day in rebalancingDates)
             {
-                var priceList = pricer.PriceCall(vanilla, day, 365, spots[day], 0.4);
+                var priceList = pricer.PriceCall(vanilla, day, 365, spots[day], volatility[day]);
                 res.Add(day, new PriceAndDelta(day, priceList.Price, priceList.Deltas));
             }
             return res;
