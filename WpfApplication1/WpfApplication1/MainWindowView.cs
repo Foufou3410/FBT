@@ -4,6 +4,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AppelWRE;
+using System.Diagnostics;
+using System.Runtime.InteropServices;
+
 using FBT.Model.FinancialModel;
 using FBT.Model.Initializer;
 
@@ -16,6 +20,29 @@ namespace FBT
 
         public MainWindowView()
         {
+            //public void WREmodelingCovTest()
+            //      {
+            // header
+            Console.WriteLine("******************************");
+            Console.WriteLine("*    WREmodelingCov in C#   *");
+            Console.WriteLine("******************************");
+
+            // sample data
+            double[,] returns = { {0.05, 0.05, 0.6}, {-0.001, -0.001, 0.56}, {0.7, 0.7, 0.12}, {-0.3, -0.3, -0.1},
+                                {0.1, 0.1, 0.3}};
+
+            // call WRE via computeCovarianceMatrix encapsulation
+            //WRE classWRE = new WRE();
+            double[,] myCovMatrix = WRE.computeCovarianceMatrix(returns);
+
+            // display result
+            WRE.dispMatrix(myCovMatrix);
+
+            // ending the program            
+            Console.WriteLine("\nType enter to exit");
+            //Console.ReadKey(true);
+            // }
+
 
 
         }
@@ -26,10 +53,13 @@ namespace FBT
         public string ViewPayOff
         {
            
-           get { return opt.GetPayoff(dic).ToString(); }
+           get {return opt.GetPayoff(dic).ToString(); }
         }
 
         #endregion Public Properties*/
 
     }
+
 }
+
+
