@@ -78,7 +78,6 @@
   <ItemGroup>
     <Compile Include="CheckingFBTTests.cs" />
     <Compile Include="Model\WRETests.cs" />
-    <Compile Include="UnitTest1.cs" />
     <Compile Include="Model\FinancialModel\FinancialComputationTests.cs" />
     <Compile Include="Model\Initializer\HardCodeInitializerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

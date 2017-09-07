@@ -1,14 +1,18 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using AppelWRE;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using WpfApplication1.Model.FinancialModel;
 using WpfApplication1.Model.Initializer;
+using WpfApplication1.Tests;
 
 namespace WpfApplication1.Tests
 {
     [TestClass()]
-    public class CheckingFBTTests
+    public class CheckingFBTTest
     {
+
+        
         [TestMethod()]
         public void MainTest()
         {
@@ -25,6 +29,28 @@ namespace WpfApplication1.Tests
             var spot = dataFeedProvider.GenerateDataFeed(debut, duree - 1, opt);
 
 
+            var list = calculator.computeListVolatility(10, spot, duree);
+            Console.WriteLine(list.Count);
+            foreach ( double d in list)
+            {
+                Console.WriteLine(d);
+            }
+
+
+            /*double[,] tab = new double[2,1];
+
+            for (var k=1; k<3; k++)
+            {
+                tab[k-1,0] = Math.Log(spot[k]/spot[k-1]);
+            }
+
+
+            var B = Math.Sqrt(PricingLibrary.Utilities.DayCount.ConvertToDouble(1,365));
+
+
+            double[,] myVol = WRE.computeVolatility(tab);
+
+            Console.WriteLine(myVol[0,0]/B);*/
 
             var riskFreeRate = init.initRiskFreeRate(pas);
 
@@ -59,6 +85,8 @@ namespace WpfApplication1.Tests
 
         }
 
-       
+        
+
+
     }
 }

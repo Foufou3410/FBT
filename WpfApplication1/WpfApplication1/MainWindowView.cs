@@ -19,6 +19,7 @@ namespace Fbt
 
         #region Public Constructors
 
+
         public MainWindowView()
         {
             //public void WREmodelingCovTest()
@@ -49,15 +50,15 @@ namespace Fbt
         }
         #endregion Public Constructors
 
-        /*#region Public Properties
+        #region Public Properties
 
         public string ViewPayOff
         {
            
-           get {return opt.GetPayoff(dic).ToString(); }
+           get {return "coucou"; }
         }
 
-        #endregion Public Properties*/
+        #endregion Public Properties
 
     }
 

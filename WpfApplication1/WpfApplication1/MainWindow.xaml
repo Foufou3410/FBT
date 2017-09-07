@@ -5,12 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfApplication1"
         mc:Ignorable="d"
-        Title="Backtest Forwardtest" Height="350" Width="525" Background="LightBlue">
+        Title="Backtest Forwardtest" Height="356.213" Width="535.355" Background="LightBlue">
     <Grid>
         <TextBlock Margin="23,105,313,177" HorizontalAlignment="Center" VerticalAlignment="Center">Payoff</TextBlock>
         <TextBlock Margin="47,173,327,121" HorizontalAlignment="Center" VerticalAlignment="Center" >Valeur du Portefeuille</TextBlock>
         <Button Command="{Binding CalculateCmd}" Margin="209,21,198,261">Calculer</Button>
-        <TextBlock Text="{Binding ViewPayOff}" Margin="209,107,73,188" Background="White" VerticalAlignment="Center" ></TextBlock>
-        <TextBlock Text="{Binding ViewPort}" Margin="209,173,73,122" Background="White" VerticalAlignment="Center"></TextBlock>
+        <TextBlock Text="{Binding ViewPayOff}" Margin="209,116,73,180" Background="White" VerticalAlignment="Center" Height="28" ></TextBlock>
+        <TextBlock Text="{Binding ViewPort}" Margin="209,178,73,114" Background="White" VerticalAlignment="Center" Height="28"></TextBlock>
     </Grid>
 </Window>
