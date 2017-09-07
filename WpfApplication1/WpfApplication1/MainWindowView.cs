@@ -16,34 +16,44 @@ namespace FBT
     class MainWindowView
     {
 
+
+        class Prices
+        {
+
+            public Prices(decimal value, DateTime date)
+            {
+                this.price = value;
+                this.date = date;
+            }
+
+            public DateTime date { get; set; }
+            public decimal price { get; set; }
+        }
         #region Public Constructors
 
-
+        static void LinqSQL()
+        {
+            Console.WriteLine("Récupération à l'aide de LINQ; syntaxe à la SQL");
+            using (DataClasses1DataContext asdc = new DataClasses1DataContext())
+            {
+                var q2 = (from lignes in asdc.HistoricalShareValues
+                          where lignes.id == "AC FP"
+                          select new Prices(lignes.value, lignes.date));
+                var listPrices = new List<Prices>();
+                foreach (Prices p in q2)
+                {
+                    listPrices.Add(p);
+                    Console.WriteLine(p.date);
+                    Console.WriteLine(p.price);
+                }
+            }
+        }
         public MainWindowView()
         {
-            //public void WREmodelingCovTest()
-            //      {
-            // header
-            Console.WriteLine("******************************");
-            Console.WriteLine("*    WREmodelingCov in C#   *");
-            Console.WriteLine("******************************");
 
-            // sample data
-            double[,] returns = { {0.05, 0.05, 0.6}, {-0.001, -0.001, 0.56}, {0.7, 0.7, 0.12}, {-0.3, -0.3, -0.1},
-                                {0.1, 0.1, 0.3}};
+            Console.WriteLine("Démarrer");
 
-            // call WRE via computeCovarianceMatrix encapsulation
-            //WRE classWRE = new WRE();
-            double[,] myCovMatrix = WRE.computeCovarianceMatrix(returns);
-
-            // display result
-            WRE.dispMatrix(myCovMatrix);
-
-            // ending the program            
-            Console.WriteLine("\nType enter to exit");
-            //Console.ReadKey(true);
-            // }
-
+            LinqSQL();
 
 
         }

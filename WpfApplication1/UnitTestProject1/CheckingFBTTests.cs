@@ -17,16 +17,19 @@ namespace FBT.Tests
 
             var debut = new DateTime(2017, 9, 6);
             var duree = 365;
-            var pas = 2;
+            var pas = 3;
+            var window = 50;
 
             var opt = init.initVanillaOpt(debut, duree - 1);
-            var vanillaOpt = new VanillaComputation(opt, debut);
+            var vanillaOpt = new VanillaComputation(opt, debut, window);
 
             var riskFreeRate = init.initRiskFreeRate(pas);
-            var dates = init.getRebalancingDates(debut, duree - 1, pas);
+            var debutRebalancing = debut.AddDays(window);
+            var datesRebalancing = init.getRebalancingDates(debutRebalancing, duree - window - 1, pas);
+            var dates = init.getRebalancingDates(debutRebalancing, duree - window - 1, 1);
 
-            var res = vanillaOpt.computePrice(dates);
-            var port = vanillaOpt.computeValuePortfolio(dates, dates, riskFreeRate);
+            var res = vanillaOpt.computePrice(datesRebalancing);
+            var port = vanillaOpt.computeValuePortfolio(datesRebalancing, datesRebalancing, riskFreeRate);
             var j = res.Count;
 
 
