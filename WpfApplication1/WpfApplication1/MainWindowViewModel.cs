@@ -32,12 +32,14 @@ namespace Wpf.CartesianChart.PointShapeLine
             start = new DateTime(2017, 9, 6);
             timeLapse = (int)period.year;
             step = 2 * (int)period.day;
+            var window = 30; //to be binded
   
             var opt = init.initVanillaOpt(start, timeLapse- 1);
-            var vanillaOpt = new VanillaComputation(opt, start);
+            var vanillaOpt = new VanillaComputation(opt, start, window);
 
             var riskFreeRate = init.initRiskFreeRate(step);
-            var dates = init.getRebalancingDates(start, timeLapse- 1, step);
+            var startRebalancing = start.AddDays(window);
+            var dates = init.getRebalancingDates(startRebalancing, timeLapse - window - 1, step);
 
             var res = vanillaOpt.computePrice(dates);
             var port = vanillaOpt.computeValuePortfolio(dates, dates, riskFreeRate);
