@@ -6,21 +6,15 @@ using System.Threading.Tasks;
 
 namespace FBT.Model.FinancialModel
 {
-    public class PricePortfolio
+    public class PriceProdFin
     {
-        public PricePortfolio(DateTime d, double p, List<double> s, double r)
+        public PriceProdFin(DateTime d, double p)
         {
             Date = d;
-            Price = p;
-            valShares = s;
-            valSansRisque = r;
+            Price = p; //Price of the financial product
         }
         public DateTime Date { get; set; }
 
         public double Price { get; set; }
-
-        public List<double> valShares { get; set; }
-
-        public double valSansRisque { get; set; }
     }
 }

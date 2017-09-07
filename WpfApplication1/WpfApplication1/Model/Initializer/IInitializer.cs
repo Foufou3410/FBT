@@ -1,4 +1,4 @@
-﻿namespace WpfApplication1.Model.Initializer
+﻿namespace FBT.Model.Initializer
 {
     public interface IInitializer
     {

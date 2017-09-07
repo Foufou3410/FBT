@@ -6,11 +6,21 @@ namespace FBT.Model.Initializer
 {
     public class HardCodeInitializer : IInitializer
     {
-        public VanillaCall initOptionsUnivers(DateTime debut, double duree)
+        public VanillaCall initVanillaOpt(DateTime debut, double duree)
         {
             var sousJacent = new Share("BNP", "1");
             var date = debut.AddDays(duree);
             var opt = new VanillaCall("optionBNP", sousJacent, date, 8);
+            return opt;
+        }
+
+        public BasketOption initBasketOpt(DateTime debut, double duree)
+        {
+            var sousJacent1 = new Share("BNP", "1");
+            var sousJacent2 = new Share("AXA", "2");
+            var sousJacent3 = new Share("Accenture", "3");
+            var date = debut.AddDays(duree);
+            var opt = new BasketOption("basketBNP", new Share[]{sousJacent1, sousJacent2, sousJacent3}, new double[] { 0.5, 0.3, 0.2 }, date, 8);
             return opt;
         }
 
