@@ -6,7 +6,7 @@ namespace WpfApplication1.Model.Initializer
 {
     public class HardCodeInitializer : IInitializer
     {
-        public VanillaCall initOptionsUnivers(DateTime debut, double duree)
+        public VanillaCall initOptionsUnivers(DateTime debut, uint duree)
         {
             var sousJacent = new Share("BNP", "1");
             var date = debut.AddDays(duree);
@@ -14,7 +14,7 @@ namespace WpfApplication1.Model.Initializer
             return opt;
         }
 
-        public List<DateTime> getDatesOfSimuData(DateTime debut, double duree, int pas)
+        public List<DateTime> getDatesOfSimuData(DateTime debut, uint duree, uint pas)
         {
             var dates = new List<DateTime>();
             var current = debut;
@@ -28,7 +28,7 @@ namespace WpfApplication1.Model.Initializer
         }
 
 
-        public List<double> getVolatilityOfSimuData(double duree, int pas)
+        public List<double> getVolatilityOfSimuData(uint duree, uint pas)
         {
             var vol = new List<double>();
             for (var i = 0; i < duree/pas; i++)
@@ -38,9 +38,9 @@ namespace WpfApplication1.Model.Initializer
             return vol;
         }
 
-        public double initRiskFreeRate(int pas)
+        public double initRiskFreeRate(uint pas)
         {
-            var span = PricingLibrary.Utilities.DayCount.ConvertToDouble(pas, 365);
+            var span = PricingLibrary.Utilities.DayCount.ConvertToDouble((int)pas, 365);
             var free = PricingLibrary.Utilities.MarketDataFeed.RiskFreeRateProvider.GetRiskFreeRateAccruedValue(span);
             return free;
         }

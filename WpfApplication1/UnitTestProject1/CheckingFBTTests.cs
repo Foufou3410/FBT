@@ -17,8 +17,8 @@ namespace WpfApplication1.Tests
 
 
             var debut = new DateTime(2017, 9, 6);
-            var duree = 365;
-            var pas = 2;
+            uint duree = 365;
+            uint pas = 2;
 
             var opt = init.initOptionsUnivers(debut, duree - 1);
             var dataFeedProvider = new MyDataFeed();
