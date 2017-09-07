@@ -16,8 +16,8 @@ namespace FBT.Tests
             var init = new HardCodeInitializer();
 
             var debut = new DateTime(2017, 9, 6);
-            uint duree = 365;
-            uint pas = 2;
+            int duree = 365;
+            int pas = 2;
 
             var opt = init.initVanillaOpt(debut, duree - 1);
             var vanillaOpt = new VanillaComputation(opt, debut);

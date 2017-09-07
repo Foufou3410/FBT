@@ -3,8 +3,8 @@ using LiveCharts.Wpf;
 using System;
 using System.Collections.Generic;
 using System.Windows.Media;
-using WpfApplication1.Model.FinancialModel;
-using WpfApplication1.Model.Initializer;
+using FBT.Model.FinancialModel;
+using FBT.Model.Initializer;
 
 namespace Wpf.CartesianChart.PointShapeLine
 {
@@ -13,40 +13,35 @@ namespace Wpf.CartesianChart.PointShapeLine
         #region Private Fields
         
         private HardCodeInitializer init;
-        private FinancialComputation computer;
         private DateTime start;
-        private uint timeLapse;
-        private uint step;
-
-        private MyDataFeed dataFeedProvider;
+        private int timeLapse;
+        private int step;
 
         #endregion Private Fields
 
 
         // To send away
-        enum period : uint { year = 365, semester = 183, month = 30, week = 5, day = 1 };
+        enum period : int { year = 365, semester = 183, month = 30, week = 5, day = 1 };
 
         public MainWindowViewModel()
         {
             //to be refactored
             init = new HardCodeInitializer();
-            computer = new FinancialComputation();
+            
 
             start = new DateTime(2017, 9, 6);
-            timeLapse = (uint)period.year;
-            step = 2 * (uint)period.day;
-            dataFeedProvider = new MyDataFeed();
-
-            var opt = init.initOptionsUnivers(start, timeLapse- 1);
-            var spot = dataFeedProvider.GenerateDataFeed(start, timeLapse- 1, opt);
+            timeLapse = (int)period.year;
+            step = 2 * (int)period.day;
+  
+            var opt = init.initVanillaOpt(start, timeLapse- 1);
+            var vanillaOpt = new VanillaComputation(opt, start);
 
             var riskFreeRate = init.initRiskFreeRate(step);
+            var dates = init.getRebalancingDates(start, timeLapse- 1, step);
 
-            var dates = init.getDatesOfSimuData(start, timeLapse- 1, step);
-            var vol = init.getVolatilityOfSimuData(timeLapse- 1, step);
+            var res = vanillaOpt.computePrice(dates);
+            var port = vanillaOpt.computeValuePortfolio(dates, dates, riskFreeRate);
 
-            var res = computer.computeDeltasAndPrice(dates, opt, spot, vol, step);
-            var port = computer.computePricePortfolio(dates, res, spot, riskFreeRate, step);
 
 
             // Dialogue with team to match model output

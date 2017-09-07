@@ -28,7 +28,7 @@
             </lvc:CartesianChart>
         </Grid>
         <!-- right panel -->
-        <Grid MaxHeight="350" Margin="850,170,150,0" Height="510" VerticalAlignment="Top">
+        <Grid MaxHeight="350" Margin="760,115,240,0" Height="510" VerticalAlignment="Top">
             <lvc:CartesianChart Series="{Binding SeriesCollectionBis}" LegendLocation="Right" RenderTransformOrigin="0.5,0.5" Margin="-16,10,1,-155" >
                 <lvc:CartesianChart.RenderTransform>
                     <TransformGroup>
