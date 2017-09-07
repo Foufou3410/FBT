@@ -1,4 +1,5 @@
-﻿using PricingLibrary.Computations;
+﻿using AppelWRE;
+using PricingLibrary.Computations;
 using PricingLibrary.FinancialProducts;
 using System;
 using System.Collections.Generic;
@@ -39,5 +40,40 @@ namespace WpfApplication1.Model.FinancialModel
             }
             return result;
         }
+
+
+        public List<double> computeListVolatility(int window, List<double> spots, int duree)
+        {
+
+
+            var result = new List<double>();
+
+
+
+            for (var j=window; j<duree; j++) {
+                double[,] tab = new double[window, 1];
+
+                for (var k = 1; k < window; k++)
+                {
+                    tab[k - 1, 0] = Math.Log(spots[j-window+k] / spots[j -window + k - 1]);
+                }
+
+
+                var B = Math.Sqrt(PricingLibrary.Utilities.DayCount.ConvertToDouble(1, 365));
+
+
+                double[,] myVol = WRE.computeVolatility(tab);
+                result.Add(myVol[0, 0]/B);
+            }
+
+            return result;
+
+        }
+
+
+
+
+
+
     }
 }

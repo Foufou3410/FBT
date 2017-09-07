@@ -7,17 +7,17 @@ using System.Threading.Tasks;
 using AppelWRE;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
-using WpfApplication1.Model.FinancialModel;
-using WpfApplication1.Model.Initializer;
 
+using FBT.Model.FinancialModel;
+using FBT.Model.Initializer;
 
-
-namespace Fbt
+namespace FBT
 {
     class MainWindowView
     {
 
         #region Public Constructors
+
 
         public MainWindowView()
         {
@@ -49,15 +49,15 @@ namespace Fbt
         }
         #endregion Public Constructors
 
-        /*#region Public Properties
+        #region Public Properties
 
         public string ViewPayOff
         {
            
-           get {return opt.GetPayoff(dic).ToString(); }
+           get {return "coucou"; }
         }
 
-        #endregion Public Properties*/
+        #endregion Public Properties
 
     }
 

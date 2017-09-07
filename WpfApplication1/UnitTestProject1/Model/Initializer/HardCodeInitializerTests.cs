@@ -1,12 +1,12 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using WpfApplication1.Model.Initializer;
+using FBT.Model.Initializer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WpfApplication1.Model.Initializer.Tests
+namespace FBT.Model.Initializer.Tests
 {
     [TestClass()]
     public class HardCodeInitializerTests
