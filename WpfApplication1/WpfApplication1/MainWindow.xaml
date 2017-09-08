@@ -55,7 +55,7 @@
                 <ColumnDefinition Width="18*"/>
             </Grid.ColumnDefinitions>
             <Button Command="{Binding CalculateCmd}" Margin="347.491,85,221,911" Grid.Column="1" >
-                Run/Stop
+                Start/Stop
             </Button>
             <ComboBox ItemsSource="{Binding ValuesType}" Margin="246,25,0,981" SelectedItem="{Binding selectedValuesType}" HorizontalAlignment="Left" Width="124"></ComboBox>
             <DatePicker Name="dateBox" Margin="246,60,0,947" HorizontalAlignment="Left" Width="124" SelectedDate="{Binding theDate,Mode =TwoWay}"></DatePicker>

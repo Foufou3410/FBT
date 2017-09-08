@@ -10,6 +10,7 @@ using System.Windows.Controls;
 using FBT.Model.Enum;
 using System.Text.RegularExpressions;
 using FBT.Model;
+using FBT.ViewModel;
 
 namespace FBT
 {
@@ -17,17 +18,14 @@ namespace FBT
     {
         #region Private Fields
         private Pattern pattern;
-        private HardCodeInitializer init;
-        private DateTime start;
-        private int timeLapse;
-        private int step;
-        private uint estmWindow;
         private List<String> viewTypesList;
         private DispatcherTimer dispatcherTimer;
         private double valPort;
         private double valPayOff;
         private bool enableRun;
         private string frequency = "1.0";
+        private ManagerVM vp;
+        private int estmWindow;
         #endregion Private Fields
 
         #region Public Constructors
@@ -55,37 +53,9 @@ namespace FBT
 
             #endregion Public Buttons
 
-
-            #region Public ToSendAway
-            // REplaced by one call obj def
-
-
-            // @TODO rename HARDCORE
-            init = new HardCodeInitializer();
-
-            start = TheDate;
-            timeLapse = (int)Period.year;
-            step = 2 * (int)Period.day;
-
-            var opt = init.initVanillaOpt(start, timeLapse - 1);
-            var vanillaOpt = new VanillaComputation(opt, start);
-            var riskFreeRate = init.initRiskFreeRate(step);
-            var dates = init.getRebalancingDates(start, timeLapse - 1, step);
-
-            var share = vanillaOpt.computePrice(dates);
-            var portefolio = vanillaOpt.computeValuePortfolio(dates, dates, riskFreeRate);
-
-            // Dialogue with team to match model output
-            ChartValues<double> optp = new ChartValues<double>();
-            ChartValues<double> pfp = new ChartValues<double>();
-            ChartValues<double> trackingError = new ChartValues<double>();
-            for (int i = 0; i < share.Count; i++)
-            {
-                optp.Insert(i, share[i].Price);
-                pfp.Insert(i, portefolio[i].Price);
-                trackingError.Insert(i, portefolio[i].Price - share[i].Price);
-            }
-            #endregion Public ToSendAway
+            vp = new ManagerVM(TheDate, EstimWindow, Frequency);
+            
+           
 
             // 1st chart - Option price + Portfolio value
             PfOpChart = new SeriesCollection
@@ -93,13 +63,13 @@ namespace FBT
                 new LineSeries
                 {
                     Title = "Option price",
-                    Values = optp,
+                    Values = vp.Optp,
                     PointGeometry = null
                 },
                 new LineSeries
                 {
                     Title = "Portfolio value",
-                    Values = pfp,
+                    Values = vp.Pfp,
                     PointGeometry = null
                 }
             };
@@ -109,10 +79,10 @@ namespace FBT
                 new LineSeries
                 {
                     Title = "Tracking error",
-                    Values = trackingError
+                    Values = vp.TrackingError
                 }
             };
-            Labels = new[] { start.ToShortDateString() };
+            Labels = new[] { TheDate.ToString() };
             YFormatter = value => value.ToString("C");
 
             #region Private MightBeUseful
@@ -137,7 +107,8 @@ namespace FBT
 
         public void SelectionVerification(object sender, EventArgs e)
         {
-            PfOpChart[1].Values.Add(5d);
+            vp.pleaseUpdateManager();
+            dispatcherTimer.Stop();
         }
 
         private void Calculate()
@@ -167,7 +138,7 @@ namespace FBT
         public SeriesCollection TerrorChart { get; private set; }
 
         public List<string> ValuesType { get => viewTypesList; }
-        public uint EstimWindow
+        public int EstimWindow
         {
             get => estmWindow;
             set

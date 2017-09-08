@@ -114,6 +114,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="MainWindowViewModel.cs" />
+    <Compile Include="ViewModel\ManagerVM.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Model\FinancialModel\PricePortfolio.cs" />
