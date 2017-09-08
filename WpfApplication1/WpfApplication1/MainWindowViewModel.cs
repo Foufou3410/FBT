@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Windows.Media;
 using FBT.Model.FinancialModel;
 using FBT.Model.Initializer;
+using System.Text.RegularExpressions;
 
 namespace Wpf.CartesianChart.PointShapeLine
 {
@@ -25,12 +26,13 @@ namespace Wpf.CartesianChart.PointShapeLine
 
         public MainWindowViewModel()
         {
+
             //to be refactored
             init = new HardCodeInitializer();
             
 
             start = new DateTime(2017, 9, 6);
-            timeLapse = (int)period.year;
+            timeLapse = 5* (int)period.year;
             step = 2 * (int)period.day;
             var window = 30; //to be binded
   

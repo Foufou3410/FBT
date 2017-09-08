@@ -107,7 +107,9 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainWindowViewModel.cs" />
+    <Compile Include="Model\Initializer\Parameters.cs" />
     <Compile Include="Model\Initializer\IInitializer.cs" />
+    <Compile Include="Model\Initializer\ParseTextFile.cs" />
     <Compile Include="ViewModel\InitializerViewModel\HardCodeInitializerViewModel.cs" />
     <Compile Include="ViewModel\InitializerViewModel\IInitializerViewModel.cs" />
     <Compile Include="App.xaml.cs">
