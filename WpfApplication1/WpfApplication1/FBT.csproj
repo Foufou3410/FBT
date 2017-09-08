@@ -75,7 +75,6 @@
     </Reference>
     <Reference Include="Prism, Version=6.3.0.0, Culture=neutral, PublicKeyToken=40ee6c3a2184dc59, processorArchitecture=MSIL">
       <HintPath>..\packages\Prism.Core.6.3.0\lib\net45\Prism.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -98,6 +97,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Model\Enum.cs" />
     <Compile Include="Model\FinancialModel\BasketComputation.cs" />
     <Compile Include="Model\FinancialModel\PriceAndDelta.cs" />
     <Compile Include="Model\FinancialModel\PriceProdFin.cs" />
@@ -106,13 +106,13 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Model\Initializer\IInitializer.cs" />
+    <Compile Include="Model\Pattern.cs" />
     <Compile Include="ViewModel\InitializerViewModel\HardCodeInitializerViewModel.cs" />
     <Compile Include="ViewModel\InitializerViewModel\IInitializerViewModel.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="CheckingFBT.cs" />
     <Compile Include="MainWindowViewModel.cs" />
   </ItemGroup>
   <ItemGroup>

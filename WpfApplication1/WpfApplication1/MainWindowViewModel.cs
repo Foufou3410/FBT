@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using AppelWRE;
-using System.Windows;
 using Prism.Commands;
 using FBT.Model.FinancialModel;
 using FBT.Model.Initializer;
@@ -9,45 +7,44 @@ using LiveCharts;
 using LiveCharts.Wpf;
 using System.Windows.Threading;
 using System.Windows.Controls;
-using System.Windows.Forms;
-using Prism.Mvvm;
-
+using FBT.Model.Enum;
+using System.Text.RegularExpressions;
+using FBT.Model;
 
 namespace FBT
 {
     class MainWindowViewModel
     {
         #region Private Fields
-
+        private Pattern pattern;
         private HardCodeInitializer init;
         private DateTime start;
         private int timeLapse;
         private int step;
+
         private List<String> viewTypesList;
-        private bool tickerRun;
         private DispatcherTimer dispatcherTimer;
         private double valPort;
         private double valPayOff;
-        
-
-
+        private bool enableRun;
+        private string frequency = "1.0";
         #endregion Private Fields
 
-        // To send away
-        enum period : int { year = 365, semester = 183, month = 30, week = 5, day = 1 };
         #region Public Constructors
 
         public MainWindowViewModel()
         {
-
+            pattern = new Pattern();
+            EnableRun = false;
             #region Public Buttons
 
-            CalculateCmd = new DelegateCommand(RunTicker, CanRunTicker);
+            CalculateCmd = new DelegateCommand(Calculate, CanRun);
             
             dispatcherTimer = new DispatcherTimer();
-            dispatcherTimer.Tick += new EventHandler(SelectionVerification); 
+            dispatcherTimer.Tick += new EventHandler(SelectionVerification);
+            
             dispatcherTimer.Interval = new TimeSpan(0, 0, 0, 0, 100);
-
+            
             viewTypesList = new List<string>();
             viewTypesList.Add("Historique");
             viewTypesList.Add("Simulées");
@@ -55,7 +52,7 @@ namespace FBT
             valPort = 15.5;
             valPayOff = 5.2;
 
-            theDate = DateTime.Today;
+            TheDate = DateTime.Today;
 
             #endregion Public Buttons
 
@@ -63,13 +60,13 @@ namespace FBT
             #region Public ToSendAway
             // REplaced by one call obj def
 
-            
+
             // @TODO rename HARDCORE
             init = new HardCodeInitializer();
-         
-            start = theDate;
-            timeLapse = (int)period.year;
-            step = 2 * (int)period.day;
+
+            start = TheDate;
+            timeLapse = (int)Period.year;
+            step = 2 * (int)Period.day;
 
             var opt = init.initVanillaOpt(start, timeLapse - 1);
             var vanillaOpt = new VanillaComputation(opt, start);
@@ -78,7 +75,7 @@ namespace FBT
 
             var share = vanillaOpt.computePrice(dates);
             var portefolio = vanillaOpt.computeValuePortfolio(dates, dates, riskFreeRate);
-            
+
             // Dialogue with team to match model output
             ChartValues<double> optp = new ChartValues<double>();
             ChartValues<double> pfp = new ChartValues<double>();
@@ -90,7 +87,6 @@ namespace FBT
                 trackingError.Insert(i, portefolio[i].Price - share[i].Price);
             }
             #endregion Public ToSendAway
-
 
             // 1st chart - Option price + Portfolio value
             PfOpChart = new SeriesCollection
@@ -137,91 +133,54 @@ namespace FBT
             /* SeriesCollection[3].Values.Add(5d);*/
             #endregion Private MightBeUseful
         }
+
         #endregion Public Constructors
 
         public void SelectionVerification(object sender, EventArgs e)
         {
-            tickerRun = false;
-            String message = "oki";
-            
-            if (selectedValuesType == null)
-            {
-                message="Veuillez renseigner le type de données à selectionner";
-                System.Windows.Forms.MessageBox.Show(message, "Erreur");
-            }
-            else if (EstimWindow<= 0)
-            {
-                message = "Fenetre d'estimation invalide";
-                System.Windows.Forms.MessageBox.Show(message, "Erreur");
-            }
-            else if(Frequency<=0)
-            {
-                message ="Frequence invalide";
-                System.Windows.Forms.MessageBox.Show(message, "Erreur");
-           }
-            else
-                System.Windows.Forms.MessageBox.Show("ok", "Erreur");
+            EnableRun = false;
             dispatcherTimer.Stop();
-            TickerRun = false;
         }
-
-        public List<string> ValuesType
-        {
-            get
-            {
-                return viewTypesList;
-            }
-        }
-
-        public string selectedValuesType { get; set; }
         
-        public DelegateCommand CalculateCmd { get; private set; }
 
-        private void RunTicker()
+        public DelegateCommand CalculateCmd
+        {
+            get;
+            private set;
+        }
+
+        private void Calculate()
         {
             dispatcherTimer.Start();
-            TickerRun = true;
         }
 
-        private bool CanRunTicker()
+        private bool CanRun()
         {
-            return !TickerRun;
+            return(pattern.PositiveDecimal.IsMatch(Frequency) && EstimWindow > 0 && ValuesType!=null);
         }
-       
-        public bool TickerRun
-        {
-            get { return tickerRun; }
-            set
-            {
-                CalculateCmd.RaiseCanExecuteChanged();
-            }
-        }
-
-        public DatePicker dateBox { get; private set; }
-        public DateTime theDate { get; set; }
-        public int EstimWindow { get;  set; }
-        public int Frequency { get; set; }
-        public double ViewPort
-        {
-            get
-            {
-                return valPort;
-            }
-        }
-
-        public double ViewPayOff
-        {
-            get
-            {
-                return valPayOff;
-            }
-        }
-
+        
+        public DatePicker DateBox { get; private set; }
+        public DateTime TheDate { get; set; }
+        public int EstimWindow { get; set; }
+        
+        public double ViewPort { get => valPort; }
+        public List<string> ValuesType { get => viewTypesList; }
+        public double ViewPayOff { get => valPayOff; }
         public SeriesCollection PfOpChart { get; set; }
         public string[] Labels { get; set; }
         public Func<double, string> YFormatter { get; set; }
         public SeriesCollection TerrorChart { get; private set; }
+        public string Frequency
+        {
+            get => frequency ;
+            set
+            {
+                frequency = value;
+                CalculateCmd.RaiseCanExecuteChanged();
+            }
+        }
 
+        public bool EnableRun { get => enableRun; set => enableRun = value; }
     }
 
 }
