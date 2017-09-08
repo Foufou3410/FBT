@@ -21,7 +21,7 @@ namespace FBT
         private DateTime start;
         private int timeLapse;
         private int step;
-
+        private uint estmWindow;
         private List<String> viewTypesList;
         private DispatcherTimer dispatcherTimer;
         private double valPort;
@@ -143,11 +143,7 @@ namespace FBT
         }
         
 
-        public DelegateCommand CalculateCmd
-        {
-            get;
-            private set;
-        }
+        
 
         private void Calculate()
         {
@@ -158,18 +154,29 @@ namespace FBT
         {
             return(pattern.PositiveDecimal.IsMatch(Frequency) && EstimWindow > 0 && ValuesType!=null);
         }
-        
+
+        public DelegateCommand CalculateCmd { get; private set; }
         public DatePicker DateBox { get; private set; }
         public DateTime TheDate { get; set; }
-        public int EstimWindow { get; set; }
-        
+       
         public double ViewPort { get => valPort; }
-        public List<string> ValuesType { get => viewTypesList; }
+        
         public double ViewPayOff { get => valPayOff; }
         public SeriesCollection PfOpChart { get; set; }
         public string[] Labels { get; set; }
         public Func<double, string> YFormatter { get; set; }
         public SeriesCollection TerrorChart { get; private set; }
+
+        public List<string> ValuesType { get => viewTypesList; }
+        public uint EstimWindow
+        {
+            get => estmWindow;
+            set
+            {
+                estmWindow = value;
+                CalculateCmd.RaiseCanExecuteChanged();
+            }
+        }
         public string Frequency
         {
             get => frequency ;
