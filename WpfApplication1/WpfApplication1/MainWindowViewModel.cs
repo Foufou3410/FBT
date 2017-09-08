@@ -26,7 +26,7 @@ namespace Wpf.CartesianChart.PointShapeLine
         public MainWindowViewModel()
         {
             //to be refactored
-            init = new HardCodeInitializer();
+            /*init = new HardCodeInitializer();
             
 
             start = new DateTime(2017, 9, 6);
@@ -84,7 +84,7 @@ namespace Wpf.CartesianChart.PointShapeLine
                 }
             };
             Labels = new[] { "Monday", "Tuesday", "Wenesday", "Thursday", "Frieday"};
-            YFormatter = value => value.ToString("C");
+            YFormatter = value => value.ToString("C");*/
 
             // Modifying the series collection will animate and update the chart
             /*SeriesCollection.Add(new LineSeries

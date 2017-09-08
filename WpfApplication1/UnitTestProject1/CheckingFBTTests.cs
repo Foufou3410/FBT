@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using FBT.Model.FinancialModel;
 using FBT.Model.Initializer;
+using System.Linq;
 
 namespace FBT.Tests
 {
@@ -17,40 +18,33 @@ namespace FBT.Tests
 
             var debut = new DateTime(2017, 9, 6);
             var duree = 365;
-            var pas = 3;
-            var window = 50;
+            var pas = 2;
+            var window = 20;
 
             var opt = init.initVanillaOpt(debut, duree - 1);
-            var vanillaOpt = new VanillaComputation(opt, debut, window);
+            var vanillaOpt = new VanillaComputation(opt, debut);
 
-            var riskFreeRate = init.initRiskFreeRate(pas);
-            var debutRebalancing = debut.AddDays(window);
-            var datesRebalancing = init.getRebalancingDates(debutRebalancing, duree - window - 1, pas);
-            var dates = init.getRebalancingDates(debutRebalancing, duree - window - 1, 1);
+            var dates = init.getRebalancingDates(debut, duree, 1);
 
-            var res = vanillaOpt.computePrice(datesRebalancing);
-            var port = vanillaOpt.computeValuePortfolio(datesRebalancing, datesRebalancing, riskFreeRate);
-            var j = res.Count;
-
-
+            var res = vanillaOpt.GenChartData(window, dates, pas);
 
             Console.WriteLine("Demarrer \n");
             Console.WriteLine("Financial product: " + opt.Name + "\n");
-            for (int i = 0; i < j; i++)
+            for (int i = 0; i < res.OptionPrice.Count; i++)
             {
-                Console.WriteLine("Date: " + res[i].Date);
-                Console.WriteLine("Option price: " + res[i].Price);
-                Console.WriteLine("Portfolio value:" + port[i].Price);
-                var trackErr = res[i].Price - port[i].Price;
+                Console.WriteLine("Date: " + dates[window + i]);
+                Console.WriteLine("Option price: " + res.OptionPrice[i]);
+                Console.WriteLine("Portfolio value:" + res.PortfolioValue[i].Value);
+                var trackErr = res.OptionPrice[i] - res.PortfolioValue[i].Value;
                 Console.WriteLine("Tracking error: " + trackErr);
                 Console.WriteLine("Composition of the portfolio: ");
-                Console.WriteLine("   Value in the underlying share " + opt.UnderlyingShare.Name + ": " + port[i].valShares[0]);
-                Console.WriteLine("   Value invested at a free risk rate:" + port[i].valSansRisque + "\n");
+                Console.WriteLine("   Number of share " + opt.UnderlyingShare.Name + ": " + res.PortfolioValue[i].Deltas[0]);
+                Console.WriteLine("   Invested in at a free risk rate:" + res.PortfolioValue[i].FreeRiskDelta + "\n");
             }
             Console.WriteLine("At Maturity:");
             Console.WriteLine("Maturity Date: " + opt.Maturity);
             var dic = new Dictionary<string, decimal>();
-            dic.Add(opt.UnderlyingShare.Id, (decimal)vanillaOpt.spots[opt.Maturity]);
+            dic.Add(opt.UnderlyingShare.Id, (decimal)vanillaOpt.Spots.Last());
             Console.WriteLine("Payoff: " + opt.GetPayoff(dic) + "\n");
             Console.WriteLine("End");
 
