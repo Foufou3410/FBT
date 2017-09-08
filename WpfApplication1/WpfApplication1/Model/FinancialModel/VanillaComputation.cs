@@ -29,47 +29,22 @@ namespace FBT.Model.FinancialModel
 
         public List<double> Spots { get; }
 
+        public List<DateTime> MarketDataDates { get; }
+
         #region Public Constructor
-        public VanillaComputation(VanillaCall v, DateTime debTest)
+        public VanillaComputation(VanillaCall v)
         {
             Vanilla = v;
             Spots = new List<double>();
-            ComputeSpots(debTest, true);
         }
         #endregion
 
         #region Public Methods
 
-        public void ComputeSpots(DateTime debTest, bool isSimulated)
-        {//Get all the spots of the underlying asset from the debTest date to the maturity date
-            Spots.Clear();
-
-            if (isSimulated)
-            {//Simulated Data
-                var simulateMarket = new SimulatedDataFeedProvider();
-                var dataFeed = simulateMarket.GetDataFeed(Vanilla, debTest);
-                foreach (DataFeed d in dataFeed)
-                {
-                    Spots.Add((double)d.PriceList[Vanilla.UnderlyingShare.Id]);
-                }
-            }
-            else
-            {//Historical Data
-                using (DataClasses1DataContext asdc = new DataClasses1DataContext())
-                {
-                    var request = (from lignes in asdc.HistoricalShareValues
-                                   where lignes.id == (Vanilla.UnderlyingShare.Id) && (lignes.date.Date < Vanilla.Maturity.Date) && (lignes.date.Date > debTest.Date)
-                                   select (double)lignes.value);
-                    foreach (double r in request)
-                    {
-                        Spots.Add(r);
-                    }
-                }
-            }
-        }
-
-        public PriceOpValPort GenChartData(int estimationWindow, List<DateTime> marketDataDates, int rebalancingStep)
+        public PriceOpValPort GenChartData(int estimationWindow, DateTime debTest, int rebalancingStep, IDataFeedProvider simulateMarket)
         {
+            getSpots(debTest, simulateMarket);
+
             var pricer = new Pricer();
             var priceOpt = new List<double>();
             var valPort = new List<Portfolio>();
@@ -77,7 +52,7 @@ namespace FBT.Model.FinancialModel
             //First datafeed considered: in date window
             var volatility = ComputeVolatility(estimationWindow, estimationWindow, rebalancingStep);
             var initialSpot = Spots[estimationWindow];
-            var priceList = pricer.PriceCall(Vanilla, marketDataDates[estimationWindow], 365, initialSpot, volatility);
+            var priceList = pricer.PriceCall(Vanilla, MarketDataDates[estimationWindow], 365, initialSpot, volatility);
 
             var valPortFolio = priceList.Price;
             var deltas = priceList.Deltas;
@@ -89,7 +64,7 @@ namespace FBT.Model.FinancialModel
 
             for (var i = estimationWindow + 1; i < Spots.Count; i++)
             {//For each data feed except the first one        
-                priceList = pricer.PriceCall(Vanilla, marketDataDates[i], 365, Spots[i], volatility);
+                priceList = pricer.PriceCall(Vanilla, MarketDataDates[i], 365, Spots[i], volatility);
                 consideredPortfolio.updateValue(new double[] { Spots[i] });
 
                 if ((i - estimationWindow)%rebalancingStep == 0)
@@ -120,6 +95,17 @@ namespace FBT.Model.FinancialModel
             var B = Math.Sqrt(PricingLibrary.Utilities.DayCount.ConvertToDouble(step, 365));
             double[,] myVol = WRE.computeVolatility(tab);
             return myVol[0, 0] / B;
+        }
+
+        private void getSpots(DateTime debTest, IDataFeedProvider simulateMarket)
+        {//Get all the spots of the underlying asset from the debTest date to the maturity date
+            Spots.Clear();
+            var dataFeed = simulateMarket.GetDataFeed(Vanilla, debTest);
+            foreach (DataFeed d in dataFeed)
+            {
+                Spots.Add((double)d.PriceList[Vanilla.UnderlyingShare.Id]);
+                MarketDataDates.Add(d.Date);
+            }
         }
         #endregion Private Methods
     }
