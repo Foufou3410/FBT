@@ -92,6 +92,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="CheckingFBTTests.cs" />
+    <Compile Include="MainWindowViewModelTests.cs" />
     <Compile Include="Model\WRETests.cs" />
     <Compile Include="Model\FinancialModel\FinancialComputationTests.cs" />
     <Compile Include="Model\Initializer\HardCodeInitializerTests.cs" />

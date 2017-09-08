@@ -13,7 +13,7 @@ using FBT.Model;
 
 namespace FBT
 {
-    class MainWindowViewModel
+    public class MainWindowViewModel
     {
         #region Private Fields
         private Pattern pattern;
@@ -42,7 +42,6 @@ namespace FBT
             
             dispatcherTimer = new DispatcherTimer();
             dispatcherTimer.Tick += new EventHandler(SelectionVerification);
-            
             dispatcherTimer.Interval = new TimeSpan(0, 0, 0, 0, 100);
             
             viewTypesList = new List<string>();
@@ -138,21 +137,21 @@ namespace FBT
 
         public void SelectionVerification(object sender, EventArgs e)
         {
-            EnableRun = false;
-            dispatcherTimer.Stop();
+            PfOpChart[1].Values.Add(5d);
         }
-        
-
-        
 
         private void Calculate()
         {
-            dispatcherTimer.Start();
+            if(enableRun)
+                dispatcherTimer.Stop();
+            else
+                dispatcherTimer.Start();
+            enableRun = !enableRun;
         }
 
         private bool CanRun()
         {
-            return(pattern.PositiveDecimal.IsMatch(Frequency) && EstimWindow > 0 && ValuesType!=null);
+            return(pattern.PositiveDecimal.IsMatch(Frequency) && EstimWindow > 0 && ValuesType != null);
         }
 
         public DelegateCommand CalculateCmd { get; private set; }
