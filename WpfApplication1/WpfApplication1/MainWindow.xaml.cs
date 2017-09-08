@@ -1,52 +1,22 @@
 ﻿using System;
 using System.Windows.Controls;
-using System.Windows.Media;
-using LiveCharts;
-using LiveCharts.Wpf;
+using System.Collections.Generic;
+using FBT;
+using System.Windows;
 
-namespace Wpf.CartesianChart.PointShapeLine
+namespace FBT
 {
-    public partial class PointShapeLineExample : UserControl
+    public partial class MainWindow : UserControl
     {
-        private List<String> viewTypesList;
-        private String startDate;
-       //private Textbox dateBox;
-
-        
-        public PointShapeLineExample()
+ 
+        public MainWindow()
         {
+   
             InitializeComponent();
-            this.DataContext = new MainWindowView();
-            //var dateBox = new TextBox();
-            viewTypesList = new List<string>();
-            viewTypesList.Add("Historique");
-            viewTypesList.Add("Simulées");
-
+            this.DataContext = new MainWindowViewModel();
         }
 
+     
 
-    private void Add_Click(object sender, RoutedEventArgs e)
-    {
-        int num1 = int.Parse(dateBox.Text);
-        //Result.Text = (num1).ToString();
-        MessageBox.Show(num1.ToString());
-        // MessageBox.Show("The Result is: " + Result.Text);
     }
-
-    public List<String> valuesType
-    {
-        get
-        {
-            return viewTypesList;
-        }
-    }
-
-    public String selectedValuesType { get; set; }
-
-  
-
-    //Tickerstarted => retrieve selected values 
-
-}
-
 }
