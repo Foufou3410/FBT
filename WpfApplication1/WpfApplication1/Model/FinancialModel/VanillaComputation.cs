@@ -25,20 +25,6 @@ namespace FBT.Model.FinancialModel
             }
         }
 
-        public class Portfolio
-        {
-            public double Value { get; }
-            public double[] Deltas { get; }
-            public double FreeRiskDelta { get; }
-
-            public Portfolio(double v, double[] d, double r)
-            {
-                Value = v;
-                Deltas = d;
-                FreeRiskDelta = r;
-            }
-        }
-
         public VanillaCall Vanilla { get; }
 
         public List<double> Spots { get; }
@@ -96,33 +82,26 @@ namespace FBT.Model.FinancialModel
             var valPortFolio = priceList.Price;
             var deltas = priceList.Deltas;
             var freeRiskQuantity = priceList.Price - priceList.Deltas[0] * initialSpot;           
-            var portfolio = new Portfolio(valPortFolio, deltas, freeRiskQuantity);
-            var previousPortfolio = portfolio;
+            var consideredPortfolio = new Portfolio(valPortFolio, deltas, freeRiskQuantity);
 
             priceOpt.Add(priceList.Price);
-            valPort.Add(portfolio);
+            valPort.Add(new Portfolio (consideredPortfolio));
 
             for (var i = estimationWindow + 1; i < Spots.Count; i++)
             {//For each data feed except the first one        
                 priceList = pricer.PriceCall(Vanilla, marketDataDates[i], 365, Spots[i], volatility);
-                valPortFolio = previousPortfolio.Deltas[0] * Spots[i] + previousPortfolio.FreeRiskDelta * RiskFreeRateProvider.GetRiskFreeRateAccruedValue(1.0/365);
+                consideredPortfolio.updateValue(new double[] { Spots[i] });
 
                 if ((i - estimationWindow)%rebalancingStep == 0)
                 {//if there is a rebalancing
                     volatility = ComputeVolatility(estimationWindow, i, rebalancingStep);
-                    deltas = priceList.Deltas;
-                }
-                else
-                {
-                    deltas = previousPortfolio.Deltas;
+                    consideredPortfolio.Deltas = priceList.Deltas;
                 }
 
-                freeRiskQuantity = valPortFolio - deltas[0] * Spots[i];
-                previousPortfolio = portfolio;             
-                portfolio = new Portfolio(valPortFolio, deltas, freeRiskQuantity);
+                consideredPortfolio.updateFreeRiskDelta(new double[] { Spots[i] });
 
                 priceOpt.Add(priceList.Price);
-                valPort.Add(portfolio);
+                valPort.Add(new Portfolio (consideredPortfolio));
             }
 
             return new PriceOpValPort(valPort, priceOpt);

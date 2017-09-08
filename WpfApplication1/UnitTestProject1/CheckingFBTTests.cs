@@ -18,8 +18,8 @@ namespace FBT.Tests
 
             var debut = new DateTime(2017, 9, 6);
             var duree = 365;
-            var pas = 2;
-            var window = 20;
+            var pas = 1;
+            var window = 50;
 
             var opt = init.initVanillaOpt(debut, duree - 1);
             var vanillaOpt = new VanillaComputation(opt, debut);
