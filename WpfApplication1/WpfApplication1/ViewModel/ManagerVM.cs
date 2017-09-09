@@ -22,7 +22,30 @@ namespace FBT.ViewModel
         private ChartValues<double> trackingError;
         #endregion Private Attributs
 
+        #region Public Accessor
+
+        public ChartValues<double> Optp { get => optp; set => optp = value; }
+        public ChartValues<double> Pfp { get => pfp; set => pfp = value; }
+        public ChartValues<double> TrackingError { get => trackingError; set => trackingError = value; }
+
+        #endregion region Public Accessor
+
         #region Public Constructor
+
+        //
+        // Abstract :
+        //     Creates a new instance of FBT.ViewModel.ManagerVM with the date to start estimation
+        //     with a set estimation window and a specific frequency of reshuffle to invoke Model
+        //
+        // Paramètres :
+        //   theDate:
+        //     The starting date to invoke modeling.
+        //
+        //   estmWindow:
+        //     The estimated window - number of days - where the model is going to be ran
+        //
+        //   frequency:
+        //     The frequency of reshuffle the portefolio
         public ManagerVM(DateTime theDate, int estmWindow, string frequency)
         {
             init = new HardCodeInitializer();
@@ -35,10 +58,7 @@ namespace FBT.ViewModel
             pfp = new ChartValues<double>();
             trackingError = new ChartValues<double>();
         }
-
-        public ChartValues<double> Optp { get => optp; set => optp = value; }
-        public ChartValues<double> Pfp { get => pfp; set => pfp = value; }
-        public ChartValues<double> TrackingError { get => trackingError; set => trackingError = value; }
+        
 
         public void pleaseUpdateManager()
         {

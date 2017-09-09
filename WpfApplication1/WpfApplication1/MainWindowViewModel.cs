@@ -17,15 +17,20 @@ namespace FBT
     public class MainWindowViewModel
     {
         #region Private Fields
+
+        private ManagerVM vp;
+
         private Pattern pattern;
-        private List<String> viewTypesList;
         private DispatcherTimer dispatcherTimer;
+
         private double valPort;
         private double valPayOff;
+
+        private List<String> viewTypesList;
         private bool enableRun;
         private string frequency = "1.0";
-        private ManagerVM vp;
         private int estmWindow;
+        
         #endregion Private Fields
 
         #region Public Constructors
@@ -34,6 +39,7 @@ namespace FBT
         {
             pattern = new Pattern();
             EnableRun = false;
+            
             #region Public Buttons
 
             CalculateCmd = new DelegateCommand(Calculate, CanRun);
@@ -50,12 +56,10 @@ namespace FBT
             valPayOff = 5.2;
 
             TheDate = DateTime.Today;
-
+            
             #endregion Public Buttons
 
             vp = new ManagerVM(TheDate, EstimWindow, Frequency);
-            
-           
 
             // 1st chart - Option price + Portfolio value
             PfOpChart = new SeriesCollection
@@ -85,22 +89,6 @@ namespace FBT
             Labels = new[] { TheDate.ToString() };
             YFormatter = value => value.ToString("C");
 
-            #region Private MightBeUseful
-            // Modifying the series collection will animate and update the chart
-            /*SeriesCollection.Add(new LineSeries
-              {
-                  Title = "Series 4",
-                  Values = new ChartValues<double> { 5, 3, 2, 4 },
-                  LineSmoothness = 0, //0: straight lines, 1: really smooth lines
-                  PointGeometry = Geometry.Parse("m 25 70.36218 20 -28 -20 22 -8 -6 z"),
-                  PointGeometrySize = 50,
-                  PointForeground = Brushes.Gray
-              });
-            */
-
-            // Modifying any series values will also animate and update the chart
-            /* SeriesCollection[3].Values.Add(5d);*/
-            #endregion Private MightBeUseful
         }
 
         #endregion Public Constructors
@@ -125,17 +113,16 @@ namespace FBT
             return(pattern.PositiveDecimal.IsMatch(Frequency) && EstimWindow > 0 && ValuesType != null);
         }
 
+        #region Public Accessor
+
         public DelegateCommand CalculateCmd { get; private set; }
         public DatePicker DateBox { get; private set; }
         public DateTime TheDate { get; set; }
        
         public double ViewPort { get => valPort; }
-        
         public double ViewPayOff { get => valPayOff; }
         public SeriesCollection PfOpChart { get; set; }
-        public string[] Labels { get; set; }
-        public Func<double, string> YFormatter { get; set; }
-        public SeriesCollection TerrorChart { get; private set; }
+        
 
         public List<string> ValuesType { get => viewTypesList; }
         public int EstimWindow
@@ -158,6 +145,13 @@ namespace FBT
         }
 
         public bool EnableRun { get => enableRun; set => enableRun = value; }
+
+        // 
+        public string[] Labels { get; set; }
+        public Func<double, string> YFormatter { get; set; }
+        public SeriesCollection TerrorChart { get; private set; }
+
+        #endregion Public Accessor
     }
 
 }
