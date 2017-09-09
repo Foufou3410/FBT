@@ -59,6 +59,7 @@ namespace FBT.ViewModel
             SampleNumber = Int32.Parse(estmWindow);
             Step = Int32.Parse(frequency);
             Labels = getDateSet();
+
             optp = new ChartValues<double>();
             pfp = new ChartValues<double>();
             trackingError = new ChartValues<double>();
@@ -70,7 +71,7 @@ namespace FBT.ViewModel
         //
         // Parameters:
         //      None - it's using object's element only.
-        private string[] getDateSet()
+        public string[] getDateSet()
         {
             List<string> allDates = new List<string>();
             for(DateTime date = StartDate; date <= StartDate.AddDays(SampleNumber); date = date.AddDays(Step))
@@ -98,6 +99,7 @@ namespace FBT.ViewModel
             StartDate = theDate;
             SampleNumber = Int32.Parse(estmWindow);
             Step = Int32.Parse(frequency);
+            Labels = getDateSet();
 
             var opt = init.initVanillaOpt(StartDate, SampleNumber - 1);
             var vanillaOpt = new VanillaComputation(opt, StartDate);

@@ -148,7 +148,6 @@ namespace FBT
 
         public bool EnableRun { get => enableRun; set => enableRun = value; }
 
-        // 
         public string[] Labels { get; set; }
         public Func<double, string> YFormatter { get; set; }
         public SeriesCollection TerrorChart { get; private set; }
