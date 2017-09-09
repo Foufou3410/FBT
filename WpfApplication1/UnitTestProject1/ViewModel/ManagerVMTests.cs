@@ -15,9 +15,15 @@ namespace FBT.ViewModel.Tests
         [TestMethod()]
         public void ManagerVMTest()
         {
-            DateTime theDate = new DateTime(1900,1,1);
+            DateTime theDate = new DateTime(1900, 1, 1);
             ManagerVM boss = new ManagerVM(theDate, 365, "");
             //throw new NotImplementedException();
+        }
+
+        [TestMethod()]
+        public void pleaseUpdateManagerTest()
+        {
+            throw new NotImplementedException();
         }
     }
 }
