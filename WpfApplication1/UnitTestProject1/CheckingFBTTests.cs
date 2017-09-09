@@ -21,8 +21,8 @@ namespace FBT.Tests
             var window = 50;
 
             var init = new HardCodeInitializer();
-            //var marketSimulator = new SimulatedDataFeedProvider();
-            var marketSimulator = new HistDataFeedProvider();
+            var marketSimulator = new SimulatedDataFeedProvider();
+            //var marketSimulator = new HistDataFeedProvider();
 
             var opt = init.initVanillaOpt(debut, duree - 1);
             var vanillaOpt = new VanillaComputation(opt);
@@ -43,9 +43,9 @@ namespace FBT.Tests
                 Console.WriteLine("   Invested in at a free risk rate:" + res.PortfolioValue[i].FreeRiskDelta + "\n");
             }
             Console.WriteLine("At Maturity:");
-            Console.WriteLine("Maturity Date: " + vanillaOpt.Vanilla.Maturity);
+            Console.WriteLine("Maturity Date: " + vanillaOpt.Option.Maturity);
             var dic = new Dictionary<string, decimal>();
-            dic.Add(opt.UnderlyingShare.Id, (decimal)vanillaOpt.Spots.Last());
+            dic.Add(vanillaOpt.Option.UnderlyingShareIds[0], (decimal)vanillaOpt.Spots.Last()[0]);
             Console.WriteLine("Payoff: " + opt.GetPayoff(dic) + "\n");
             Console.WriteLine("End");
 

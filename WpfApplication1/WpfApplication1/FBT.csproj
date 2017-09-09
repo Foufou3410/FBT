@@ -100,9 +100,11 @@
       <DependentUpon>AccesSql.dbml</DependentUpon>
     </Compile>
     <Compile Include="Model\FinancialModel\BasketComputation.cs" />
+    <Compile Include="Model\FinancialModel\FinancialComputation.cs" />
     <Compile Include="Model\FinancialModel\HistDataFeedProvider.cs" />
     <Compile Include="Model\FinancialModel\Portfolio.cs" />
     <Compile Include="Model\FinancialModel\PriceAndDelta.cs" />
+    <Compile Include="Model\FinancialModel\PriceOpValPort.cs" />
     <Compile Include="Model\FinancialModel\PriceProdFin.cs" />
     <Compile Include="Model\FinancialModel\VanillaComputation.cs" />
     <Compile Include="MainWindow.xaml.cs">
