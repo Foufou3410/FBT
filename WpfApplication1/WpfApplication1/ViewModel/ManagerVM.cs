@@ -20,6 +20,7 @@ namespace FBT.ViewModel
         private ChartValues<double> optp;
         private ChartValues<double> pfp;
         private ChartValues<double> trackingError;
+        private string[] labels;
         #endregion Private Attributs
 
         #region Public Accessor
@@ -27,17 +28,21 @@ namespace FBT.ViewModel
         public ChartValues<double> Optp { get => optp; set => optp = value; }
         public ChartValues<double> Pfp { get => pfp; set => pfp = value; }
         public ChartValues<double> TrackingError { get => trackingError; set => trackingError = value; }
+        public string[] Labels { get => labels; set => labels = value; }
+        public DateTime StartDate { get => startDate; set => startDate = value; }
+        public int SampleNumber { get => sampleNumber; set => sampleNumber = value; }
+        public int Step { get => step; set => step = value; }
 
         #endregion region Public Accessor
 
         #region Public Constructor
 
         //
-        // Abstract :
+        // Abstract:
         //     Creates a new instance of FBT.ViewModel.ManagerVM with the date to start estimation
         //     with a set estimation window and a specific frequency of reshuffle to invoke Model
         //
-        // Paramètres :
+        // Parameters:
         //   theDate:
         //     The starting date to invoke modeling.
         //
@@ -46,27 +51,45 @@ namespace FBT.ViewModel
         //
         //   frequency:
         //     The frequency of reshuffle the portefolio
-        public ManagerVM(DateTime theDate, int estmWindow, string frequency)
+        public ManagerVM(DateTime theDate, string estmWindow, string frequency)
         {
             init = new HardCodeInitializer();
 
-            startDate = theDate;
-            sampleNumber = (int)Period.month;
-            step = 2 * (int)Period.day; // frequency
-
+            StartDate = theDate;
+            SampleNumber = Int32.Parse(estmWindow);
+            Step = Int32.Parse(frequency);
+            Labels = getDateSet();
             optp = new ChartValues<double>();
             pfp = new ChartValues<double>();
             trackingError = new ChartValues<double>();
         }
-        
 
-        public void pleaseUpdateManager()
+        // 
+        // Abstract:
+        //      Built the set of dates that will be printed to the xaxis
+        //
+        // Parameters:
+        //      None - it's using object's element only.
+        private string[] getDateSet()
         {
-            var opt = init.initVanillaOpt(startDate, sampleNumber - 1);
-            var vanillaOpt = new VanillaComputation(opt, startDate);
-            var riskFreeRate = init.initRiskFreeRate(step);
-            var dates = init.getRebalancingDates(startDate, sampleNumber - 1, step);
+            List<string> allDates = new List<string>();
+            for(DateTime date = StartDate; date <= StartDate.AddDays(SampleNumber); date = date.AddDays(Step))
+                allDates.Add(date.ToShortDateString());
+            
+            return (allDates.ToArray());
+        }
 
+        public void pleaseUpdateManager(DateTime theDate, string estmWindow, string frequency)
+        {
+            StartDate = theDate;
+            SampleNumber = Int32.Parse(estmWindow);
+            Step = Int32.Parse(frequency);
+
+            var opt = init.initVanillaOpt(StartDate, SampleNumber - 1);
+            var vanillaOpt = new VanillaComputation(opt, StartDate);
+            var riskFreeRate = init.initRiskFreeRate(Step);
+            var dates = init.getRebalancingDates(StartDate, SampleNumber - 1, Step);
+ 
             var share = vanillaOpt.computePrice(dates);
             var portefolio = vanillaOpt.computeValuePortfolio(dates, dates, riskFreeRate);
 

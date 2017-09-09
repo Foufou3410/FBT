@@ -28,8 +28,8 @@ namespace FBT
 
         private List<String> viewTypesList;
         private bool enableRun;
-        private string frequency = "1.0";
-        private int estmWindow;
+        private string frequency = "2";
+        private string estmWindow = "365";
         
         #endregion Private Fields
 
@@ -77,7 +77,7 @@ namespace FBT
                     PointGeometry = null
                 }
             };
-            // 2nd chart - tracking error
+            // 2nd chart - Tracking error
             TerrorChart = new SeriesCollection
             {
                 new LineSeries
@@ -86,16 +86,17 @@ namespace FBT
                     Values = vp.TrackingError
                 }
             };
-            Labels = new[] { TheDate.ToString() };
+            Labels = vp.Labels;
             YFormatter = value => value.ToString("C");
 
         }
 
         #endregion Public Constructors
 
+        #region Handler
         public void SelectionVerification(object sender, EventArgs e)
         {
-            vp.pleaseUpdateManager();
+            vp.pleaseUpdateManager(TheDate, EstimWindow, Frequency);
             dispatcherTimer.Stop();
         }
 
@@ -110,10 +111,11 @@ namespace FBT
 
         private bool CanRun()
         {
-            return(pattern.PositiveDecimal.IsMatch(Frequency) && EstimWindow > 0 && ValuesType != null);
+            return(pattern.PositiveDecimal.IsMatch(Frequency) && pattern.PositiveInteger.IsMatch(EstimWindow) && ValuesType != null);
         }
+        #endregion Handler
 
-        #region Public Accessor
+        #region Public Accessors
 
         public DelegateCommand CalculateCmd { get; private set; }
         public DatePicker DateBox { get; private set; }
@@ -125,7 +127,7 @@ namespace FBT
         
 
         public List<string> ValuesType { get => viewTypesList; }
-        public int EstimWindow
+        public string EstimWindow
         {
             get => estmWindow;
             set
@@ -151,7 +153,7 @@ namespace FBT
         public Func<double, string> YFormatter { get; set; }
         public SeriesCollection TerrorChart { get; private set; }
 
-        #endregion Public Accessor
+        #endregion Public Accessors
     }
 
 }
