@@ -1,9 +1,13 @@
-﻿namespace FBT.Model.Initializer
+﻿using FBT.Model.FinancialModel;
+using System;
+
+namespace FBT.Model.Initializer
 {
     public interface IInitializer
     {
-        #region Public Methods
 
-        #endregion Public Methods
+        VanillaComputation initVanillaOpt();
+
+        BasketComputation initBasketOpt();
     }
 }
