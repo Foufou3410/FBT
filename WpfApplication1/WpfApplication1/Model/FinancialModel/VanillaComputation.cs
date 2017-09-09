@@ -24,10 +24,15 @@ namespace FBT.Model.FinancialModel
         #endregion
 
         #region Protected Methods
-        override protected PricingResults ComputePricing(int dateIndex, double[] volatility)
+        override protected PricingResults ComputePricing(int dateIndex, double[] volatility, double[,] correlation)
         {
             var pricer = new Pricer();
             return pricer.PriceCall(Vanilla, MarketDataDates[dateIndex], 365, Spots[dateIndex][0], volatility[0]);
+        }
+
+        protected override double[,] ComputeCorrelation(int dateIndex)
+        {
+            return new double[,] { { 1 } };
         }
         #endregion Protected Methods
     }

@@ -30,7 +30,7 @@ namespace FBT.Tests
             var res = vanillaOpt.GenChartData(window, debut, pas, marketSimulator);
 
             Console.WriteLine("Demarrer \n");
-            Console.WriteLine("Financial product: " + opt.Name + "\n");
+            Console.WriteLine("Financial product: " + vanillaOpt.Option.Name + "\n");
             for (int i = 0; i < res.OptionPrice.Count; i++)
             {
                 Console.WriteLine("Date: " + vanillaOpt.MarketDataDates[window + i]);
@@ -54,51 +54,43 @@ namespace FBT.Tests
         [TestMethod()]
         public void BasketTest()
         {
-            var init = new HardCodeInitializer();
-
             var debut = new DateTime(2017, 9, 6);
             var duree = 365;
-            var pas = 2;
+            var pas = 1;
+            var window = 50;
+
+            var init = new HardCodeInitializer();
+            var marketSimulator = new SimulatedDataFeedProvider();
+            //var marketSimulator = new HistDataFeedProvider();
 
             var opt = init.initBasketOpt(debut, duree - 1);
-            var basketOpt = new BasketComputation(opt, debut);
+            var basketOpt = new BasketComputation(opt);
 
-            var riskFreeRate = init.initRiskFreeRate(pas);
-            var dates = init.getRebalancingDates(debut, duree - 1, pas);
-
-            var res = basketOpt.computePrice(dates);
-            var port = basketOpt.computeValuePortfolio(dates, dates, riskFreeRate);
-            var j = res.Count;
-
+            var res = basketOpt.GenChartData(window, debut, pas, marketSimulator);
 
 
             Console.WriteLine("Demarrer \n");
-            Console.WriteLine("Financial product: " + opt.Name + "\n");
-            for (int i = 0; i < j; i++)
+            Console.WriteLine("Financial product: " + basketOpt.Option.Name + "\n");
+            for (int date = 0; date < res.OptionPrice.Count; date++)
             {
-                Console.WriteLine("Date: " + res[i].Date);
-                Console.WriteLine("Option price: " + res[i].Price);
-                Console.WriteLine("Portfolio value:" + port[i].Price);
-                var trackErr = res[i].Price - port[i].Price;
+                Console.WriteLine("Date: " + basketOpt.MarketDataDates[window + date]);
+                Console.WriteLine("Option price: " + res.OptionPrice[date]);
+                Console.WriteLine("Portfolio value:" + res.PortfolioValue[date].Value);
+                var trackErr = res.OptionPrice[date] - res.PortfolioValue[date].Value;
                 Console.WriteLine("Tracking error: " + trackErr);
-                Console.WriteLine("Composition of the portfolio: ");
-                var shareNb = 0;
-                foreach (string id in opt.UnderlyingShareIds)
+                for (var shareId = 0; shareId < opt.UnderlyingShareIds.Length; shareId ++)
                 {
-                    Console.WriteLine("   Value in the underlying share of ID " + id + ": " + port[i].valShares[shareNb]);
-                    shareNb++;
+                    Console.WriteLine("   Nb of share of ID '" + opt.UnderlyingShareIds[shareId] + "': " + res.PortfolioValue[date].Deltas[shareId]);
                 }
-                Console.WriteLine("   Value invested at a free risk rate:" + port[i].valSansRisque + "\n");
+                Console.WriteLine("   Value invested at a free risk rate:" + res.PortfolioValue[date].FreeRiskDelta + "\n");
             }
 
             Console.WriteLine("At Maturity:");
-            Console.WriteLine("Maturity Date: " + opt.Maturity);
+            Console.WriteLine("Maturity Date: " + basketOpt.Option.Maturity);
             var dic = new Dictionary<string, decimal>();
-            var k = 0;
-            foreach (string id in opt.UnderlyingShareIds)
+            for (var shareId = 0; shareId < opt.UnderlyingShareIds.Length; shareId++)
             {
-                dic.Add(id, (decimal)basketOpt.spots[opt.Maturity][k]);
-                k++;
+                dic.Add(opt.UnderlyingShareIds[shareId], (decimal)basketOpt.Spots.Last()[shareId]);
             }
             Console.WriteLine("Payoff: " + opt.GetPayoff(dic) + "\n");
             Console.WriteLine("End");
