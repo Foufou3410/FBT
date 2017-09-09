@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using FBT.Model.FinancialModel;
 using FBT.Model.Initializer;
 using System.Linq;
+using PricingLibrary.Utilities.MarketDataFeed;
 
 namespace FBT.Tests
 {
@@ -14,25 +15,25 @@ namespace FBT.Tests
         [TestMethod()]
         public void VanillaTest()
         {
-            var init = new HardCodeInitializer();
-
             var debut = new DateTime(2017, 9, 6);
             var duree = 365;
             var pas = 1;
             var window = 50;
 
+            var init = new HardCodeInitializer();
+            //var marketSimulator = new SimulatedDataFeedProvider();
+            var marketSimulator = new HistDataFeedProvider();
+
             var opt = init.initVanillaOpt(debut, duree - 1);
-            var vanillaOpt = new VanillaComputation(opt, debut);
+            var vanillaOpt = new VanillaComputation(opt);
 
-            var dates = init.getRebalancingDates(debut, duree, 1);
-
-            var res = vanillaOpt.GenChartData(window, dates, pas);
+            var res = vanillaOpt.GenChartData(window, debut, pas, marketSimulator);
 
             Console.WriteLine("Demarrer \n");
             Console.WriteLine("Financial product: " + opt.Name + "\n");
             for (int i = 0; i < res.OptionPrice.Count; i++)
             {
-                Console.WriteLine("Date: " + dates[window + i]);
+                Console.WriteLine("Date: " + vanillaOpt.MarketDataDates[window + i]);
                 Console.WriteLine("Option price: " + res.OptionPrice[i]);
                 Console.WriteLine("Portfolio value:" + res.PortfolioValue[i].Value);
                 var trackErr = res.OptionPrice[i] - res.PortfolioValue[i].Value;
@@ -42,7 +43,7 @@ namespace FBT.Tests
                 Console.WriteLine("   Invested in at a free risk rate:" + res.PortfolioValue[i].FreeRiskDelta + "\n");
             }
             Console.WriteLine("At Maturity:");
-            Console.WriteLine("Maturity Date: " + opt.Maturity);
+            Console.WriteLine("Maturity Date: " + vanillaOpt.Vanilla.Maturity);
             var dic = new Dictionary<string, decimal>();
             dic.Add(opt.UnderlyingShare.Id, (decimal)vanillaOpt.Spots.Last());
             Console.WriteLine("Payoff: " + opt.GetPayoff(dic) + "\n");

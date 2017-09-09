@@ -36,6 +36,7 @@ namespace FBT.Model.FinancialModel
         {
             Vanilla = v;
             Spots = new List<double>();
+            MarketDataDates = new List<DateTime>();
         }
         #endregion
 
@@ -49,7 +50,7 @@ namespace FBT.Model.FinancialModel
             var priceOpt = new List<double>();
             var valPort = new List<Portfolio>();
 
-            //First datafeed considered: in date window
+            //The first datafeed considered is the one at date window
             var volatility = ComputeVolatility(estimationWindow, estimationWindow, rebalancingStep);
             var initialSpot = Spots[estimationWindow];
             var priceList = pricer.PriceCall(Vanilla, MarketDataDates[estimationWindow], 365, initialSpot, volatility);
@@ -87,14 +88,15 @@ namespace FBT.Model.FinancialModel
         #region Private Methods
         private double ComputeVolatility(int window, int deb, int step)
         {//Compute the volatility at date deb. Estimate the parameters thanks to the data of the window days before deb
-            double[,] tab = new double[window - 1, 1];
+            /*double[,] tab = new double[window - 1, 1];
             for (var k = 1; k < window; k++)
             {
                 tab[k - 1, 0] = Math.Log(Spots[deb - window + k] / Spots[deb - window + k - 1]);
             }
             var B = Math.Sqrt(PricingLibrary.Utilities.DayCount.ConvertToDouble(step, 365));
             double[,] myVol = WRE.computeVolatility(tab);
-            return myVol[0, 0] / B;
+            return myVol[0, 0] / B;*/
+            return 0.4;
         }
 
         private void getSpots(DateTime debTest, IDataFeedProvider simulateMarket)
