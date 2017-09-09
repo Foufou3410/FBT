@@ -17,7 +17,6 @@ namespace FBT.ViewModel.Tests
         {
             DateTime theDate = new DateTime(1900, 1, 1);
             ManagerVM boss = new ManagerVM(theDate, "365", "2");
-            
         }
 
         [TestMethod()]

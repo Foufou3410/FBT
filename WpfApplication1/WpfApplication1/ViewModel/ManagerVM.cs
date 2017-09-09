@@ -79,6 +79,20 @@ namespace FBT.ViewModel
             return (allDates.ToArray());
         }
 
+
+        //
+        // Abstract:
+        //      Update managerVM's attributs.
+        //
+        // Parameters:
+        //  theDate:
+        //      DateTime where the modeling should be ran.
+        //
+        //  estWindow:
+        //      String containing the period where the model should be ran.
+        //
+        //  frequency:
+        //      String containing the step where portefolio is reshuffled.
         public void pleaseUpdateManager(DateTime theDate, string estmWindow, string frequency)
         {
             StartDate = theDate;
