@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using PricingLibrary.FinancialProducts;
 
-namespace FBT.Model.DataFeed
+namespace FBT.Model.DataFeedProvider
 {
     public class HistDataFeedProvider : IDataFeedProvider
     {
