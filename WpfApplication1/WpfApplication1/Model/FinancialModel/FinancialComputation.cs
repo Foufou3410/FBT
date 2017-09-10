@@ -103,9 +103,13 @@ namespace FBT.Model.FinancialModel
         {//Get all the spots of the underlying asset from the debTest date to the maturity date
             Spots.Clear();
             var firstDateMarket = simulateMarket.GetMinDate();
-            if (beginningTest.Date < firstDateMarket)
+            if (beginningTest.Date < firstDateMarket.Date)
             {
-                throw new Exception("No Market data before the " + firstDateMarket);
+                throw new Exception("No Market data before the " + firstDateMarket.ToShortDateString());
+            }
+            if (beginningTest.Date > Option.Maturity.Date)
+            {
+                throw new Exception("No Market data after the Maturity date (" + Option.Maturity.ToShortDateString() + ")");
             }
             var dataFeed = simulateMarket.GetDataFeed(Option, beginningTest);
             foreach (DataFeed d in dataFeed)
