@@ -8,43 +8,24 @@ namespace FBT.Model.Initializer
 {
     public class HardCodeInitializer : IInitializer
     {
-        #region Public Properties
-        public DateTime SimuStartDate { get; }
-
-        public int SimuTimeSpan { get; }
-
-        public int RebalancingStep { get; }
-
-        public int EstimationWindow { get; }
-        #endregion Public Properties
-
-        #region Public Constructor
-        public HardCodeInitializer()
-        {
-            SimuStartDate = new DateTime(2017, 9, 6);
-            SimuTimeSpan = 365;
-            RebalancingStep = 1;
-            EstimationWindow = 50;
-        }
-        #endregion Public Constructor
-
         #region Public Methods
-        public VanillaComputation initVanillaOpt()
+        public List<FinancialComputation> initAvailableOptions()
         {
-            var sousJacent = new Share("BNP", "AC FP");
-            var date = SimuStartDate.AddDays(SimuTimeSpan);
-            var opt = new VanillaCall("optionBNP", sousJacent, date, 8);
-            return new VanillaComputation(opt);
-        }
+            var res = new List<FinancialComputation>();
 
-        public BasketComputation initBasketOpt()
-        {
-            var sousJacent1 = new Share("BNP", "1");
-            var sousJacent2 = new Share("AXA", "2");
-            var sousJacent3 = new Share("Accenture", "3");
-            var date = SimuStartDate.AddDays(SimuTimeSpan);
-            var opt = new BasketOption("basketBNP", new Share[]{sousJacent1, sousJacent2, sousJacent3}, new double[] { 0.5, 0.3, 0.2 }, date, 8);
-            return new BasketComputation(opt);
+            var sousJacentVanilla = new Share("BNP", "AC FP");
+            var maturityVanilla = new DateTime(2018, 9, 6);
+            var vanilla = new VanillaCall("optionBNP", sousJacentVanilla, maturityVanilla, 8);
+            res.Add(new VanillaComputation(vanilla));
+
+            var sousJacentBasket1 = new Share("BNP", "1");
+            var sousJacentBasket2 = new Share("AXA", "2");
+            var sousJacentBasket3 = new Share("Accenture", "3");
+            var maturityBasket = new DateTime(2018, 9, 6);
+            var basket = new BasketOption("basketBNP", new Share[] { sousJacentBasket1, sousJacentBasket2, sousJacentBasket3 }, new double[] { 0.5, 0.3, 0.2 }, maturityBasket, 8);
+            res.Add(new BasketComputation(basket));
+
+            return res;
         }
         #endregion Public Methods
     }

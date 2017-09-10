@@ -15,37 +15,37 @@ namespace FBT.Tests
         [TestMethod()]
         public void VanillaTest()
         {
+            var SimuStartDate = new DateTime(2017, 9, 6);
+            var RebalancingStep = 1;
+            var EstimationWindow = 50;
+
             var marketSimulator = new SimulatedDataFeedProvider();
             //var marketSimulator = new HistDataFeedProvider();
 
             var init = new HardCodeInitializer();
+            var vanillaOpt = init.initAvailableOptions()[0];
 
-            var start = init.SimuStartDate;
-            var step = init.RebalancingStep;
-            var window = init.EstimationWindow;
-            var vanillaOpt = init.initVanillaOpt();
+            var res = vanillaOpt.GenChartData(EstimationWindow, SimuStartDate, RebalancingStep, marketSimulator);
 
-            var res = vanillaOpt.GenChartData(window, start, step, marketSimulator);
-
-            prettyPrintRes(vanillaOpt, res, window);
+            prettyPrintRes(vanillaOpt, res, EstimationWindow);
         }
 
         [TestMethod()]
         public void BasketTest()
         {
+            var SimuStartDate = new DateTime(2017, 9, 6);
+            var RebalancingStep = 1;
+            var EstimationWindow = 50;
+
             var marketSimulator = new SimulatedDataFeedProvider();
             //var marketSimulator = new HistDataFeedProvider();
 
             var init = new HardCodeInitializer();
+            var basketOpt = init.initAvailableOptions()[1];
 
-            var start = init.SimuStartDate;
-            var step = init.RebalancingStep;
-            var window = init.EstimationWindow;
-            var basketOpt = init.initBasketOpt();
+            var res = basketOpt.GenChartData(EstimationWindow, SimuStartDate, RebalancingStep, marketSimulator);
 
-            var res = basketOpt.GenChartData(window, start, step, marketSimulator);
-
-            prettyPrintRes(basketOpt, res, window);
+            prettyPrintRes(basketOpt, res, EstimationWindow);
         }
 
         private void prettyPrintRes(FinancialComputation opt, PriceOpValPort res, int window)
