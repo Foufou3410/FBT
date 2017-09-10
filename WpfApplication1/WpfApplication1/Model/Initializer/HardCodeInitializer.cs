@@ -15,7 +15,7 @@ namespace FBT.Model.Initializer
 
             var sousJacentVanilla = new Share("BNP", "AC FP");
             var maturityVanilla = new DateTime(2018, 9, 6);
-            var vanilla = new VanillaCall("optionBNP", sousJacentVanilla, maturityVanilla, 8);
+            var vanilla = new VanillaCall("vanillaBNP", sousJacentVanilla, maturityVanilla, 8);
             res.Add(new VanillaComputation(vanilla));
 
             var sousJacentBasket1 = new Share("BNP", "1");

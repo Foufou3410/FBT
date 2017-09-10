@@ -31,9 +31,9 @@ namespace FBT.Model.FinancialModel
         #endregion Public Constructor
 
         #region Public Methods
-        public PriceOpValPort GenChartData(int estimationWindow, DateTime debTest, int rebalancingStep, IDataFeedProvider simulateMarket)
+        public PriceOpValPort GenChartData(int estimationWindow, DateTime beginningTest, int rebalancingStep, IDataFeedProvider simulateMarket)
         {
-            GetSpots(debTest, simulateMarket);
+            GetSpots(beginningTest, simulateMarket);
 
             var priceOpt = new List<double>();
             var valPort = new List<Portfolio>();
@@ -99,10 +99,15 @@ namespace FBT.Model.FinancialModel
             return res.ToArray();
         }
 
-        private void GetSpots(DateTime debTest, IDataFeedProvider simulateMarket)
+        private void GetSpots(DateTime beginningTest, IDataFeedProvider simulateMarket)
         {//Get all the spots of the underlying asset from the debTest date to the maturity date
             Spots.Clear();
-            var dataFeed = simulateMarket.GetDataFeed(Option, debTest);
+            var firstDateMarket = simulateMarket.GetMinDate();
+            if (beginningTest.Date < firstDateMarket)
+            {
+                throw new Exception("No Market data before the " + firstDateMarket);
+            }
+            var dataFeed = simulateMarket.GetDataFeed(Option, beginningTest);
             foreach (DataFeed d in dataFeed)
             {
                 var spotList = new List<double>();

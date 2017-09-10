@@ -10,7 +10,7 @@ namespace FBT.Model.DataFeedProvider
 {
     public class HistDataFeedProvider : IDataFeedProvider
     {
-        string IDataFeedProvider.Name { get { return "HistoricalData"; } }
+        string IDataFeedProvider.Name { get { return "Historical Data"; } }
 
         int IDataFeedProvider.NumberOfDaysPerYear { get { return 365; } }
 
