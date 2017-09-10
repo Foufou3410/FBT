@@ -58,7 +58,7 @@ namespace FBT.ViewModel
             StartDate = theDate;
             SampleNumber = Int32.Parse(estmWindow);
             Step = Int32.Parse(frequency);
-            Labels = getDateSet();
+            Labels = GetDateSet();
 
             optp = new ChartValues<double>();
             pfp = new ChartValues<double>();
@@ -71,7 +71,7 @@ namespace FBT.ViewModel
         //
         // Parameters:
         //      None - it's using object's element only.
-        public string[] getDateSet()
+        public string[] GetDateSet()
         {
             List<string> allDates = new List<string>();
             for(DateTime date = StartDate; date <= StartDate.AddDays(SampleNumber); date = date.AddDays(Step))
@@ -94,26 +94,25 @@ namespace FBT.ViewModel
         //
         //  frequency:
         //      String containing the step where portefolio is reshuffled.
-        public void pleaseUpdateManager(DateTime theDate, string estmWindow, string frequency)
+        public void PleaseUpdateManager(DateTime theDate, string estmWindow, string frequency)
         {
             StartDate = theDate;
             SampleNumber = Int32.Parse(estmWindow);
             Step = Int32.Parse(frequency);
-            Labels = getDateSet();
+            Labels = GetDateSet();
+            var window = 20;
 
             var opt = init.initVanillaOpt(StartDate, SampleNumber - 1);
             var vanillaOpt = new VanillaComputation(opt, StartDate);
-            var riskFreeRate = init.initRiskFreeRate(Step);
-            var dates = init.getRebalancingDates(StartDate, SampleNumber - 1, Step);
- 
-            var share = vanillaOpt.computePrice(dates);
-            var portefolio = vanillaOpt.computeValuePortfolio(dates, dates, riskFreeRate);
 
-            for (int i = 0; i < share.Count; i++)
+            var dates = init.getRebalancingDates(StartDate, SampleNumber - 1, 1);
+            var res = vanillaOpt.GenChartData(window, dates, Step);
+            
+            for (int i = 0; i < res.OptionPrice.Count; i++)
             {
-                optp.Insert(i, share[i].Price);
-                pfp.Insert(i, portefolio[i].Price);
-                trackingError.Insert(i, portefolio[i].Price - share[i].Price);
+                optp.Insert(i, res.OptionPrice[i]);
+                pfp.Insert(i, res.PortfolioValue[i].Value);
+                trackingError.Insert(i, res.OptionPrice[i] - res.PortfolioValue[i].Value);
             }
         }
 

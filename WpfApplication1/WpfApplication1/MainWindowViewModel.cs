@@ -96,7 +96,7 @@ namespace FBT
         #region Handler
         public void SelectionVerification(object sender, EventArgs e)
         {
-            vp.pleaseUpdateManager(TheDate, EstimWindow, Frequency);
+            vp.PleaseUpdateManager(TheDate, EstimWindow, Frequency);
             dispatcherTimer.Stop();
         }
 
