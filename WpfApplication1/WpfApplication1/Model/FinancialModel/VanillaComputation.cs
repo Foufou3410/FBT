@@ -1,4 +1,5 @@
-﻿using PricingLibrary.Computations;
+﻿using AppelWRE;
+using PricingLibrary.Computations;
 using PricingLibrary.FinancialProducts;
 using PricingLibrary.Utilities.MarketDataFeed;
 using System;
@@ -11,80 +12,135 @@ namespace FBT.Model.FinancialModel
 {
     public class VanillaComputation
     {
-        public VanillaCall vanilla { get; }
+        public class PriceOpValPort
+        {
+            public List<Portfolio> PortfolioValue { get; }
 
-        public Dictionary<DateTime, double> spots { get; }
+            public List<double> OptionPrice { get; }
+
+            public PriceOpValPort (List<Portfolio> valP, List<double> priceOp)
+            {
+                PortfolioValue = valP;
+                OptionPrice = priceOp;
+            }
+        }
+
+        public class Portfolio
+        {
+            public double Value { get; }
+            public double[] Deltas { get; }
+            public double FreeRiskDelta { get; }
+
+            public Portfolio(double v, double[] d, double r)
+            {
+                Value = v;
+                Deltas = d;
+                FreeRiskDelta = r;
+            }
+        }
+
+        public VanillaCall Vanilla { get; }
+
+        public List<double> Spots { get; }
 
         #region Public Constructor
         public VanillaComputation(VanillaCall v, DateTime debTest)
         {
-            vanilla = v;
-            spots = new Dictionary<DateTime, double>();
-
-            var simulateMarket = new SimulatedDataFeedProvider();
-            var dataFeed = simulateMarket.GetDataFeed(vanilla, debTest);
-            foreach (DataFeed d in dataFeed)
-            {
-                spots.Add(d.Date, (double)d.PriceList[vanilla.UnderlyingShare.Id]);
-            }
+            Vanilla = v;
+            Spots = new List<double>();
+            ComputeSpots(debTest, true);
         }
         #endregion
 
         #region Public Methods
-        public List<PriceProdFin> computePrice (List<DateTime> dates)
-        {
-            var res = new List<PriceProdFin>();
-            var pricer = new Pricer();
 
-            foreach (DateTime day in dates)
-            {
-                var priceList = pricer.PriceCall(vanilla, day, 365, spots[day], 0.4);
-                res.Add(new PriceProdFin(day, priceList.Price));
+        public void ComputeSpots(DateTime debTest, bool isSimulated)
+        {//Get all the spots of the underlying asset from the debTest date to the maturity date
+            Spots.Clear();
+
+            if (isSimulated)
+            {//Simulated Data
+                var simulateMarket = new SimulatedDataFeedProvider();
+                var dataFeed = simulateMarket.GetDataFeed(Vanilla, debTest);
+                foreach (DataFeed d in dataFeed)
+                {
+                    Spots.Add((double)d.PriceList[Vanilla.UnderlyingShare.Id]);
+                }
             }
-            return res;
+            else
+            {//Historical Data
+                using (DataClasses1DataContext asdc = new DataClasses1DataContext())
+                {
+                    var request = (from lignes in asdc.HistoricalShareValues
+                                   where lignes.id == (Vanilla.UnderlyingShare.Id) && (lignes.date.Date < Vanilla.Maturity.Date) && (lignes.date.Date > debTest.Date)
+                                   select (double)lignes.value);
+                    foreach (double r in request)
+                    {
+                        Spots.Add(r);
+                    }
+                }
+            }
         }
 
-        public List<PricePortfolio> computeValuePortfolio(List<DateTime> dates, List<DateTime> rebalancingDates,  double riskFreeRate)
-        //The first date of dates and of rebalancingDates must be the same
+        public PriceOpValPort GenChartData(int estimationWindow, List<DateTime> marketDataDates, int rebalancingStep)
         {
-            var res = new List<PricePortfolio>();
-            var deltas = computeRebalPriceAndDeltas(rebalancingDates);
-            var i = 0;
-            var valPortefeuille = deltas[dates[i]].Price;
+            var pricer = new Pricer();
+            var priceOpt = new List<double>();
+            var valPort = new List<Portfolio>();
 
-            var currentDelta = deltas[dates[i]].Deltas[0];
-            var previousDelta = currentDelta;
+            //First datafeed considered: in date window
+            var volatility = ComputeVolatility(estimationWindow, estimationWindow, rebalancingStep);
+            var initialSpot = Spots[estimationWindow];
+            var priceList = pricer.PriceCall(Vanilla, marketDataDates[estimationWindow], 365, initialSpot, volatility);
 
-            res.Add(new PricePortfolio(dates[i], valPortefeuille, new List<double> { deltas[dates[i]].Deltas[0] * spots[dates[i]] }, valPortefeuille - deltas[dates[i]].Deltas[0] * spots[dates[i]]));
+            var valPortFolio = priceList.Price;
+            var deltas = priceList.Deltas;
+            var freeRiskQuantity = priceList.Price - priceList.Deltas[0] * initialSpot;           
+            var portfolio = new Portfolio(valPortFolio, deltas, freeRiskQuantity);
+            var previousPortfolio = portfolio;
 
-            for (i = 1; i < dates.Count; i++)
-            {
-                if (deltas.ContainsKey(dates[i]))
-                {
-                    var tmp = currentDelta;
-                    currentDelta = deltas[dates[i]].Deltas[0];
-                    previousDelta = tmp;
+            priceOpt.Add(priceList.Price);
+            valPort.Add(portfolio);
+
+            for (var i = estimationWindow + 1; i < Spots.Count; i++)
+            {//For each data feed except the first one        
+                priceList = pricer.PriceCall(Vanilla, marketDataDates[i], 365, Spots[i], volatility);
+                valPortFolio = previousPortfolio.Deltas[0] * Spots[i] + previousPortfolio.FreeRiskDelta * RiskFreeRateProvider.GetRiskFreeRateAccruedValue(1.0/365);
+
+                if ((i - estimationWindow)%rebalancingStep == 0)
+                {//if there is a rebalancing
+                    volatility = ComputeVolatility(estimationWindow, i, rebalancingStep);
+                    deltas = priceList.Deltas;
                 }
-                valPortefeuille = currentDelta * spots[dates[i]] + (previousDelta * spots[dates[i]] + (valPortefeuille - previousDelta * spots[dates[i-1]]) * (riskFreeRate) - currentDelta * spots[dates[i]]);
-                res.Add(new PricePortfolio(dates[i], valPortefeuille, new List<double> { currentDelta * spots[dates[i]] }, valPortefeuille - currentDelta * spots[dates[i]]));
+                else
+                {
+                    deltas = previousPortfolio.Deltas;
+                }
+
+                freeRiskQuantity = valPortFolio - deltas[0] * Spots[i];
+                previousPortfolio = portfolio;             
+                portfolio = new Portfolio(valPortFolio, deltas, freeRiskQuantity);
+
+                priceOpt.Add(priceList.Price);
+                valPort.Add(portfolio);
             }
-            return res;
+
+            return new PriceOpValPort(valPort, priceOpt);
         }
 
         #endregion
 
         #region Private Methods
-        private Dictionary<DateTime, PriceAndDelta> computeRebalPriceAndDeltas(List<DateTime> rebalancingDates)
-        {
-            var res = new Dictionary<DateTime, PriceAndDelta>();
-            var pricer = new Pricer();
-
-            foreach (DateTime day in rebalancingDates)
+        private double ComputeVolatility(int window, int deb, int step)
+        {//Compute the volatility at date deb. Estimate the parameters thanks to the data of the window days before deb
+            double[,] tab = new double[window - 1, 1];
+            for (var k = 1; k < window; k++)
             {
-                var priceList = pricer.PriceCall(vanilla, day, 365, spots[day], 0.4);
-                res.Add(day, new PriceAndDelta(day, priceList.Price, priceList.Deltas));
+                tab[k - 1, 0] = Math.Log(Spots[deb - window + k] / Spots[deb - window + k - 1]);
             }
-            return res;
+            var B = Math.Sqrt(PricingLibrary.Utilities.DayCount.ConvertToDouble(step, 365));
+            double[,] myVol = WRE.computeVolatility(tab);
+            return myVol[0, 0] / B;
         }
         #endregion Private Methods
     }

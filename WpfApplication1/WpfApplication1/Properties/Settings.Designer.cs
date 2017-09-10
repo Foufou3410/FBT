@@ -22,5 +22,16 @@ namespace FBT.Properties {
                 return defaultInstance;
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=ingefin.ensimag.fr;Initial Catalog=DotNetDB;User ID=etudiant;Password" +
+            "=edn!2015")]
+        public string DotNetDBConnectionString {
+            get {
+                return ((string)(this["DotNetDBConnectionString"]));
+            }
+        }
     }
 }

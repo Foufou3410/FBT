@@ -9,7 +9,7 @@ namespace FBT.Model.Initializer
     {
         public VanillaCall initVanillaOpt(DateTime debut, double duree)
         {
-            var sousJacent = new Share("BNP", "1");
+            var sousJacent = new Share("BNP", "AC FP");
             var date = debut.AddDays(duree);
             var opt = new VanillaCall("optionBNP", sousJacent, date, 8);
             return opt;
