@@ -24,6 +24,7 @@ namespace FBT.ViewModel
         private string[] labels;
         private SimulatedDataFeedProvider marketSimulator;
         private double valPayOff;
+        private double valPortfolio;
 
 
         #endregion Private Attributs
@@ -71,6 +72,12 @@ namespace FBT.ViewModel
             set { valPayOff = value; }
         }
 
+        public double ValPortfolio
+        {
+            get { return valPortfolio; }
+            set { valPortfolio = value; }
+        }
+
         #endregion region Public Accessor
 
         #region Public Constructor
@@ -98,7 +105,6 @@ namespace FBT.ViewModel
             SampleNumber = Int32.Parse(estmWindow);
             Step = Int32.Parse(frequency);
             Labels = GetDateSet(new List<DateTime>());
-            ValPayOff = 0d;
             marketSimulator = new SimulatedDataFeedProvider();
             optp = new ChartValues<double>();
             pfp = new ChartValues<double>();
@@ -148,7 +154,8 @@ namespace FBT.ViewModel
 
             var res = vanillaOpt.GenChartData(window, StartDate, Step, marketSimulator);
             ValPayOff = vanillaOpt.PayOff;
-            
+            ValPortfolio = res.PortfolioValue.Last().Value;
+
             for (int i = 0; i < res.OptionPrice.Count; i++)
             {
                 optp.Insert(i, res.OptionPrice[i]);
