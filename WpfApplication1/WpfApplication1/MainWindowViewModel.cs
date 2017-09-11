@@ -104,7 +104,10 @@ namespace FBT
 
         private bool CanRun()
         {
-            return(pattern.PositiveDecimal.IsMatch(Frequency) && pattern.PositiveInteger.IsMatch(EstimWindow) && ValuesType != null);
+            return(
+                pattern.PositiveDecimal.IsMatch(Frequency) &&
+                pattern.PositiveInteger.IsMatch(EstimWindow) && 
+                ValuesType != null);
         }
         #endregion Handler
 

@@ -91,15 +91,10 @@ namespace FBT.ViewModel
         //      None - it's using object's element only.
         public string[] GetDateSet(List<DateTime> MarketDataDates)
         {
-
-            Console.WriteLine(MarketDataDates.Count);
             List<string> allDates = new List<string>();
             foreach (DateTime it in MarketDataDates)
-            {
-                Console.WriteLine(it);
                 allDates.Add(it.ToShortDateString());
-                Console.WriteLine("I'm in");
-            }
+
             return (allDates.ToArray());
         }
 
