@@ -1,13 +1,9 @@
-﻿using FBT.Model.Enum;
-using FBT.Model.FinancialModel;
-using FBT.Model.Initializer;
+﻿using FBT.Model.FinancialModel;
 using LiveCharts;
 using PricingLibrary.Utilities.MarketDataFeed;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FBT.ViewModel
 {
@@ -20,12 +16,9 @@ namespace FBT.ViewModel
         private ChartValues<double> trackingError;
         private IDataFeedProvider marketSimulator;
         private FinancialComputation option;
-
-
         #endregion Private Attributs
 
         #region Public Accessor
-
         public ChartValues<double> Optp
         {
             get { return optp; } 
@@ -53,7 +46,6 @@ namespace FBT.ViewModel
         #endregion region Public Accessor
 
         #region Public Constructor
-
         //
         // Abstract:
         //     Creates a new instance of FBT.ViewModel.ManagerVM with the date to start estimation
@@ -83,6 +75,7 @@ namespace FBT.ViewModel
         }
         #endregion Public Constructor
 
+        #region Public Methods
         // 
         // Abstract:
         //      Built the set of dates that will be printed to the xaxis
@@ -97,7 +90,6 @@ namespace FBT.ViewModel
 
             return (allDates.ToArray());
         }
-
 
         //
         // Abstract:
@@ -136,7 +128,6 @@ namespace FBT.ViewModel
                 trackingError.Insert(i, res.OptionPrice[i] - res.PortfolioValue[i].Value);
             }
         }
-
-        
+        #endregion Public Method 
     }
 }

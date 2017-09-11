@@ -81,7 +81,7 @@
             <Label Margin="187,44,646,962" Height="30" >Option</Label>
             <Label Margin="169,7,646,999" Height="30" >Data Type</Label>
             <Label Margin="169,80,646,927" Height="29">Start Date</Label>
-            <Label Margin="139,120,646,890" Height="26" Content="Estimation Window"/>
+            <Label Margin="119,120,646,890" Height="26" Content="Estimation Window"/>
             <Label Margin="139,154,636,851" Height="31" Content="Rebalancing Step"/>
 
         </Grid>

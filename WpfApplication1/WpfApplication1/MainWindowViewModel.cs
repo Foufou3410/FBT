@@ -6,7 +6,6 @@ using FBT.Model.Initializer;
 using LiveCharts;
 using LiveCharts.Wpf;
 using System.Windows.Threading;
-using System.Windows.Controls;
 using FBT.Model;
 using FBT.ViewModel;
 using PricingLibrary.Utilities.MarketDataFeed;
@@ -18,11 +17,9 @@ namespace FBT
     {
         #region Private Fields
         private ManagerVM vp;
-
         private Pattern pattern;
         private DispatcherTimer dispatcherTimer;
         private double valPort;
-
         private List<IDataFeedProvider> viewTypesList;
         private List<FinancialComputation> optionList;
         private IDataFeedProvider selectedValuesType;
@@ -36,8 +33,7 @@ namespace FBT
 
         #region Public Constructors
         public MainWindowViewModel()
-        {
-            
+        { 
             pattern = new Pattern();
             EnableRun = false;
             
@@ -91,10 +87,7 @@ namespace FBT
 
             Labels = vp.Labels;
             YFormatter = value => value.ToString("C");
-            #endregion Charts Initialization
-
-           
-           
+            #endregion Charts Initialization     
         }
         #endregion Public Constructors
 
@@ -115,18 +108,16 @@ namespace FBT
 
         private bool CanRun()
         {
-            if (SelectedValuesType.Name == "Historical Data")
-                ;
             return (
-                pattern.PositiveDecimal.IsMatch(Frequency) &&
+                pattern.PositiveInteger.IsMatch(Frequency) &&
                 pattern.PositiveInteger.IsMatch(EstimWindow)
                 );
         }
         #endregion Handler
 
         #region Public Accessors
-
         public DelegateCommand CalculateCmd { get; private set; }
+
         public DateTime TheDate
         {
             get { return theDate; }
@@ -144,21 +135,20 @@ namespace FBT
         
 
         public List<IDataFeedProvider> ValuesType { get { return viewTypesList; } }
+
         public IDataFeedProvider SelectedValuesType
         {
             get { return selectedValuesType; }
             set
             {
-                
                 TheDate = value.GetMinDate();
-
                 SetProperty(ref selectedValuesType, value);
             }
         }
 
         public List<FinancialComputation> OptionList { get { return optionList; } }
-        public FinancialComputation SelectedOption { get; set; }
 
+        public FinancialComputation SelectedOption { get; set; }
 
         public string EstimWindow {
             get { return estmWindow; }
@@ -168,6 +158,7 @@ namespace FBT
                 CalculateCmd.RaiseCanExecuteChanged();
             }
         }
+
         public string Frequency
         {
             get { return frequency; }
@@ -189,15 +180,17 @@ namespace FBT
             get { return labels; }
             set { SetProperty(ref labels, value); }
         }
+
         public Func<double, string> YFormatter { get; set; }
+
         public SeriesCollection TerrorChart { get; private set; }
+
         public double ViewPayOff { get { return viewPayOff; }
             set
             {
                 SetProperty(ref viewPayOff, value);
             } 
         }
-
         #endregion Public Accessors
     }
 

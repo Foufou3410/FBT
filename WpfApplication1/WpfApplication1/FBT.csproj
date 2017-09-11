@@ -122,8 +122,6 @@
     <Compile Include="Model\Initializer\IInitializer.cs" />
     <Compile Include="Model\Initializer\ParseTextFileInitializer.cs" />
     <Compile Include="Model\Pattern.cs" />
-    <Compile Include="ViewModel\InitializerViewModel\HardCodeInitializerViewModel.cs" />
-    <Compile Include="ViewModel\InitializerViewModel\IInitializerViewModel.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
