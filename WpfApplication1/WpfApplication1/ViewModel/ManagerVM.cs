@@ -15,13 +15,17 @@ namespace FBT.ViewModel
     {
         #region Private Attributs
         private HardCodeInitializer init;
-        private DateTime startDate;
         private int sampleNumber;
-        private int step;
         private ChartValues<double> optp;
         private ChartValues<double> pfp;
         private ChartValues<double> trackingError;
         private string[] labels;
+        private IDataFeedProvider marketSimulator;
+        private FinancialComputation option;
+        private double valPayOff;
+        private double valPortfolio;
+
+
         #endregion Private Attributs
 
         #region Public Accessor
@@ -40,27 +44,16 @@ namespace FBT.ViewModel
             get { return trackingError; }
             set { trackingError = value; }
         }
-        public string[] Labels
-        {
-            get { return labels; }
-            set { labels = value; }
-        }
-        public DateTime StartDate
-        {
-            get { return startDate; }
-            set { startDate = value; }
-        }
+        public string[] Labels { get; set; }
+        public DateTime StartDate { get; set; }
         public int SampleNumber
         {
             get { return sampleNumber; }
             set { sampleNumber = value; }
         }
-        public int Step
-        {
-            get { return step; }
-            set { step = value; }
-        }
-
+        public int Step { get; set; }
+        public double ValPayOff { get; set; }
+        public double ValPortfolio { get; set; }
         #endregion region Public Accessor
 
         #region Public Constructor
@@ -79,14 +72,14 @@ namespace FBT.ViewModel
         //
         //   frequency:
         //     The frequency of reshuffle the portefolio
-        public ManagerVM(DateTime theDate, string estmWindow, string frequency)
+        public ManagerVM(DateTime theDate, string estmWindow, string frequency, IDataFeedProvider simulator, FinancialComputation opt)
         {
-            init = new HardCodeInitializer();
-
             StartDate = theDate;
             SampleNumber = Int32.Parse(estmWindow);
             Step = Int32.Parse(frequency);
-            Labels = GetDateSet();
+            Labels = GetDateSet(new List<DateTime>());
+            marketSimulator = simulator;
+            option = opt;
 
             optp = new ChartValues<double>();
             pfp = new ChartValues<double>();
@@ -100,12 +93,12 @@ namespace FBT.ViewModel
         //
         // Parameters:
         //      None - it's using object's element only.
-        public string[] GetDateSet()
+        public string[] GetDateSet(List<DateTime> MarketDataDates)
         {
             List<string> allDates = new List<string>();
-            for(DateTime date = StartDate; date <= StartDate.AddDays(SampleNumber); date = date.AddDays(Step))
-                allDates.Add(date.ToShortDateString());
-            
+            foreach (DateTime it in MarketDataDates)
+                allDates.Add(it.ToShortDateString());
+
             return (allDates.ToArray());
         }
 
@@ -123,19 +116,22 @@ namespace FBT.ViewModel
         //
         //  frequency:
         //      String containing the step where portefolio is reshuffled.
-        public void PleaseUpdateManager(DateTime theDate, string estmWindow, string frequency)
+        public void PleaseUpdateManager(DateTime theDate, string estmWindow, string frequency, IDataFeedProvider simulator, FinancialComputation opt)
         {
             StartDate = theDate;
             SampleNumber = Int32.Parse(estmWindow);
             Step = Int32.Parse(frequency);
-            Labels = GetDateSet();
+            marketSimulator = simulator;
+            option = opt;
+            
             var window = 20;
-            var marketSimulator = new SimulatedDataFeedProvider();
-
-            var vanillaOpt = init.initAvailableOptions()[0];
-
-            var res = vanillaOpt.GenChartData(window, StartDate, Step, marketSimulator);
-
+            var res = option.GenChartData(window, StartDate, Step, marketSimulator);
+            ValPayOff = option.PayOff;
+            ValPortfolio = res.PortfolioValue.Last().Value;
+            Labels = GetDateSet(option.MarketDataDates);
+            optp.Clear();
+            pfp.Clear();
+            trackingError.Clear();
             for (int i = 0; i < res.OptionPrice.Count; i++)
             {
                 optp.Insert(i, res.OptionPrice[i]);

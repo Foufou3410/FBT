@@ -14,11 +14,15 @@ namespace FBT.Model.FinancialModel
     public abstract class FinancialComputation
     {
         #region Public Properties
+        public string Name { get { return Option.Name; } }
+
         public IOption Option { get; }
 
         public List<double[]> Spots { get; }
 
         public List<DateTime> MarketDataDates { get; }
+
+        public double PayOff { get; private set; } 
         #endregion Public Properties
 
         #region Public Constructor
@@ -40,7 +44,7 @@ namespace FBT.Model.FinancialModel
 
             //The first datafeed considered is the one at date window
             var volatility = ComputeVolatility(estimationWindow, estimationWindow, rebalancingStep);
-            var correlation = ComputeCorrelation(estimationWindow);
+            var correlation = ComputeCorrelation(estimationWindow, estimationWindow);
             var pricingRes = ComputePricing(estimationWindow, volatility, correlation);
 
             var valPortFolio = pricingRes.Price;
@@ -59,7 +63,7 @@ namespace FBT.Model.FinancialModel
                 if ((i - estimationWindow) % rebalancingStep == 0)
                 {//if there is a rebalancing
                     volatility = ComputeVolatility(estimationWindow, i, rebalancingStep);
-                    correlation = ComputeCorrelation(i);
+                    correlation = ComputeCorrelation(estimationWindow , i);
                     consideredPortfolio.Deltas = pricingRes.Deltas;
                 }
 
@@ -76,7 +80,7 @@ namespace FBT.Model.FinancialModel
         #region Protected Methods
         abstract protected PricingResults ComputePricing(int dateIndex, double[] volatility, double[,] correlation);
 
-        abstract protected double[,] ComputeCorrelation(int dateIndex);
+        abstract protected double[,] ComputeCorrelation(int estimationWindow, int startPoint);
         #endregion Protected Methods
 
         #region Private Methods
@@ -110,6 +114,7 @@ namespace FBT.Model.FinancialModel
             {
                 throw new Exception("No Market data after the Maturity date (" + Option.Maturity.ToShortDateString() + ")");
             }
+
             var dataFeed = simulateMarket.GetDataFeed(Option, beginningTest);
             if (dataFeed.Count() == 0)
             {
@@ -125,6 +130,17 @@ namespace FBT.Model.FinancialModel
                 Spots.Add(spotList.ToArray());
                 MarketDataDates.Add(d.Date);
             }
+            PayOff = computePayOff();
+        }
+
+        private double computePayOff()
+        {
+            var dic = new Dictionary<string, decimal>();
+            for (var shareId = 0; shareId < Option.UnderlyingShareIds.Length; shareId++)
+            {
+                dic.Add(Option.UnderlyingShareIds[shareId], (decimal)Spots.Last()[shareId]);
+            }
+            return (Option.GetPayoff(dic));
         }
 
         #endregion Private Methods

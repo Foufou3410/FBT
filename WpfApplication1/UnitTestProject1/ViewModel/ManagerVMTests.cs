@@ -28,5 +28,6 @@ namespace FBT.ViewModel.Tests
         {
             throw new NotImplementedException();
         }
+
     }
 }

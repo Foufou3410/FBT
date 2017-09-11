@@ -6,7 +6,6 @@ using FBT.Model.FinancialModel;
 using FBT.Model.Initializer;
 using System.Linq;
 using PricingLibrary.Utilities.MarketDataFeed;
-using FBT.Model.DataFeedProvider;
 
 namespace FBT.Tests
 {
@@ -16,12 +15,12 @@ namespace FBT.Tests
         [TestMethod()]
         public void VanillaTest()
         {
-            var SimuStartDate = new DateTime(2017, 9, 6);
+            var SimuStartDate = new DateTime(2010, 9, 6);
             var RebalancingStep = 1;
             var EstimationWindow = 50;
 
-            var marketSimulator = new SimulatedDataFeedProvider();
-            //var marketSimulator = new HistDataFeedProvider();
+            //var marketSimulator = new SimulatedDataFeedProvider();
+            var marketSimulator = new HistDataFeedProvider();
 
             var init = new HardCodeInitializer();
             var vanillaOpt = init.initAvailableOptions()[0];
@@ -34,12 +33,12 @@ namespace FBT.Tests
         [TestMethod()]
         public void BasketTest()
         {
-            var SimuStartDate = new DateTime(2017, 9, 6);
+            var SimuStartDate = new DateTime(2010, 9, 6);
             var RebalancingStep = 1;
             var EstimationWindow = 50;
 
-            var marketSimulator = new SimulatedDataFeedProvider();
-            //var marketSimulator = new HistDataFeedProvider();
+            //var marketSimulator = new SimulatedDataFeedProvider();
+            var marketSimulator = new HistDataFeedProvider();
 
             var init = new HardCodeInitializer();
             var basketOpt = init.initAvailableOptions()[1];

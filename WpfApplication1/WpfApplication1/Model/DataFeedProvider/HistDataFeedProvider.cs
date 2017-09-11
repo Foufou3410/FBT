@@ -5,16 +5,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using PricingLibrary.FinancialProducts;
+using FBT;
 
-namespace FBT.Model.DataFeedProvider
+namespace PricingLibrary.Utilities.MarketDataFeed
 {
     public class HistDataFeedProvider : IDataFeedProvider
     {
-        string IDataFeedProvider.Name { get { return "Historical Data"; } }
+        public string Name { get { return "Historical Data"; } }
 
-        int IDataFeedProvider.NumberOfDaysPerYear { get { return 365; } }
+        public int NumberOfDaysPerYear { get { return 365; } }
 
-        List<DataFeed> IDataFeedProvider.GetDataFeed(IOption option, DateTime debDate)
+        public List<DataFeed> GetDataFeed(IOption option, DateTime debDate)
         {
             using (DataClasses1DataContext dataAccess = new DataClasses1DataContext())
             {
@@ -29,7 +30,7 @@ namespace FBT.Model.DataFeedProvider
             }
         }
 
-        DateTime IDataFeedProvider.GetMinDate()
+        public DateTime GetMinDate()
         {
             using (DataClasses1DataContext dataAccess = new DataClasses1DataContext())
             {
