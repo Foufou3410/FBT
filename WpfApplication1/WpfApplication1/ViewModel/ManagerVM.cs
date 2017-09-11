@@ -22,6 +22,8 @@ namespace FBT.ViewModel
         private ChartValues<double> pfp;
         private ChartValues<double> trackingError;
         private string[] labels;
+        private SimulatedDataFeedProvider marketSimulator;
+
         #endregion Private Attributs
 
         #region Public Accessor
@@ -83,11 +85,12 @@ namespace FBT.ViewModel
         {
             init = new HardCodeInitializer();
 
+
             StartDate = theDate;
             SampleNumber = Int32.Parse(estmWindow);
             Step = Int32.Parse(frequency);
-            Labels = GetDateSet();
-
+            Labels = GetDateSet(new List<DateTime>());
+            marketSimulator = new SimulatedDataFeedProvider();
             optp = new ChartValues<double>();
             pfp = new ChartValues<double>();
             trackingError = new ChartValues<double>();
@@ -100,10 +103,10 @@ namespace FBT.ViewModel
         //
         // Parameters:
         //      None - it's using object's element only.
-        public string[] GetDateSet()
+        public string[] GetDateSet(List<DateTime> MarketDataDates)
         {
             List<string> allDates = new List<string>();
-            for(DateTime date = StartDate; date <= StartDate.AddDays(SampleNumber); date = date.AddDays(Step))
+            for(DateTime date = StartDate; date <= StartDate.AddDays(SampleNumber); date = date.AddDays(1))
                 allDates.Add(date.ToShortDateString());
             
             return (allDates.ToArray());
@@ -128,12 +131,10 @@ namespace FBT.ViewModel
             StartDate = theDate;
             SampleNumber = Int32.Parse(estmWindow);
             Step = Int32.Parse(frequency);
-            Labels = GetDateSet();
+            
             var window = 20;
-            var marketSimulator = new SimulatedDataFeedProvider();
-
             var vanillaOpt = init.initAvailableOptions()[0];
-
+            Labels = GetDateSet(vanillaOpt.MarketDataDates);
             var res = vanillaOpt.GenChartData(window, StartDate, Step, marketSimulator);
 
             for (int i = 0; i < res.OptionPrice.Count; i++)

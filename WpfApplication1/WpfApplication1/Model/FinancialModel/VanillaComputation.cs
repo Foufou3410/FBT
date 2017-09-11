@@ -30,7 +30,7 @@ namespace FBT.Model.FinancialModel
             return pricer.PriceCall(Vanilla, MarketDataDates[dateIndex], 365, Spots[dateIndex][0], volatility[0]);
         }
 
-        protected override double[,] ComputeCorrelation(int dateIndex)
+        protected override double[,] ComputeCorrelation(int dateIndex, int startingPoint)
         {
             return new double[,] { { 1 } };
         }

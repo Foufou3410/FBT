@@ -1,4 +1,5 @@
-﻿using PricingLibrary.Computations;
+﻿using AppelWRE;
+using PricingLibrary.Computations;
 using PricingLibrary.FinancialProducts;
 using PricingLibrary.Utilities.MarketDataFeed;
 using System;
@@ -29,23 +30,18 @@ namespace FBT.Model.FinancialModel
             return pricer.PriceBasket(basket, MarketDataDates[dateIndex], 365, Spots[dateIndex], volatility, correlation);
         }
 
-        protected override double[,] ComputeCorrelation(int dateIndex)
+        protected override double[,] ComputeCorrelation(int window, int startingPoint)
         {
-            double[,] correlation = new double[Spots[dateIndex].Length, Spots[dateIndex].Length];
-            for (int i = 0; i < Spots[dateIndex].Length; i++)
+            double[,] data = new double[window, Option.UnderlyingShareIds.Length];
+            for (int i=0; i<window;i++)
             {
-                for (int j = 0; j < Spots[dateIndex].Length; j++)
+                for(int j=0; j<Option.UnderlyingShareIds.Length; j++)
                 {
-                    if (i != j)
-                    {
-                        correlation[i, j] = 0.1;
-                    }
-                    else
-                    {
-                        correlation[i, j] = 1;
-                    }
+                    data[i,j] = Spots[startingPoint - window + i][j];
                 }
             }
+            double[,] correlation = WRE.computeCorrelationMatrix(data);
+
             return correlation;
         }
         #endregion Protected Methods
