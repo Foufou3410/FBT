@@ -13,16 +13,16 @@ namespace FBT.Model.Initializer
         {
             var res = new List<FinancialComputation>();
 
-            var sousJacentVanilla = new Share("BNP", "AC FP");
-            var maturityVanilla = new DateTime(2018, 9, 6);
-            var vanilla = new VanillaCall("vanillaBNP", sousJacentVanilla, maturityVanilla, 8);
+            var sousJacentVanilla = new Share("AC", "AC FP     ");
+            var maturityVanilla = new DateTime(2011, 9, 6);
+            var vanilla = new VanillaCall("vanilla AC", sousJacentVanilla, maturityVanilla, 8);
             res.Add(new VanillaComputation(vanilla));
 
-            var sousJacentBasket1 = new Share("BNP", "1");
-            var sousJacentBasket2 = new Share("AXA", "2");
-            var sousJacentBasket3 = new Share("Accenture", "3");
-            var maturityBasket = new DateTime(2018, 9, 6);
-            var basket = new BasketOption("basketBNP", new Share[] { sousJacentBasket1, sousJacentBasket2, sousJacentBasket3 }, new double[] { 0.5, 0.3, 0.2 }, maturityBasket, 8);
+            var sousJacentBasket1 = new Share("AC", "AC FP     ");
+            var sousJacentBasket2 = new Share("ACA", "ACA FP    ");
+            var sousJacentBasket3 = new Share("EDF", "EDF FP    ");
+            var maturityBasket = new DateTime(2011, 9, 6);
+            var basket = new BasketOption("basket AC ACA EDF", new Share[] { sousJacentBasket1, sousJacentBasket2, sousJacentBasket3 }, new double[] { 0.5, 0.3, 0.2 }, maturityBasket, 8);
             res.Add(new BasketComputation(basket));
 
             return res;

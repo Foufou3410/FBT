@@ -110,6 +110,7 @@ namespace FBT.Model.FinancialModel
             {
                 throw new Exception("No Market data after the Maturity date (" + Option.Maturity.ToShortDateString() + ")");
             }
+
             var dataFeed = simulateMarket.GetDataFeed(Option, beginningTest);
             if (dataFeed.Count() == 0)
             {
