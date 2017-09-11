@@ -22,7 +22,6 @@ namespace FBT
 
         private Pattern pattern;
         private DispatcherTimer dispatcherTimer;
-
         private double valPort;
         private double valPayOff;
 
@@ -55,8 +54,7 @@ namespace FBT
             valPort = 15.5;
             valPayOff = 5.2;
 
-            TheDate = DateTime.Today;
-            
+        
             #endregion Public Buttons
 
             vp = new ManagerVM(TheDate, EstimWindow, Frequency);
@@ -96,6 +94,7 @@ namespace FBT
         #region Handler
         public void SelectionVerification(object sender, EventArgs e)
         {
+            Console.WriteLine(TheDate.ToString());
             vp.PleaseUpdateManager(TheDate, EstimWindow, Frequency);
             dispatcherTimer.Stop();
         }
@@ -119,7 +118,7 @@ namespace FBT
 
         public DelegateCommand CalculateCmd { get; private set; }
         public DatePicker DateBox { get; private set; }
-        public DateTime TheDate { get; set; }
+        public DateTime TheDate { get; set;}
        
         public double ViewPort { get { return valPort; } }
         public double ViewPayOff { get { return valPayOff; } }
