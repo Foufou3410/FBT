@@ -106,9 +106,10 @@
       <DependentUpon>AccesSql.dbml</DependentUpon>
     </Compile>
     <Compile Include="Model\FinancialModel\BasketComputation.cs" />
+    <Compile Include="Model\FinancialModel\FinancialComputation.cs" />
+    <Compile Include="Model\DataFeedProvider\HistDataFeedProvider.cs" />
     <Compile Include="Model\FinancialModel\Portfolio.cs" />
-    <Compile Include="Model\FinancialModel\PriceAndDelta.cs" />
-    <Compile Include="Model\FinancialModel\PriceProdFin.cs" />
+    <Compile Include="Model\FinancialModel\PriceOpValPort.cs" />
     <Compile Include="Model\FinancialModel\VanillaComputation.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -126,7 +127,6 @@
     <Compile Include="ViewModel\ManagerVM.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Model\FinancialModel\PricePortfolio.cs" />
     <Compile Include="Model\Initializer\HardCodeInitializer.cs" />
     <Compile Include="Model\WRE.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">

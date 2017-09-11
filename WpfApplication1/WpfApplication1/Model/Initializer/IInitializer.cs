@@ -1,9 +1,11 @@
-﻿namespace FBT.Model.Initializer
+﻿using FBT.Model.FinancialModel;
+using System;
+using System.Collections.Generic;
+
+namespace FBT.Model.Initializer
 {
     public interface IInitializer
     {
-        #region Public Methods
-
-        #endregion Public Methods
+        List<FinancialComputation> initAvailableOptions();
     }
 }
