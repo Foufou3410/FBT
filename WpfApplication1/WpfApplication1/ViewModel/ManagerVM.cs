@@ -2,6 +2,7 @@
 using FBT.Model.FinancialModel;
 using FBT.Model.Initializer;
 using LiveCharts;
+using PricingLibrary.Utilities.MarketDataFeed;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -129,13 +130,12 @@ namespace FBT.ViewModel
             Step = Int32.Parse(frequency);
             Labels = GetDateSet();
             var window = 20;
+            var marketSimulator = new SimulatedDataFeedProvider();
 
-            var opt = init.initVanillaOpt(StartDate, SampleNumber - 1);
-            var vanillaOpt = new VanillaComputation(opt, StartDate);
+            var vanillaOpt = init.initAvailableOptions()[0];
 
-            var dates = init.getRebalancingDates(StartDate, SampleNumber - 1, 1);
-            var res = vanillaOpt.GenChartData(window, dates, Step);
-            
+            var res = vanillaOpt.GenChartData(window, StartDate, Step, marketSimulator);
+
             for (int i = 0; i < res.OptionPrice.Count; i++)
             {
                 optp.Insert(i, res.OptionPrice[i]);
