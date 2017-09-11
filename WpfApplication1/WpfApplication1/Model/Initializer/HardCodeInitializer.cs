@@ -9,28 +9,28 @@ namespace FBT.Model.Initializer
     public class HardCodeInitializer : IInitializer
     {
         #region Public Methods
-        public List<FinancialComputation> initAvailableOptions()
+        public List<FinancialComputation> initAvailableOptions(string filename)
         {
             var res = new List<FinancialComputation>();
 
             var sousJacentVanilla0 = new Share("AC", "AC FP     ");
-            var maturityVanilla0 = new DateTime(2014, 9, 6);
-            var vanilla0 = new VanillaCall("simu vanilla AC", sousJacentVanilla0, maturityVanilla0, 8);
+            var maturityVanilla0 = new DateTime(2014, 9, 25);
+            var vanilla0 = new VanillaCall("simu vanilla AC", sousJacentVanilla0, maturityVanilla0, 25);
             res.Add(new VanillaComputation(vanilla0));
 
             var sousJacentVanilla1 = new Share("AC", "AC FP     ");
-            var maturityVanilla1 = new DateTime(2011, 9, 6);
-            var vanilla1 = new VanillaCall("vanilla AC", sousJacentVanilla1, maturityVanilla1, 8);
+            var maturityVanilla1 = new DateTime(2011, 9, 25);
+            var vanilla1 = new VanillaCall("vanilla AC", sousJacentVanilla1, maturityVanilla1, 25);
             res.Add(new VanillaComputation(vanilla1));
 
             var sousJacentVanilla2 = new Share("BN", "BN FP     ");
             var maturityVanilla2 = new DateTime(2011, 9, 6);
-            var vanilla2 = new VanillaCall("vanilla BN", sousJacentVanilla2, maturityVanilla2, 10);
+            var vanilla2 = new VanillaCall("vanilla BN", sousJacentVanilla2, maturityVanilla2, 45);
             res.Add(new VanillaComputation(vanilla2));
 
             var sousJacentVanilla3 = new Share("CAP", "CAP FP    ");
             var maturityVanilla3 = new DateTime(2011, 9, 6);
-            var vanilla3 = new VanillaCall("vanilla CAP", sousJacentVanilla3, maturityVanilla3, 10);
+            var vanilla3 = new VanillaCall("vanilla CAP", sousJacentVanilla3, maturityVanilla3, 35);
             res.Add(new VanillaComputation(vanilla3));
 
             var sousJacentBasket1 = new Share("AC", "AI FP     ");

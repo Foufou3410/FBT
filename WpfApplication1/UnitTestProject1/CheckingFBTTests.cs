@@ -41,7 +41,7 @@ namespace FBT.Tests
             var marketSimulator = new HistDataFeedProvider();
 
             var init = new HardCodeInitializer();
-            var basketOpt = init.initAvailableOptions()[1];
+            var basketOpt = init.initAvailableOptions()[4];
 
             var res = basketOpt.GenChartData(EstimationWindow, SimuStartDate, RebalancingStep, marketSimulator);
 

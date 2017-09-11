@@ -37,11 +37,7 @@ namespace FBT
         #region Public Constructors
         public MainWindowViewModel()
         {
-
-
-            var test = new ParseTextFile();
-            var t = test.Parse();
-
+            
             pattern = new Pattern();
             EnableRun = false;
             
@@ -55,8 +51,11 @@ namespace FBT
             viewTypesList = new List<IDataFeedProvider>() {new SimulatedDataFeedProvider(), new HistDataFeedProvider()};
             SelectedValuesType = viewTypesList[0];
 
-            var init = new HardCodeInitializer();
-            optionList = init.initAvailableOptions();
+            //var init = new HardCodeInitializer();
+            var init = new ParseTextFileInitializer();
+            init.generateJson(@"test2.json");
+
+            optionList = init.initAvailableOptions(@"test2.json");
             SelectedOption = optionList[0];
 
             #endregion Public Buttons

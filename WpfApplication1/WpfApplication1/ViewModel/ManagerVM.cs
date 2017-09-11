@@ -14,7 +14,6 @@ namespace FBT.ViewModel
     public class ManagerVM
     {
         #region Private Attributs
-        
         private int sampleNumber;
         private ChartValues<double> optp;
         private ChartValues<double> pfp;
@@ -94,10 +93,8 @@ namespace FBT.ViewModel
         {
             List<string> allDates = new List<string>();
             foreach (DateTime it in MarketDataDates)
-            {
-                Console.WriteLine(it.ToString());
                 allDates.Add(it.ToShortDateString());
-            }
+
             return (allDates.ToArray());
         }
 
