@@ -14,7 +14,6 @@ namespace FBT.ViewModel
     public class ManagerVM
     {
         #region Private Attributs
-        private HardCodeInitializer init;
         private int sampleNumber;
         private ChartValues<double> optp;
         private ChartValues<double> pfp;

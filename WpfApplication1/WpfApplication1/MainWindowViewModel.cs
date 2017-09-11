@@ -42,8 +42,7 @@ namespace FBT
         {
             
 
-        var test = new ParseTextFile();
-            var t = test.Parse();
+        var test = new ParseTextFileInitializer();
 
             pattern = new Pattern();
             EnableRun = false;
@@ -58,7 +57,8 @@ namespace FBT
             viewTypesList = new List<IDataFeedProvider>() {new SimulatedDataFeedProvider(), new HistDataFeedProvider()};
             SelectedValuesType = viewTypesList[0];
 
-            var init = new HardCodeInitializer();
+            //var init = new HardCodeInitializer();
+            var init = new ParseTextFileInitializer();
             optionList = init.initAvailableOptions();
             SelectedOption = optionList[0];
 
