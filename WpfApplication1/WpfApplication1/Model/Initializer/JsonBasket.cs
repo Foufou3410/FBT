@@ -2,8 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FBT.Model.Initializer
 {
@@ -52,7 +50,7 @@ namespace FBT.Model.Initializer
             for (var i =0; i<UnderlyingShareNames.Count(); i++)
             {
                 var share = new JsonShare(UnderlyingShareIds[i], UnderlyingShareNames[i]);
-                var sh = share.toShare();
+                var sh = share.ToShare();
                 shares[i] = sh;
             }
             

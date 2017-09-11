@@ -2,10 +2,6 @@
 using PricingLibrary.FinancialProducts;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using Newtonsoft.Json;
 using System.IO;
 
@@ -13,16 +9,14 @@ namespace FBT.Model.Initializer
 {
     class ParseTextFileInitializer : IInitializer
     {
-        private readonly static JsonSerializerSettings settings = new JsonSerializerSettings
+        private readonly static JsonSerializerSettings Settings = new JsonSerializerSettings
         {
             Formatting = Formatting.Indented,
             TypeNameHandling = TypeNameHandling.Auto,
             MissingMemberHandling = MissingMemberHandling.Error
         };
 
-
-
-        public void generateJson(string file)
+        public void GenerateJson(string file)
         {
             var objects = new List<IOption>()
             {
@@ -32,15 +26,14 @@ namespace FBT.Model.Initializer
                 new JsonBasket("basketBNP", new string[] { "1", "2", "3" }, new double[] { 0.5, 0.3, 0.2 }, new DateTime(2018, 9, 6), 8, new string[] {"BNP", "AXA", "ACCOR" })            
             };
 
-            File.WriteAllText(file, JsonConvert.SerializeObject(objects, settings));
+            File.WriteAllText(file, JsonConvert.SerializeObject(objects, Settings));
         }
 
-
-        public List<FinancialComputation> initAvailableOptions(string file)
+        public List<FinancialComputation> InitAvailableOptions(string file)
         {
 
             var serialized = File.ReadAllText(file);
-            var results = JsonConvert.DeserializeObject<List<IOption>>(serialized, settings);
+            var results = JsonConvert.DeserializeObject<List<IOption>>(serialized, Settings);
 
             var finalRes = new List<FinancialComputation>();
             foreach (var res in results)

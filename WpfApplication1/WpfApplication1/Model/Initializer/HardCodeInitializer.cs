@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using PricingLibrary.FinancialProducts;
-using AppelWRE;
 using FBT.Model.FinancialModel;
 
 namespace FBT.Model.Initializer
@@ -9,7 +8,7 @@ namespace FBT.Model.Initializer
     public class HardCodeInitializer : IInitializer
     {
         #region Public Methods
-        public List<FinancialComputation> initAvailableOptions(string filename)
+        public List<FinancialComputation> InitAvailableOptions(string filename)
         {
             var res = new List<FinancialComputation>();
 

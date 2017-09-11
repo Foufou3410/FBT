@@ -1,25 +1,19 @@
 ﻿using AppelWRE;
 using PricingLibrary.Computations;
 using PricingLibrary.FinancialProducts;
-using PricingLibrary.Utilities.MarketDataFeed;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FBT.Model.FinancialModel
 {
     public class BasketComputation : FinancialComputation
     {
         #region Public Properties
-        public BasketOption basket { get; }
+        public BasketOption Basket { get; }
         #endregion Public Properties
 
         #region Public Constructor
         public BasketComputation(BasketOption b) : base(b)
         {
-            basket = b;
+            Basket = b;
         }
         #endregion
 
@@ -27,7 +21,7 @@ namespace FBT.Model.FinancialModel
         protected override PricingResults ComputePricing(int dateIndex, double[] volatility, double[,] correlation)
         {
             var pricer = new Pricer();
-            return pricer.PriceBasket(basket, MarketDataDates[dateIndex], 365, Spots[dateIndex], volatility, correlation);
+            return pricer.PriceBasket(Basket, MarketDataDates[dateIndex], 365, Spots[dateIndex], volatility, correlation);
         }
 
         protected override double[,] ComputeCorrelation(int window, int startingPoint)

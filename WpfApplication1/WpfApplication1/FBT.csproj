@@ -103,7 +103,6 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="MainWindowViewModel.cs" />
-    <Compile Include="Model\Enum.cs" />
     <Compile Include="AccesSql.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -120,7 +119,6 @@
     </Compile>
     <Compile Include="Model\Initializer\JsonBasket.cs" />
     <Compile Include="Model\Initializer\JsonShare.cs" />
-    <Compile Include="Model\Initializer\Parameters.cs" />
     <Compile Include="Model\Initializer\IInitializer.cs" />
     <Compile Include="Model\Initializer\ParseTextFileInitializer.cs" />
     <Compile Include="Model\Pattern.cs" />

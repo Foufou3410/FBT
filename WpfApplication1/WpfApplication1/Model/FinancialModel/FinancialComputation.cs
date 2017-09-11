@@ -6,8 +6,6 @@ using PricingLibrary.Utilities.MarketDataFeed;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FBT.Model.FinancialModel
 {
@@ -58,7 +56,7 @@ namespace FBT.Model.FinancialModel
             for (var i = estimationWindow + 1; i < Spots.Count; i++)
             {//For each data feed except the first one
                 pricingRes = ComputePricing(i, volatility, correlation);
-                consideredPortfolio.updateValue(Spots[i]);
+                consideredPortfolio.UpdateValue(Spots[i]);
 
                 if ((i - estimationWindow) % rebalancingStep == 0)
                 {//if there is a rebalancing
@@ -67,7 +65,7 @@ namespace FBT.Model.FinancialModel
                     consideredPortfolio.Deltas = pricingRes.Deltas;
                 }
 
-                consideredPortfolio.updateFreeRiskDelta(Spots[i]);
+                consideredPortfolio.UpdateFreeRiskDelta(Spots[i]);
 
                 priceOpt.Add(pricingRes.Price);
                 valPort.Add(new Portfolio(consideredPortfolio));
@@ -79,7 +77,6 @@ namespace FBT.Model.FinancialModel
 
         #region Protected Methods
         abstract protected PricingResults ComputePricing(int dateIndex, double[] volatility, double[,] correlation);
-
         abstract protected double[,] ComputeCorrelation(int estimationWindow, int startPoint);
         #endregion Protected Methods
 
@@ -88,7 +85,7 @@ namespace FBT.Model.FinancialModel
         {//Compute the volatility of all the underlying shares at date deb. 
          //Estimate the parameters thanks to the data of the window days before deb.
             var res = new List<double>();
-            for (var share =0; share < Option.UnderlyingShareIds.Length; share ++)
+            for (var share = 0; share < Option.UnderlyingShareIds.Length; share ++)
             {
                 double[,] tab = new double[window - 1, 1];
                 for (var k = 1; k < window; k++)

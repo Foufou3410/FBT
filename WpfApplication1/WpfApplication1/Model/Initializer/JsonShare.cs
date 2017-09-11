@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using PricingLibrary.FinancialProducts;
+﻿using PricingLibrary.FinancialProducts;
 
 namespace FBT.Model.Initializer
 {
@@ -18,7 +13,7 @@ namespace FBT.Model.Initializer
             Name = name;
         }
 
-        public Share toShare()
+        public Share ToShare()
         {
             return new Share(Name, Id);
         }

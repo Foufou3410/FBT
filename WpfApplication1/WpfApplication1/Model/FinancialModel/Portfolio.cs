@@ -1,9 +1,4 @@
 ﻿using PricingLibrary.Utilities.MarketDataFeed;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FBT.Model.FinancialModel
 {
@@ -16,18 +11,11 @@ namespace FBT.Model.FinancialModel
         #endregion Public Properties
 
         #region Public Constructor
-        public Portfolio(double v, double[] d, double r)
-        {
-            Value = v;
-            Deltas = d;
-            FreeRiskDelta = r;
-        }
-
         public Portfolio(double v, double[] d, double[] initialSpots)
         {
             Value = v;
             Deltas = d;
-            FreeRiskDelta = v - scalaire(d, initialSpots);
+            FreeRiskDelta = v - Scalaire(d, initialSpots);
         }
 
         public Portfolio(Portfolio p)
@@ -39,19 +27,19 @@ namespace FBT.Model.FinancialModel
         #endregion Public Properties
 
         #region Public Methods
-        public void updateValue(double[] spot)
+        public void UpdateValue(double[] spot)
         {
-            Value = scalaire(Deltas, spot) + FreeRiskDelta * RiskFreeRateProvider.GetRiskFreeRateAccruedValue(1.0 / 365);
+            Value = Scalaire(Deltas, spot) + FreeRiskDelta * RiskFreeRateProvider.GetRiskFreeRateAccruedValue(1.0 / 365);
         }
 
-        public void updateFreeRiskDelta(double[] spot)
+        public void UpdateFreeRiskDelta(double[] spot)
         {
-            FreeRiskDelta = Value - scalaire(Deltas, spot);
+            FreeRiskDelta = Value - Scalaire(Deltas, spot);
         }
         #endregion Public Methods
 
         #region Private Methods
-        private double scalaire(double[] a, double[] b)
+        private double Scalaire(double[] a, double[] b)
         {
             var res = 0.0;
             for (var i = 0; i < a.Length; i++)
