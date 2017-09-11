@@ -26,6 +26,8 @@ namespace FBT
         private double valPort;
 
         private List<IDataFeedProvider> viewTypesList;
+        private List<FinancialComputation> optionList;
+
         private bool enableRun;
         private string frequency = "0";
         private string estmWindow = "0";
@@ -47,16 +49,18 @@ namespace FBT
             dispatcherTimer.Interval = new TimeSpan(0, 0, 0, 0, 100);
 
             viewTypesList = new List<IDataFeedProvider>() {new SimulatedDataFeedProvider(), new HistDataFeedProvider()};
-            selectedValuesType = viewTypesList[0];
+            SelectedValuesType = viewTypesList[0];
 
             valPort = 15.5;
-           //valPayOff =;
-           
+            //valPayOff =;
 
-        
+            var init = new HardCodeInitializer();
+            optionList = init.initAvailableOptions();
+            SelectedOption = optionList[0];
+
             #endregion Public Buttons
 
-            vp = new ManagerVM(TheDate, EstimWindow, Frequency, selectedValuesType);
+            vp = new ManagerVM(TheDate, EstimWindow, Frequency, SelectedValuesType, SelectedOption);
 
             #region Charts Initialization
             // 1st chart - Option price + Portfolio value
@@ -97,7 +101,7 @@ namespace FBT
         #region Handler
         public void SelectionVerification(object sender, EventArgs e)
         {
-            vp.PleaseUpdateManager(TheDate, EstimWindow, Frequency, selectedValuesType);
+            vp.PleaseUpdateManager(TheDate, EstimWindow, Frequency, SelectedValuesType, SelectedOption);
             ViewPayOff = vp.ValPayOff;
             dispatcherTimer.Stop();
         }
@@ -129,7 +133,10 @@ namespace FBT
         
 
         public List<IDataFeedProvider> ValuesType { get { return viewTypesList; } }
-        public IDataFeedProvider selectedValuesType { get; set; }
+        public IDataFeedProvider SelectedValuesType { get; set; }
+
+        public List<FinancialComputation> OptionList { get { return optionList; } }
+        public FinancialComputation SelectedOption { get; set; }
 
 
         public string EstimWindow {

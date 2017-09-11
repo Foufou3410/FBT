@@ -14,6 +14,8 @@ namespace FBT.Model.FinancialModel
     public abstract class FinancialComputation
     {
         #region Public Properties
+        public string Name { get { return Option.Name; } }
+
         public IOption Option { get; }
 
         public List<double[]> Spots { get; }

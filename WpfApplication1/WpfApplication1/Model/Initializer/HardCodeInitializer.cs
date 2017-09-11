@@ -13,16 +13,26 @@ namespace FBT.Model.Initializer
         {
             var res = new List<FinancialComputation>();
 
-            var sousJacentVanilla = new Share("AC", "AC FP     ");
-            var maturityVanilla = new DateTime(2011, 9, 6);
-            var vanilla = new VanillaCall("vanilla AC", sousJacentVanilla, maturityVanilla, 8);
-            res.Add(new VanillaComputation(vanilla));
+            var sousJacentVanilla1 = new Share("AC", "AC FP     ");
+            var maturityVanilla1 = new DateTime(2011, 9, 6);
+            var vanilla1 = new VanillaCall("vanilla AC", sousJacentVanilla1, maturityVanilla1, 8);
+            res.Add(new VanillaComputation(vanilla1));
 
-            var sousJacentBasket1 = new Share("AC", "AC FP     ");
-            var sousJacentBasket2 = new Share("ACA", "ACA FP    ");
-            var sousJacentBasket3 = new Share("EDF", "EDF FP    ");
-            var maturityBasket = new DateTime(2011, 9, 6);
-            var basket = new BasketOption("basket AC ACA EDF", new Share[] { sousJacentBasket1, sousJacentBasket2, sousJacentBasket3 }, new double[] { 0.5, 0.3, 0.2 }, maturityBasket, 8);
+            var sousJacentVanilla2 = new Share("BN", "BN FP     ");
+            var maturityVanilla2 = new DateTime(2011, 9, 6);
+            var vanilla2 = new VanillaCall("vanilla BN", sousJacentVanilla2, maturityVanilla2, 10);
+            res.Add(new VanillaComputation(vanilla2));
+
+            var sousJacentVanilla3 = new Share("CAP", "CAP FP    ");
+            var maturityVanilla3 = new DateTime(2011, 9, 6);
+            var vanilla3 = new VanillaCall("vanilla CAP", sousJacentVanilla3, maturityVanilla3, 10);
+            res.Add(new VanillaComputation(vanilla3));
+
+            var sousJacentBasket1 = new Share("AC", "AI FP     ");
+            var sousJacentBasket2 = new Share("ACA", "CAP FP    ");
+            var sousJacentBasket3 = new Share("EDF", "BN FP     ");
+            var maturityBasket = new DateTime(2013, 6, 11);
+            var basket = new BasketOption("basket AI CAP BN", new Share[] { sousJacentBasket1, sousJacentBasket2, sousJacentBasket3 }, new double[] { 0.3, 0.3, 0.4 }, maturityBasket, 9);
             res.Add(new BasketComputation(basket));
 
             return res;

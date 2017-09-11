@@ -23,6 +23,7 @@ namespace FBT.ViewModel
         private ChartValues<double> trackingError;
         private string[] labels;
         private IDataFeedProvider marketSimulator;
+        private FinancialComputation option;
         private double valPayOff;
 
 
@@ -89,16 +90,15 @@ namespace FBT.ViewModel
         //
         //   frequency:
         //     The frequency of reshuffle the portefolio
-        public ManagerVM(DateTime theDate, string estmWindow, string frequency, IDataFeedProvider simulator)
+        public ManagerVM(DateTime theDate, string estmWindow, string frequency, IDataFeedProvider simulator, FinancialComputation opt)
         {
-            init = new HardCodeInitializer();
-
             StartDate = theDate;
             SampleNumber = Int32.Parse(estmWindow);
             Step = Int32.Parse(frequency);
             Labels = GetDateSet(new List<DateTime>());
             ValPayOff = 0d;
             marketSimulator = simulator;
+            option = opt;
 
             optp = new ChartValues<double>();
             pfp = new ChartValues<double>();
@@ -135,20 +135,20 @@ namespace FBT.ViewModel
         //
         //  frequency:
         //      String containing the step where portefolio is reshuffled.
-        public void PleaseUpdateManager(DateTime theDate, string estmWindow, string frequency, IDataFeedProvider simulator)
+        public void PleaseUpdateManager(DateTime theDate, string estmWindow, string frequency, IDataFeedProvider simulator, FinancialComputation opt)
         {
             StartDate = theDate;
             SampleNumber = Int32.Parse(estmWindow);
             Step = Int32.Parse(frequency);
             marketSimulator = simulator;
+            option = opt;
             
             var window = 20;
-            var vanillaOpt = init.initAvailableOptions()[0];
-            Labels = GetDateSet(vanillaOpt.MarketDataDates);
+            Labels = GetDateSet(option.MarketDataDates);
             Console.WriteLine(Labels.First());
 
-            var res = vanillaOpt.GenChartData(window, StartDate, Step, marketSimulator);
-            ValPayOff = vanillaOpt.PayOff;
+            var res = option.GenChartData(window, StartDate, Step, marketSimulator);
+            ValPayOff = option.PayOff;
             
             for (int i = 0; i < res.OptionPrice.Count; i++)
             {

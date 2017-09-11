@@ -57,7 +57,14 @@
             <Button Command="{Binding CalculateCmd}" Margin="347.491,85,221,911" Grid.Column="1" >
                 Start/Stop
             </Button>
-            <ComboBox ItemsSource="{Binding ValuesType}" Margin="246,25,0,981" SelectedItem="{Binding selectedValuesType}" HorizontalAlignment="Left" Width="124">
+            <ComboBox ItemsSource="{Binding OptionList}" Margin="500,25,0,981" SelectedItem="{Binding SelectedOption}" HorizontalAlignment="Left" Width="124">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Name}" />
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+            <ComboBox ItemsSource="{Binding ValuesType}" Margin="246,25,0,981" SelectedItem="{Binding SelectedValuesType}" HorizontalAlignment="Left" Width="124">
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
                         <TextBlock Text="{Binding Name}" />
