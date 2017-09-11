@@ -23,6 +23,8 @@ namespace FBT.ViewModel
         private ChartValues<double> trackingError;
         private string[] labels;
         private SimulatedDataFeedProvider marketSimulator;
+        private double valPayOff;
+
 
         #endregion Private Attributs
 
@@ -63,6 +65,12 @@ namespace FBT.ViewModel
             set { step = value; }
         }
 
+        public double ValPayOff
+        {
+            get { return valPayOff;}
+            set { valPayOff = value; }
+        }
+
         #endregion region Public Accessor
 
         #region Public Constructor
@@ -90,6 +98,7 @@ namespace FBT.ViewModel
             SampleNumber = Int32.Parse(estmWindow);
             Step = Int32.Parse(frequency);
             Labels = GetDateSet(new List<DateTime>());
+            ValPayOff = 0d;
             marketSimulator = new SimulatedDataFeedProvider();
             optp = new ChartValues<double>();
             pfp = new ChartValues<double>();
@@ -136,13 +145,15 @@ namespace FBT.ViewModel
             var vanillaOpt = init.initAvailableOptions()[0];
             Labels = GetDateSet(vanillaOpt.MarketDataDates);
             var res = vanillaOpt.GenChartData(window, StartDate, Step, marketSimulator);
-
+            ValPayOff = vanillaOpt.PayOff;
+            
             for (int i = 0; i < res.OptionPrice.Count; i++)
             {
                 optp.Insert(i, res.OptionPrice[i]);
                 pfp.Insert(i, res.PortfolioValue[i].Value);
                 trackingError.Insert(i, res.OptionPrice[i] - res.PortfolioValue[i].Value);
             }
+          
         }
 
         
