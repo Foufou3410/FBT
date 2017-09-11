@@ -23,6 +23,7 @@ namespace FBT.ViewModel
         private ChartValues<double> trackingError;
         private string[] labels;
         private IDataFeedProvider marketSimulator;
+        private double valPayOff;
 
 
         #endregion Private Attributs
