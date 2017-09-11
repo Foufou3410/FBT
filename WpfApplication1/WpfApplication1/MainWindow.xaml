@@ -74,10 +74,8 @@
             <DatePicker Name="dateBox" Margin="246,60,0,947" HorizontalAlignment="Left" Width="124" SelectedDate="{Binding TheDate,Mode =TwoWay}"></DatePicker>
             <TextBox Text="{Binding EstimWindow, UpdateSourceTrigger=PropertyChanged}" Margin="247,94,510,916" Width="124" Height="26"></TextBox>
             <TextBox Text="{Binding Frequency, UpdateSourceTrigger=PropertyChanged}" Margin="246,136,510.509,868"></TextBox>
-
             <TextBlock Text="{Binding ViewPayOff}" Margin="209,0,0,808" Background="White" VerticalAlignment="Bottom" Height="28" HorizontalAlignment="Left" Width="1351" Grid.ColumnSpan="2"  ></TextBlock>
             <TextBlock Text="{Binding ViewPort}" Margin="209,242,0,770" Background="White" VerticalAlignment="Center" Height="24" HorizontalAlignment="Left" Width="1351" Grid.ColumnSpan="2" ></TextBlock>
-
             <Label Margin="88,206,730.509,802" Height="28" Width="62">Payoff</Label>
             <Label Margin="57,239,695.509,771" Height="26" Width="128" >Valeur du Portefeuille</Label>
             <Label Margin="139,25,646,981" Height="30" >Type de données:</Label>
