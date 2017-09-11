@@ -32,7 +32,6 @@ namespace FBT
         private string frequency = "1";
         private string estmWindow = "50";
         private double viewPayOff;
-        private double valPort;
         private string[] labels;
         #endregion Private Fields
 
