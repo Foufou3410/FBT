@@ -69,9 +69,9 @@ namespace AppelWRE
             if (res != 0)
             {
                 if (res < 0)
-                    throw new Exception("ERROR: WREmodelingCov encountred a problem. See info parameter for more details");
+                    throw new Exception("ERROR: Volatility encountred a problem. See info parameter for more details");
                 else
-                    throw new Exception("WARNING: WREmodelingCov encountred a problem. See info parameter for more details");
+                    throw new Exception("WARNING: Volatility encountred a problem. See info parameter for more details");
             }
             return volatility;
         }
