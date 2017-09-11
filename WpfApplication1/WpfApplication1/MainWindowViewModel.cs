@@ -11,13 +11,13 @@ using FBT.Model.Enum;
 using System.Text.RegularExpressions;
 using FBT.Model;
 using FBT.ViewModel;
+using PricingLibrary.Utilities.MarketDataFeed;
 
 namespace FBT
 {
     public class MainWindowViewModel
     {
         #region Private Fields
-
         private ManagerVM vp;
 
         private Pattern pattern;
@@ -26,41 +26,37 @@ namespace FBT
         private double valPort;
         private double valPayOff;
 
-        private List<String> viewTypesList;
+        private List<IDataFeedProvider> viewTypesList;
         private bool enableRun;
         private string frequency = "2";
-        private string estmWindow = "365";
-        
+        private string estmWindow = "365";       
         #endregion Private Fields
 
         #region Public Constructors
-
         public MainWindowViewModel()
         {
             pattern = new Pattern();
             EnableRun = false;
             
             #region Public Buttons
-
             CalculateCmd = new DelegateCommand(Calculate, CanRun);
             
             dispatcherTimer = new DispatcherTimer();
             dispatcherTimer.Tick += new EventHandler(SelectionVerification);
             dispatcherTimer.Interval = new TimeSpan(0, 0, 0, 0, 100);
-            
-            viewTypesList = new List<string>();
-            viewTypesList.Add("Historique");
-            viewTypesList.Add("Simulées");
+
+            viewTypesList = new List<IDataFeedProvider>() {new SimulatedDataFeedProvider(), new HistDataFeedProvider()};
+            selectedValuesType = viewTypesList[0];
 
             valPort = 15.5;
             valPayOff = 5.2;
 
-            TheDate = DateTime.Today;
-            
+            TheDate = DateTime.Today;         
             #endregion Public Buttons
 
-            vp = new ManagerVM(TheDate, EstimWindow, Frequency);
+            vp = new ManagerVM(TheDate, EstimWindow, Frequency, selectedValuesType);
 
+            #region Charts Initialization
             // 1st chart - Option price + Portfolio value
             PfOpChart = new SeriesCollection
             {
@@ -86,17 +82,18 @@ namespace FBT
                     Values = vp.TrackingError
                 }
             };
+
             Labels = vp.Labels;
             YFormatter = value => value.ToString("C");
+            #endregion Charts Initialization
 
         }
-
         #endregion Public Constructors
 
         #region Handler
         public void SelectionVerification(object sender, EventArgs e)
         {
-            vp.PleaseUpdateManager(TheDate, EstimWindow, Frequency);
+            vp.PleaseUpdateManager(TheDate, EstimWindow, Frequency, selectedValuesType);
             dispatcherTimer.Stop();
         }
 
@@ -126,7 +123,10 @@ namespace FBT
         public SeriesCollection PfOpChart { get; set; }
         
 
-        public List<string> ValuesType { get { return viewTypesList; } }
+        public List<IDataFeedProvider> ValuesType { get { return viewTypesList; } }
+        public IDataFeedProvider selectedValuesType { get; set; }
+
+
         public string EstimWindow {
             get { return estmWindow; }
             set

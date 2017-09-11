@@ -22,7 +22,7 @@ namespace FBT.ViewModel
         private ChartValues<double> pfp;
         private ChartValues<double> trackingError;
         private string[] labels;
-        private SimulatedDataFeedProvider marketSimulator;
+        private IDataFeedProvider marketSimulator;
 
         #endregion Private Attributs
 
@@ -81,16 +81,16 @@ namespace FBT.ViewModel
         //
         //   frequency:
         //     The frequency of reshuffle the portefolio
-        public ManagerVM(DateTime theDate, string estmWindow, string frequency)
+        public ManagerVM(DateTime theDate, string estmWindow, string frequency, IDataFeedProvider simulator)
         {
             init = new HardCodeInitializer();
-
 
             StartDate = theDate;
             SampleNumber = Int32.Parse(estmWindow);
             Step = Int32.Parse(frequency);
             Labels = GetDateSet(new List<DateTime>());
-            marketSimulator = new SimulatedDataFeedProvider();
+            marketSimulator = simulator;
+
             optp = new ChartValues<double>();
             pfp = new ChartValues<double>();
             trackingError = new ChartValues<double>();
@@ -126,11 +126,12 @@ namespace FBT.ViewModel
         //
         //  frequency:
         //      String containing the step where portefolio is reshuffled.
-        public void PleaseUpdateManager(DateTime theDate, string estmWindow, string frequency)
+        public void PleaseUpdateManager(DateTime theDate, string estmWindow, string frequency, IDataFeedProvider simulator)
         {
             StartDate = theDate;
             SampleNumber = Int32.Parse(estmWindow);
             Step = Int32.Parse(frequency);
+            marketSimulator = simulator;
             
             var window = 20;
             var vanillaOpt = init.initAvailableOptions()[0];
