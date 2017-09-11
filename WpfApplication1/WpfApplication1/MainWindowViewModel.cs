@@ -12,10 +12,11 @@ using System.Text.RegularExpressions;
 using FBT.Model;
 using FBT.ViewModel;
 using PricingLibrary.Utilities.MarketDataFeed;
+using Prism.Mvvm;
 
 namespace FBT
 {
-    public class MainWindowViewModel
+    public class MainWindowViewModel :BindableBase
     {
         #region Private Fields
         private ManagerVM vp;
@@ -23,12 +24,13 @@ namespace FBT
         private Pattern pattern;
         private DispatcherTimer dispatcherTimer;
         private double valPort;
-        private double valPayOff;
 
         private List<IDataFeedProvider> viewTypesList;
         private bool enableRun;
-        private string frequency = "2";
-        private string estmWindow = "365";       
+        private string frequency = "0";
+        private string estmWindow = "0";
+        private double viewPayOff;
+        
         #endregion Private Fields
 
         #region Public Constructors
@@ -48,7 +50,8 @@ namespace FBT
             selectedValuesType = viewTypesList[0];
 
             valPort = 15.5;
-            valPayOff = 5.2;
+           //valPayOff =;
+           
 
         
             #endregion Public Buttons
@@ -86,6 +89,8 @@ namespace FBT
             YFormatter = value => value.ToString("C");
             #endregion Charts Initialization
 
+           
+           
         }
         #endregion Public Constructors
 
@@ -93,6 +98,7 @@ namespace FBT
         public void SelectionVerification(object sender, EventArgs e)
         {
             vp.PleaseUpdateManager(TheDate, EstimWindow, Frequency, selectedValuesType);
+            ViewPayOff = vp.ValPayOff;
             dispatcherTimer.Stop();
         }
 
@@ -118,7 +124,7 @@ namespace FBT
         public DateTime TheDate { get; set;}
        
         public double ViewPort { get { return valPort; } }
-        public double ViewPayOff { get { return valPayOff; } }
+
         public SeriesCollection PfOpChart { get; set; }
         
 
@@ -153,6 +159,12 @@ namespace FBT
         public string[] Labels { get; set; }
         public Func<double, string> YFormatter { get; set; }
         public SeriesCollection TerrorChart { get; private set; }
+        public double ViewPayOff { get { return viewPayOff; }
+            set
+            {
+                SetProperty(ref viewPayOff, value);
+            } 
+        }
 
         #endregion Public Accessors
     }

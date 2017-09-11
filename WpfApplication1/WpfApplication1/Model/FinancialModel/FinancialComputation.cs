@@ -19,6 +19,8 @@ namespace FBT.Model.FinancialModel
         public List<double[]> Spots { get; }
 
         public List<DateTime> MarketDataDates { get; }
+
+        public double PayOff { get; private set; } 
         #endregion Public Properties
 
         #region Public Constructor
@@ -126,6 +128,17 @@ namespace FBT.Model.FinancialModel
                 Spots.Add(spotList.ToArray());
                 MarketDataDates.Add(d.Date);
             }
+            PayOff = computePayOff();
+        }
+
+        private double computePayOff()
+        {
+            var dic = new Dictionary<string, decimal>();
+            for (var shareId = 0; shareId < Option.UnderlyingShareIds.Length; shareId++)
+            {
+                dic.Add(Option.UnderlyingShareIds[shareId], (decimal)Spots.Last()[shareId]);
+            }
+            return (Option.GetPayoff(dic));
         }
 
         #endregion Private Methods
