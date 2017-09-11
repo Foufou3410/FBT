@@ -91,6 +91,7 @@ namespace FBT.ViewModel
             pfp = new ChartValues<double>();
             trackingError = new ChartValues<double>();
         }
+        #endregion Public Constructor
 
         // 
         // Abstract:
@@ -143,6 +144,6 @@ namespace FBT.ViewModel
             }
         }
 
-        #endregion Public Constructor
+        
     }
 }

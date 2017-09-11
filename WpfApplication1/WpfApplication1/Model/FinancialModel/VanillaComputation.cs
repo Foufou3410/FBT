@@ -89,7 +89,7 @@ namespace FBT.Model.FinancialModel
 
             for (var i = estimationWindow + 1; i < Spots.Count; i++)
             {//For each data feed except the first one        
-                priceList = pricer.PriceCall(Vanilla, marketDataDates[i], 365, Spots[i], volatility);
+                priceList = pricer.PriceCall(Vanilla, marketDataDates[i-1], 365, Spots[i], volatility);
                 consideredPortfolio.updateValue(new double[] { Spots[i] });
 
                 if ((i - estimationWindow)%rebalancingStep == 0)
