@@ -52,11 +52,6 @@ namespace FBT
             viewTypesList.Add("Historique");
             viewTypesList.Add("Simulées");
 
-            valPort = 15.5;
-           //valPayOff =;
-           
-
-        
             #endregion Public Buttons
 
             vp = new ManagerVM(TheDate, EstimWindow, Frequency);
@@ -101,6 +96,7 @@ namespace FBT
             Console.WriteLine(TheDate.ToString());
             vp.PleaseUpdateManager(TheDate, EstimWindow, Frequency);
             ViewPayOff = vp.ValPayOff;
+            ViewPort = vp.ValPortfolio;
             dispatcherTimer.Stop();
         }
 
@@ -121,7 +117,11 @@ namespace FBT
         public DatePicker DateBox { get; private set; }
         public DateTime TheDate { get; set;}
        
-        public double ViewPort { get { return valPort; } }
+        public double ViewPort
+        {
+            get { return valPort; }
+            set { SetProperty(ref valPort, value); }
+        }
 
         public SeriesCollection PfOpChart { get; set; }
         
