@@ -54,34 +54,35 @@
                 <ColumnDefinition Width="0*"/>
                 <ColumnDefinition Width="18*"/>
             </Grid.ColumnDefinitions>
-            <Button Command="{Binding CalculateCmd}" Margin="347.491,85,221,911" Grid.Column="1" >
+            <Button Command="{Binding CalculateCmd}" Margin="347,147,221,849" Grid.Column="1" >
                 Start
             </Button>
-            <ComboBox ItemsSource="{Binding OptionList}" Margin="500,25,0,981" SelectedItem="{Binding SelectedOption}" HorizontalAlignment="Left" Width="124">
+            <ComboBox ItemsSource="{Binding OptionList}" Margin="246,40,0,966" SelectedItem="{Binding SelectedOption}" HorizontalAlignment="Left" Width="124">
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
                         <TextBlock Text="{Binding Name}" />
                     </DataTemplate>
                 </ComboBox.ItemTemplate>
             </ComboBox>
-            <ComboBox ItemsSource="{Binding ValuesType}" Margin="246,25,0,981" SelectedItem="{Binding SelectedValuesType}" HorizontalAlignment="Left" Width="124">
+            <ComboBox ItemsSource="{Binding ValuesType}" Margin="246,7,0,999" SelectedItem="{Binding SelectedValuesType}" HorizontalAlignment="Left" Width="124">
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
                         <TextBlock Text="{Binding Name}" />
                     </DataTemplate>
                 </ComboBox.ItemTemplate>
             </ComboBox>
-            <DatePicker Name="dateBox" Margin="246,60,0,947" HorizontalAlignment="Left" Width="124" SelectedDate="{Binding TheDate,Mode =TwoWay}"></DatePicker>
-            <TextBox Text="{Binding EstimWindow, UpdateSourceTrigger=PropertyChanged}" Margin="247,94,510,916" Width="124" Height="26"></TextBox>
-            <TextBox Text="{Binding Frequency, UpdateSourceTrigger=PropertyChanged}" Margin="246,136,510.509,868"></TextBox>
-            <TextBlock Text="{Binding ViewPayOff}" Margin="209,0,0,808" Background="White" VerticalAlignment="Bottom" Height="28" HorizontalAlignment="Left" Width="1351" Grid.ColumnSpan="2"  ></TextBlock>
-            <TextBlock Text="{Binding ViewPort}" Margin="209,242,0,770" Background="White" VerticalAlignment="Center" Height="24" HorizontalAlignment="Left" Width="1351" Grid.ColumnSpan="2" ></TextBlock>
-            <Label Margin="88,206,730.509,802" Height="28" Width="62">Payoff</Label>
-            <Label Margin="57,239,695.509,771" Height="26" Width="128" >Valeur du Portefeuille</Label>
-            <Label Margin="139,25,646,981" Height="30" >Type de données:</Label>
-            <Label Margin="139,60,646,947" Height="29">Date de départ</Label>
-            <Label Margin="115,94,646,916" Height="26" Content="Fenêtre d'estimation"/>
-            <Label Margin="71,136,636,869" Height="31" Content="Fréquence de rebalancement"/>
+            <DatePicker Name="dateBox" Margin="246,82,0,925" HorizontalAlignment="Left" Width="124" SelectedDate="{Binding TheDate,Mode =TwoWay}"></DatePicker>
+            <TextBox Text="{Binding EstimWindow, UpdateSourceTrigger=PropertyChanged}" Margin="247,118,510,892" Width="124" Height="26"></TextBox>
+            <TextBox Text="{Binding Frequency, UpdateSourceTrigger=PropertyChanged}" Margin="246,150,511,854"></TextBox>
+            <TextBlock Text="{Binding ViewPayOff}" Margin="209,0,0,786" Background="White" VerticalAlignment="Bottom" Height="28" HorizontalAlignment="Left" Width="1165" Grid.ColumnSpan="2"  ></TextBlock>
+            <TextBlock Text="{Binding ViewPort}" Margin="209,262,0,749" Background="White" VerticalAlignment="Center" Height="25" HorizontalAlignment="Left" Width="1165" Grid.ColumnSpan="2" ></TextBlock>
+            <Label Margin="88,222,731,786" Height="28" Width="62">Payoff</Label>
+            <Label Margin="57,261,696,749" Height="26" Width="128" >Portfolio value</Label>
+            <Label Margin="187,44,646,962" Height="30" >Option</Label>
+            <Label Margin="169,7,646,999" Height="30" >Data Type</Label>
+            <Label Margin="169,80,646,927" Height="29">Start Date</Label>
+            <Label Margin="139,120,646,890" Height="26" Content="Estimation Window"/>
+            <Label Margin="139,154,636,851" Height="31" Content="Rebalancing Step"/>
 
         </Grid>
     </Grid>
