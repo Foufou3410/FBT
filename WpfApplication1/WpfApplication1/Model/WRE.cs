@@ -30,6 +30,34 @@ namespace AppelWRE
             ref int info
         );
 
+        [DllImport("wre-ensimag-c-4.1.dll", EntryPoint = "WREmodelingCorr", CallingConvention = CallingConvention.Cdecl)]
+        public static extern int WREmodelingCorr(
+          ref int nbValues,
+          ref int nbAssets,
+          double[,] inputValues,
+          double[,] corrMatrix,
+          ref int info
+      );
+        public static double[,] computeCorrelationMatrix(double[,] returns)
+        {
+            int dataSize = returns.GetLength(0);
+            int nbAssets = returns.GetLength(1);
+            double[,] corrMatrix = new double[nbAssets, nbAssets];
+            int info = 0;
+            int res;
+            res = WREmodelingCorr(ref dataSize, ref nbAssets, returns, corrMatrix, ref info);
+            if (res != 0)
+            {
+                if (res < 0)
+                    throw new Exception("ERROR: WREmodelingCorr encountred a problem. See info parameter for more details");
+                else
+                    throw new Exception("WARNING: WREmodelingCorr encountred a problem. See info parameter for more details");
+            }
+            return corrMatrix;
+        }
+
+
+
 
         public static double[,] computeVolatility(double[,] returns)
         {
@@ -41,9 +69,9 @@ namespace AppelWRE
             if (res != 0)
             {
                 if (res < 0)
-                    throw new Exception("ERROR: WREmodelingCov encountred a problem. See info parameter for more details");
+                    throw new Exception("ERROR: Volatility encountred a problem. See info parameter for more details");
                 else
-                    throw new Exception("WARNING: WREmodelingCov encountred a problem. See info parameter for more details");
+                    throw new Exception("WARNING: Volatility encountred a problem. See info parameter for more details");
             }
             return volatility;
         }

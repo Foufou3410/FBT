@@ -40,7 +40,7 @@ namespace FBT.Model.FinancialModel
 
             //The first datafeed considered is the one at date window
             var volatility = ComputeVolatility(estimationWindow, estimationWindow, rebalancingStep);
-            var correlation = ComputeCorrelation(estimationWindow);
+            var correlation = ComputeCorrelation(estimationWindow, estimationWindow);
             var pricingRes = ComputePricing(estimationWindow, volatility, correlation);
 
             var valPortFolio = pricingRes.Price;
@@ -59,7 +59,7 @@ namespace FBT.Model.FinancialModel
                 if ((i - estimationWindow) % rebalancingStep == 0)
                 {//if there is a rebalancing
                     volatility = ComputeVolatility(estimationWindow, i, rebalancingStep);
-                    correlation = ComputeCorrelation(i);
+                    correlation = ComputeCorrelation(estimationWindow , i);
                     consideredPortfolio.Deltas = pricingRes.Deltas;
                 }
 
@@ -76,7 +76,7 @@ namespace FBT.Model.FinancialModel
         #region Protected Methods
         abstract protected PricingResults ComputePricing(int dateIndex, double[] volatility, double[,] correlation);
 
-        abstract protected double[,] ComputeCorrelation(int dateIndex);
+        abstract protected double[,] ComputeCorrelation(int estimationWindow, int startPoint);
         #endregion Protected Methods
 
         #region Private Methods
