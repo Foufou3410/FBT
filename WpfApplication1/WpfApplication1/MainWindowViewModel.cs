@@ -7,12 +7,8 @@ using LiveCharts;
 using LiveCharts.Wpf;
 using System.Windows.Threading;
 using System.Windows.Controls;
-using FBT.Model.Enum;
-using System.Text.RegularExpressions;
 using FBT.Model;
 using FBT.ViewModel;
-using Newtonsoft.Json;
-using PricingLibrary.FinancialProducts;
 using PricingLibrary.Utilities.MarketDataFeed;
 using Prism.Mvvm;
 
@@ -29,20 +25,21 @@ namespace FBT
 
         private List<IDataFeedProvider> viewTypesList;
         private List<FinancialComputation> optionList;
-
+        private IDataFeedProvider selectedValuesType;
         private bool enableRun;
         private string frequency = "1";
         private string estmWindow = "50";
         private double viewPayOff;
         private string[] labels;
+        private DateTime theDate;
         #endregion Private Fields
 
         #region Public Constructors
         public MainWindowViewModel()
         {
-            
 
-        var test = new ParseTextFile();
+
+            var test = new ParseTextFile();
             var t = test.Parse();
 
             pattern = new Pattern();
@@ -119,18 +116,24 @@ namespace FBT
 
         private bool CanRun()
         {
-            return(
+            if (SelectedValuesType.Name == "Historical Data")
+                ;
+            return (
                 pattern.PositiveDecimal.IsMatch(Frequency) &&
-                pattern.PositiveInteger.IsMatch(EstimWindow) && 
-                ValuesType != null);
+                pattern.PositiveInteger.IsMatch(EstimWindow)
+                );
         }
         #endregion Handler
 
         #region Public Accessors
 
         public DelegateCommand CalculateCmd { get; private set; }
-        public DatePicker DateBox { get; private set; }
-        public DateTime TheDate { get; set;}
+        public DateTime TheDate
+        {
+            get { return theDate; }
+            set { SetProperty(ref theDate, value); }
+
+        }
        
         public double ViewPort
         {
@@ -142,7 +145,17 @@ namespace FBT
         
 
         public List<IDataFeedProvider> ValuesType { get { return viewTypesList; } }
-        public IDataFeedProvider SelectedValuesType { get; set; }
+        public IDataFeedProvider SelectedValuesType
+        {
+            get { return selectedValuesType; }
+            set
+            {
+                
+                TheDate = value.GetMinDate();
+
+                SetProperty(ref selectedValuesType, value);
+            }
+        }
 
         public List<FinancialComputation> OptionList { get { return optionList; } }
         public FinancialComputation SelectedOption { get; set; }

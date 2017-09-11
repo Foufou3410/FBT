@@ -14,16 +14,13 @@ namespace FBT.ViewModel
     public class ManagerVM
     {
         #region Private Attributs
-        private HardCodeInitializer init;
+        
         private int sampleNumber;
         private ChartValues<double> optp;
         private ChartValues<double> pfp;
         private ChartValues<double> trackingError;
-        private string[] labels;
         private IDataFeedProvider marketSimulator;
         private FinancialComputation option;
-        private double valPayOff;
-        private double valPortfolio;
 
 
         #endregion Private Attributs
@@ -80,7 +77,7 @@ namespace FBT.ViewModel
             Labels = GetDateSet(new List<DateTime>());
             marketSimulator = simulator;
             option = opt;
-
+            
             optp = new ChartValues<double>();
             pfp = new ChartValues<double>();
             trackingError = new ChartValues<double>();
@@ -97,8 +94,10 @@ namespace FBT.ViewModel
         {
             List<string> allDates = new List<string>();
             foreach (DateTime it in MarketDataDates)
+            {
+                Console.WriteLine(it.ToString());
                 allDates.Add(it.ToShortDateString());
-
+            }
             return (allDates.ToArray());
         }
 
@@ -123,11 +122,12 @@ namespace FBT.ViewModel
             Step = Int32.Parse(frequency);
             marketSimulator = simulator;
             option = opt;
-            
+            option.MarketDataDates.Clear();
             var window = 20;
             var res = option.GenChartData(window, StartDate, Step, marketSimulator);
             ValPayOff = option.PayOff;
             ValPortfolio = res.PortfolioValue.Last().Value;
+            
             Labels = GetDateSet(option.MarketDataDates);
             optp.Clear();
             pfp.Clear();
