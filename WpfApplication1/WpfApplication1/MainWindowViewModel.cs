@@ -96,7 +96,6 @@ namespace FBT
         {
             Console.WriteLine(TheDate.ToString());
             vp.PleaseUpdateManager(TheDate, EstimWindow, Frequency);
-            dispatcherTimer.Stop();
         }
 
         private void Calculate()

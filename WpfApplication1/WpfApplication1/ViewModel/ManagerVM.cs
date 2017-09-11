@@ -42,16 +42,8 @@ namespace FBT.ViewModel
             get { return trackingError; }
             set { trackingError = value; }
         }
-        public string[] Labels
-        {
-            get { return labels; }
-            set { labels = value; }
-        }
-        public DateTime StartDate
-        {
-            get { return startDate; }
-            set { startDate = value; }
-        }
+        public string[] Labels { get; set; }
+        public DateTime StartDate { get; set; }
         public int SampleNumber
         {
             get { return sampleNumber; }
@@ -138,7 +130,9 @@ namespace FBT.ViewModel
             Console.WriteLine(Labels.First());
 
             var res = vanillaOpt.GenChartData(window, StartDate, Step, marketSimulator);
-
+            optp.Clear();
+            pfp.Clear();
+            trackingError.Clear();
             for (int i = 0; i < res.OptionPrice.Count; i++)
             {
                 optp.Insert(i, res.OptionPrice[i]);

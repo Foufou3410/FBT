@@ -14,7 +14,7 @@ namespace FBT.Model.Initializer
             var res = new List<FinancialComputation>();
 
             var sousJacentVanilla = new Share("AC", "AC FP     ");
-            var maturityVanilla = new DateTime(2011, 9, 6);
+            var maturityVanilla = new DateTime(2013, 9, 6);
             var vanilla = new VanillaCall("vanilla AC", sousJacentVanilla, maturityVanilla, 8);
             res.Add(new VanillaComputation(vanilla));
 
