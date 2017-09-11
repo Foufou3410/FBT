@@ -73,8 +73,12 @@
       <HintPath>..\packages\PricingLibrary.1.0.1\lib\net45\PricingLibrary.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Prism, Version=6.3.0.0, Culture=neutral, PublicKeyToken=40ee6c3a2184dc59, processorArchitecture=MSIL">
+      <HintPath>..\packages\Prism.Core.6.3.0\lib\net45\Prism.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Data.Linq" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -94,6 +98,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Model\Enum.cs" />
     <Compile Include="AccesSql.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -110,14 +115,15 @@
     <Compile Include="Model\Initializer\Parameters.cs" />
     <Compile Include="Model\Initializer\IInitializer.cs" />
     <Compile Include="Model\Initializer\ParseTextFile.cs" />
+    <Compile Include="Model\Pattern.cs" />
     <Compile Include="ViewModel\InitializerViewModel\HardCodeInitializerViewModel.cs" />
     <Compile Include="ViewModel\InitializerViewModel\IInitializerViewModel.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="CheckingFBT.cs" />
-    <Compile Include="MainWindowView.cs" />
+    <Compile Include="MainWindowViewModel.cs" />
+    <Compile Include="ViewModel\ManagerVM.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Model\FinancialModel\PricePortfolio.cs" />

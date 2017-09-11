@@ -1,24 +1,24 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using FBT.Model.FinancialModel;
+using FBT;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FBT.Model.FinancialModel.Tests
+namespace FBT.Tests
 {
     [TestClass()]
-    public class FinancialComputationTests
+    public class MainWindowViewModelTests
     {
         [TestMethod()]
-        public void computeDeltasAndPriceTest()
+        public void MainWindowViewModelTest()
         {
             throw new NotImplementedException();
         }
 
         [TestMethod()]
-        public void computePricePortfolioTest()
+        public void SelectionVerificationTest()
         {
             throw new NotImplementedException();
         }

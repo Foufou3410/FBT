@@ -1,112 +1,160 @@
-﻿using LiveCharts;
-using LiveCharts.Wpf;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Windows.Media;
+using Prism.Commands;
 using FBT.Model.FinancialModel;
 using FBT.Model.Initializer;
+using LiveCharts;
+using LiveCharts.Wpf;
+using System.Windows.Threading;
+using System.Windows.Controls;
+using FBT.Model.Enum;
 using System.Text.RegularExpressions;
+using FBT.Model;
+using FBT.ViewModel;
 
-namespace Wpf.CartesianChart.PointShapeLine
+namespace FBT
 {
-    internal class MainWindowViewModel
+    public class MainWindowViewModel
     {
         #region Private Fields
-        
-        private HardCodeInitializer init;
-        private DateTime start;
-        private int timeLapse;
-        private int step;
 
+        private ManagerVM vp;
+
+        private Pattern pattern;
+        private DispatcherTimer dispatcherTimer;
+
+        private double valPort;
+        private double valPayOff;
+
+        private List<String> viewTypesList;
+        private bool enableRun;
+        private string frequency = "2";
+        private string estmWindow = "365";
+        
         #endregion Private Fields
 
-
-        // To send away
-        enum period : int { year = 365, semester = 183, month = 30, week = 5, day = 1 };
+        #region Public Constructors
 
         public MainWindowViewModel()
         {
-
-            //to be refactored
-            init = new HardCodeInitializer();
+            pattern = new Pattern();
+            EnableRun = false;
             
+            #region Public Buttons
 
-            start = new DateTime(2017, 9, 6);
-            timeLapse = 5* (int)period.year;
-            step = 2 * (int)period.day;
-            var window = 30; //to be binded
-  
-            var opt = init.initVanillaOpt(start, timeLapse- 1);
-            var vanillaOpt = new VanillaComputation(opt, start, window);
-
-            var riskFreeRate = init.initRiskFreeRate(step);
-            var startRebalancing = start.AddDays(window);
-            var dates = init.getRebalancingDates(startRebalancing, timeLapse - window - 1, step);
-
-            var res = vanillaOpt.computePrice(dates);
-            var port = vanillaOpt.computeValuePortfolio(dates, dates, riskFreeRate);
-
-
-
-            // Dialogue with team to match model output
-            ChartValues<double> optp = new ChartValues<double>();
-            ChartValues<double> pfp = new ChartValues<double>();
-            ChartValues<double> trackingError = new ChartValues<double>();
-            for (int i=0; i < res.Count; i++)
-            {
-                optp.Insert(i, res[i].Price);
-                pfp.Insert(i, port[i].Price);
-                trackingError.Insert(i, port[i].Price - res[i].Price);
-            }
+            CalculateCmd = new DelegateCommand(Calculate, CanRun);
             
+            dispatcherTimer = new DispatcherTimer();
+            dispatcherTimer.Tick += new EventHandler(SelectionVerification);
+            dispatcherTimer.Interval = new TimeSpan(0, 0, 0, 0, 100);
+            
+            viewTypesList = new List<string>();
+            viewTypesList.Add("Historique");
+            viewTypesList.Add("Simulées");
+
+            valPort = 15.5;
+            valPayOff = 5.2;
+
+            TheDate = DateTime.Today;
+            
+            #endregion Public Buttons
+
+            vp = new ManagerVM(TheDate, EstimWindow, Frequency);
 
             // 1st chart - Option price + Portfolio value
-            SeriesCollection = new SeriesCollection
+            PfOpChart = new SeriesCollection
             {
                 new LineSeries
                 {
                     Title = "Option price",
-                    Values = optp,
+                    Values = vp.Optp,
                     PointGeometry = null
                 },
                 new LineSeries
                 {
                     Title = "Portfolio value",
-                    Values = pfp,
+                    Values = vp.Pfp,
                     PointGeometry = null
                 }
             };
-            // 2nd chart - tracking error
-            SeriesCollectionBis = new SeriesCollection
+            // 2nd chart - Tracking error
+            TerrorChart = new SeriesCollection
             {
                 new LineSeries
                 {
                     Title = "Tracking error",
-                    Values = trackingError
+                    Values = vp.TrackingError
                 }
             };
-            Labels = new[] { "Monday", "Tuesday", "Wenesday", "Thursday", "Frieday"};
+            Labels = vp.Labels;
             YFormatter = value => value.ToString("C");
 
-            // Modifying the series collection will animate and update the chart
-            /*SeriesCollection.Add(new LineSeries
-              {
-                  Title = "Series 4",
-                  Values = new ChartValues<double> { 5, 3, 2, 4 },
-                  LineSmoothness = 0, //0: straight lines, 1: really smooth lines
-                  PointGeometry = Geometry.Parse("m 25 70.36218 20 -28 -20 22 -8 -6 z"),
-                  PointGeometrySize = 50,
-                  PointForeground = Brushes.Gray
-              });
-            */
-
-            // Modifying any series values will also animate and update the chart
-            /* SeriesCollection[3].Values.Add(5d);*/
         }
 
-        public SeriesCollection SeriesCollection { get; set; }
+        #endregion Public Constructors
+
+        #region Handler
+        public void SelectionVerification(object sender, EventArgs e)
+        {
+            vp.PleaseUpdateManager(TheDate, EstimWindow, Frequency);
+            dispatcherTimer.Stop();
+        }
+
+        private void Calculate()
+        {
+            if(enableRun)
+                dispatcherTimer.Stop();
+            else
+                dispatcherTimer.Start();
+            enableRun = !enableRun;
+        }
+
+        private bool CanRun()
+        {
+            return(pattern.PositiveDecimal.IsMatch(Frequency) && pattern.PositiveInteger.IsMatch(EstimWindow) && ValuesType != null);
+        }
+        #endregion Handler
+
+        #region Public Accessors
+
+        public DelegateCommand CalculateCmd { get; private set; }
+        public DatePicker DateBox { get; private set; }
+        public DateTime TheDate { get; set; }
+       
+        public double ViewPort { get => valPort; }
+        public double ViewPayOff { get => valPayOff; }
+        public SeriesCollection PfOpChart { get; set; }
+        
+
+        public List<string> ValuesType { get => viewTypesList; }
+        public string EstimWindow
+        {
+            get => estmWindow;
+            set
+            {
+                estmWindow = value;
+                CalculateCmd.RaiseCanExecuteChanged();
+            }
+        }
+        public string Frequency
+        {
+            get => frequency ;
+            set
+            {
+                frequency = value;
+                CalculateCmd.RaiseCanExecuteChanged();
+            }
+        }
+
+        public bool EnableRun { get => enableRun; set => enableRun = value; }
+
         public string[] Labels { get; set; }
         public Func<double, string> YFormatter { get; set; }
-        public SeriesCollection SeriesCollectionBis { get; private set; }
+        public SeriesCollection TerrorChart { get; private set; }
+
+        #endregion Public Accessors
     }
+
 }
+
+
