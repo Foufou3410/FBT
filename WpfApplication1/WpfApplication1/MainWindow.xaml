@@ -58,7 +58,7 @@
                 Start/Stop
             </Button>
             <ComboBox ItemsSource="{Binding ValuesType}" Margin="246,25,0,981" SelectedItem="{Binding selectedValuesType}" HorizontalAlignment="Left" Width="124"></ComboBox>
-            <DatePicker Name="dateBox" Margin="246,60,0,947" HorizontalAlignment="Left" Width="124" SelectedDate="{Binding theDate,Mode =TwoWay}"></DatePicker>
+            <DatePicker Name="dateBox" Margin="246,60,0,947" HorizontalAlignment="Left" Width="124" SelectedDate="{Binding TheDate,Mode =TwoWay}"></DatePicker>
             <TextBox Text="{Binding EstimWindow, UpdateSourceTrigger=PropertyChanged}" Margin="247,94,510,916" Width="124" Height="26"></TextBox>
             <TextBox Text="{Binding Frequency, UpdateSourceTrigger=PropertyChanged}" Margin="246,136,510.509,868"></TextBox>
 

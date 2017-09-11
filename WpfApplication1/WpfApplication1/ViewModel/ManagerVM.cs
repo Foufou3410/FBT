@@ -144,6 +144,8 @@ namespace FBT.ViewModel
             var window = 20;
             var vanillaOpt = init.initAvailableOptions()[0];
             Labels = GetDateSet(vanillaOpt.MarketDataDates);
+            Console.WriteLine(Labels.First());
+
             var res = vanillaOpt.GenChartData(window, StartDate, Step, marketSimulator);
             ValPayOff = vanillaOpt.PayOff;
             
