@@ -24,6 +24,7 @@ namespace FBT.Model.FinancialModel
         #endregion
 
         #region Protected Methods
+        
         override protected PricingResults ComputePricing(int dateIndex, double[] volatility, double[,] correlation)
         {
             var pricer = new Pricer();

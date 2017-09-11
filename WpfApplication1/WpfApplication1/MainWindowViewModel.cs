@@ -11,6 +11,8 @@ using FBT.Model.Enum;
 using System.Text.RegularExpressions;
 using FBT.Model;
 using FBT.ViewModel;
+using Newtonsoft.Json;
+using PricingLibrary.FinancialProducts;
 
 namespace FBT
 {
@@ -37,6 +39,11 @@ namespace FBT
 
         public MainWindowViewModel()
         {
+            
+
+        var test = new ParseTextFile();
+            var t = test.Parse();
+
             pattern = new Pattern();
             EnableRun = false;
             
