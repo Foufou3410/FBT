@@ -86,15 +86,14 @@ namespace FBT.Model.FinancialModel
             var res = new List<double>();
             for (var share =0; share < Option.UnderlyingShareIds.Length; share ++)
             {
-                /*double[,] tab = new double[window - 1, 1];
+                double[,] tab = new double[window - 1, 1];
                 for (var k = 1; k < window; k++)
                 {
                     tab[k - 1, 0] = Math.Log((double)Spots[deb - window + k][share] / (double)Spots[deb - window + k - 1][share]);
                 }
                 var B = Math.Sqrt(DayCount.ConvertToDouble(step, 365));
                 double[,] myVol = WRE.computeVolatility(tab);
-                res.Add(myVol[0, 0] / B);*/
-                res.Add(0.4);
+                res.Add(myVol[0, 0] / B);
             }
             return res.ToArray();
         }
@@ -112,6 +111,10 @@ namespace FBT.Model.FinancialModel
                 throw new Exception("No Market data after the Maturity date (" + Option.Maturity.ToShortDateString() + ")");
             }
             var dataFeed = simulateMarket.GetDataFeed(Option, beginningTest);
+            if (dataFeed.Count() == 0)
+            {
+                throw new Exception("No Market data");
+            }
             foreach (DataFeed d in dataFeed)
             {
                 var spotList = new List<double>();

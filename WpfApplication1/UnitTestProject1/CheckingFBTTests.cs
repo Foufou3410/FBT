@@ -6,6 +6,7 @@ using FBT.Model.FinancialModel;
 using FBT.Model.Initializer;
 using System.Linq;
 using PricingLibrary.Utilities.MarketDataFeed;
+using FBT.Model.DataFeedProvider;
 
 namespace FBT.Tests
 {
