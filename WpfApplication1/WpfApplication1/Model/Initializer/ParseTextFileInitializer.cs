@@ -26,7 +26,7 @@ namespace FBT.Model.Initializer
         {
             var objects = new List<IOption>()
             {
-                new VanillaCall("vanillaBNP", new Share("BNP", "AC FP"), new DateTime(2018, 9, 6), 8),
+                new VanillaCall("vanillaBNP", new Share("BNP", "AC FP     "), new DateTime(2018, 9, 6), 8),
                 new JsonBasket("Simu basket AI BN CAP", new string[] { "AI FP     ", "BN FP     ", "CAP FP    " }, new double[] { 0.3, 0.3, 0.4 }, new DateTime(2013, 6, 11), 9, new string[] { "AI FP", "BN FP", "CAP FP" }),
                 new JsonBasket("Hist basket AI BN CAP", new string[] { "AI FP     ", "BN FP     ", "CAP FP    " }, new double[] { 0.3, 0.3, 0.4 }, new DateTime(2013, 6, 11), 45, new string[] { "AI FP", "BN FP", "CAP FP" }),
                 new JsonBasket("basketBNP", new string[] { "1", "2", "3" }, new double[] { 0.5, 0.3, 0.2 }, new DateTime(2018, 9, 6), 8, new string[] {"BNP", "AXA", "ACCOR" })            
