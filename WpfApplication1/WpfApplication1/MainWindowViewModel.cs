@@ -121,15 +121,14 @@ namespace FBT
         public DatePicker DateBox { get; private set; }
         public DateTime TheDate { get; set; }
        
-        public double ViewPort { get => valPort; }
-        public double ViewPayOff { get => valPayOff; }
+        public double ViewPort { get { return valPort; } }
+        public double ViewPayOff { get { return valPayOff; } }
         public SeriesCollection PfOpChart { get; set; }
         
 
-        public List<string> ValuesType { get => viewTypesList; }
-        public string EstimWindow
-        {
-            get => estmWindow;
+        public List<string> ValuesType { get { return viewTypesList; } }
+        public string EstimWindow {
+            get { return estmWindow; }
             set
             {
                 estmWindow = value;
@@ -138,7 +137,7 @@ namespace FBT
         }
         public string Frequency
         {
-            get => frequency ;
+            get { return frequency; }
             set
             {
                 frequency = value;
@@ -146,7 +145,11 @@ namespace FBT
             }
         }
 
-        public bool EnableRun { get => enableRun; set => enableRun = value; }
+        public bool EnableRun
+        {
+            get { return enableRun; }
+            set { enableRun = value; }
+        }
 
         public string[] Labels { get; set; }
         public Func<double, string> YFormatter { get; set; }

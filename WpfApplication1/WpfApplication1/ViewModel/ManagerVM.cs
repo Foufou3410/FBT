@@ -25,13 +25,40 @@ namespace FBT.ViewModel
 
         #region Public Accessor
 
-        public ChartValues<double> Optp { get => optp; set => optp = value; }
-        public ChartValues<double> Pfp { get => pfp; set => pfp = value; }
-        public ChartValues<double> TrackingError { get => trackingError; set => trackingError = value; }
-        public string[] Labels { get => labels; set => labels = value; }
-        public DateTime StartDate { get => startDate; set => startDate = value; }
-        public int SampleNumber { get => sampleNumber; set => sampleNumber = value; }
-        public int Step { get => step; set => step = value; }
+        public ChartValues<double> Optp
+        {
+            get { return optp; } 
+            set { optp = value; }
+        }
+        public ChartValues<double> Pfp
+        {
+            get { return pfp; }
+            set { pfp = value; }
+        }
+        public ChartValues<double> TrackingError {
+            get { return trackingError; }
+            set { trackingError = value; }
+        }
+        public string[] Labels
+        {
+            get { return labels; }
+            set { labels = value; }
+        }
+        public DateTime StartDate
+        {
+            get { return startDate; }
+            set { startDate = value; }
+        }
+        public int SampleNumber
+        {
+            get { return sampleNumber; }
+            set { sampleNumber = value; }
+        }
+        public int Step
+        {
+            get { return step; }
+            set { step = value; }
+        }
 
         #endregion region Public Accessor
 
