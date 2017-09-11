@@ -55,7 +55,7 @@
                 <ColumnDefinition Width="18*"/>
             </Grid.ColumnDefinitions>
             <Button Command="{Binding CalculateCmd}" Margin="347.491,85,221,911" Grid.Column="1" >
-                Start/Stop
+                Start
             </Button>
             <ComboBox ItemsSource="{Binding OptionList}" Margin="500,25,0,981" SelectedItem="{Binding SelectedOption}" HorizontalAlignment="Left" Width="124">
                 <ComboBox.ItemTemplate>

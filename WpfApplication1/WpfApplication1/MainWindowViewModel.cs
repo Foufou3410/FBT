@@ -29,10 +29,11 @@ namespace FBT
         private List<FinancialComputation> optionList;
 
         private bool enableRun;
-        private string frequency = "0";
-        private string estmWindow = "0";
+        private string frequency = "1";
+        private string estmWindow = "50";
         private double viewPayOff;
-        
+        private double valPort;
+        private string[] labels;
         #endregion Private Fields
 
         #region Public Constructors
@@ -101,21 +102,21 @@ namespace FBT
             vp.PleaseUpdateManager(TheDate, EstimWindow, Frequency, SelectedValuesType, SelectedOption);
             ViewPayOff = vp.ValPayOff;
             ViewPort = vp.ValPortfolio;
+            Labels = vp.Labels;
             dispatcherTimer.Stop();
         }
 
         private void Calculate()
         {
-            if(enableRun)
-                dispatcherTimer.Stop();
-            else
-                dispatcherTimer.Start();
-            enableRun = !enableRun;
+            dispatcherTimer.Start();
         }
 
         private bool CanRun()
         {
-            return(pattern.PositiveDecimal.IsMatch(Frequency) && pattern.PositiveInteger.IsMatch(EstimWindow) && ValuesType != null);
+            return(
+                pattern.PositiveDecimal.IsMatch(Frequency) &&
+                pattern.PositiveInteger.IsMatch(EstimWindow) && 
+                ValuesType != null);
         }
         #endregion Handler
 
@@ -165,7 +166,11 @@ namespace FBT
             set { enableRun = value; }
         }
 
-        public string[] Labels { get; set; }
+        public string[] Labels
+        {
+            get { return labels; }
+            set { SetProperty(ref labels, value); }
+        }
         public Func<double, string> YFormatter { get; set; }
         public SeriesCollection TerrorChart { get; private set; }
         public double ViewPayOff { get { return viewPayOff; }

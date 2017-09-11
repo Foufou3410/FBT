@@ -15,9 +15,7 @@ namespace FBT.ViewModel
     {
         #region Private Attributs
         private HardCodeInitializer init;
-        private DateTime startDate;
         private int sampleNumber;
-        private int step;
         private ChartValues<double> optp;
         private ChartValues<double> pfp;
         private ChartValues<double> trackingError;
@@ -46,39 +44,16 @@ namespace FBT.ViewModel
             get { return trackingError; }
             set { trackingError = value; }
         }
-        public string[] Labels
-        {
-            get { return labels; }
-            set { labels = value; }
-        }
-        public DateTime StartDate
-        {
-            get { return startDate; }
-            set { startDate = value; }
-        }
+        public string[] Labels { get; set; }
+        public DateTime StartDate { get; set; }
         public int SampleNumber
         {
             get { return sampleNumber; }
             set { sampleNumber = value; }
         }
-        public int Step
-        {
-            get { return step; }
-            set { step = value; }
-        }
-
-        public double ValPayOff
-        {
-            get { return valPayOff;}
-            set { valPayOff = value; }
-        }
-
-        public double ValPortfolio
-        {
-            get { return valPortfolio; }
-            set { valPortfolio = value; }
-        }
-
+        public int Step { get; set; }
+        public double ValPayOff { get; set; }
+        public double ValPortfolio { get; set; }
         #endregion region Public Accessor
 
         #region Public Constructor
@@ -121,9 +96,9 @@ namespace FBT.ViewModel
         public string[] GetDateSet(List<DateTime> MarketDataDates)
         {
             List<string> allDates = new List<string>();
-            for(DateTime date = StartDate; date <= StartDate.AddDays(SampleNumber); date = date.AddDays(1))
-                allDates.Add(date.ToShortDateString());
-            
+            foreach (DateTime it in MarketDataDates)
+                allDates.Add(it.ToShortDateString());
+
             return (allDates.ToArray());
         }
 
@@ -150,13 +125,13 @@ namespace FBT.ViewModel
             option = opt;
             
             var window = 20;
-            Labels = GetDateSet(option.MarketDataDates);
-            Console.WriteLine(Labels.First());
-
             var res = option.GenChartData(window, StartDate, Step, marketSimulator);
             ValPayOff = option.PayOff;
             ValPortfolio = res.PortfolioValue.Last().Value;
-
+            Labels = GetDateSet(option.MarketDataDates);
+            optp.Clear();
+            pfp.Clear();
+            trackingError.Clear();
             for (int i = 0; i < res.OptionPrice.Count; i++)
             {
                 optp.Insert(i, res.OptionPrice[i]);
