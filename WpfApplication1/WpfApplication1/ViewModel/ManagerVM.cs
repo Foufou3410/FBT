@@ -91,7 +91,8 @@ namespace FBT.ViewModel
         //      None - it's using object's element only.
         public string[] GetDateSet(List<DateTime> MarketDataDates)
         {
-            Console.WriteLine("I'm out");
+
+            Console.WriteLine(MarketDataDates.Count);
             List<string> allDates = new List<string>();
             foreach (DateTime it in MarketDataDates)
             {
@@ -121,16 +122,14 @@ namespace FBT.ViewModel
             StartDate = theDate;
             SampleNumber = Int32.Parse(estmWindow);
             Step = Int32.Parse(frequency);
-            Console.WriteLine(Step);
 
             var window = 20;
             var option = init.initAvailableOptions()[0];
-            Labels = GetDateSet(option.MarketDataDates);
-            
+                       
             var res = option.GenChartData(window, StartDate, Step, marketSimulator);
             ValPayOff = option.PayOff;
             ValPortfolio = res.PortfolioValue.Last().Value;
-
+            Labels = GetDateSet(option.MarketDataDates);
             optp.Clear();
             pfp.Clear();
             trackingError.Clear();
