@@ -48,7 +48,7 @@ namespace FBT.ViewModel
         }
         public int Step { get; set; }
         public double ValPayOff { get; set; }
-
+        public double ValPortfolio { get; set; }
         #endregion region Public Accessor
 
         #region Public Constructor
@@ -91,10 +91,14 @@ namespace FBT.ViewModel
         //      None - it's using object's element only.
         public string[] GetDateSet(List<DateTime> MarketDataDates)
         {
+            Console.WriteLine("I'm out");
             List<string> allDates = new List<string>();
-            for(DateTime date = StartDate; date <= StartDate.AddDays(SampleNumber); date = date.AddDays(1))
-                allDates.Add(date.ToShortDateString());
-            
+            foreach (DateTime it in MarketDataDates)
+            {
+                Console.WriteLine(it);
+                allDates.Add(it.ToShortDateString());
+                Console.WriteLine("I'm in");
+            }
             return (allDates.ToArray());
         }
 
@@ -117,13 +121,16 @@ namespace FBT.ViewModel
             StartDate = theDate;
             SampleNumber = Int32.Parse(estmWindow);
             Step = Int32.Parse(frequency);
-            
-            var window = 20;
-            var vanillaOpt = init.initAvailableOptions()[0];
-            Labels = GetDateSet(vanillaOpt.MarketDataDates);
-            Console.WriteLine(Labels.First());
+            Console.WriteLine(Step);
 
-            var res = vanillaOpt.GenChartData(window, StartDate, Step, marketSimulator);
+            var window = 20;
+            var option = init.initAvailableOptions()[0];
+            Labels = GetDateSet(option.MarketDataDates);
+            
+            var res = option.GenChartData(window, StartDate, Step, marketSimulator);
+            ValPayOff = option.PayOff;
+            ValPortfolio = res.PortfolioValue.Last().Value;
+
             optp.Clear();
             pfp.Clear();
             trackingError.Clear();
