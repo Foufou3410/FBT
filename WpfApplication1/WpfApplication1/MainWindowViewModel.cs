@@ -101,15 +101,12 @@ namespace FBT
             Console.WriteLine(TheDate.ToString());
             vp.PleaseUpdateManager(TheDate, EstimWindow, Frequency);
             ViewPayOff = vp.ValPayOff;
+            dispatcherTimer.Stop();
         }
 
         private void Calculate()
         {
-            if(enableRun)
-                dispatcherTimer.Stop();
-            else
-                dispatcherTimer.Start();
-            enableRun = !enableRun;
+            dispatcherTimer.Start();
         }
 
         private bool CanRun()

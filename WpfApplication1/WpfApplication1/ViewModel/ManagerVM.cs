@@ -15,15 +15,12 @@ namespace FBT.ViewModel
     {
         #region Private Attributs
         private HardCodeInitializer init;
-        private DateTime startDate;
         private int sampleNumber;
-        private int step;
         private ChartValues<double> optp;
         private ChartValues<double> pfp;
         private ChartValues<double> trackingError;
-        private string[] labels;
         private SimulatedDataFeedProvider marketSimulator;
-
+        
         #endregion Private Attributs
 
         #region Public Accessor
@@ -49,11 +46,8 @@ namespace FBT.ViewModel
             get { return sampleNumber; }
             set { sampleNumber = value; }
         }
-        public int Step
-        {
-            get { return step; }
-            set { step = value; }
-        }
+        public int Step { get; set; }
+        public double ValPayOff { get; set; }
 
         #endregion region Public Accessor
 
