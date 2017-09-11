@@ -19,21 +19,27 @@ namespace FBT.Model.Initializer
             TypeNameHandling = TypeNameHandling.Auto,
             MissingMemberHandling = MissingMemberHandling.Error
         };
-        public List<FinancialComputation> initAvailableOptions()
-        {
 
+
+
+        public void generateJson(string file)
+        {
             var objects = new List<IOption>()
             {
-                //new VanillaCall("vanillaBNP", new Share("BNP", "AC FP"), new DateTime(2018, 9, 6), 8),
-                new JsonBasket("basket AI BN CAP", new string[] { "AI FP     ", "BN FP     ", "CAP FP    " }, new double[] { 0.3, 0.3, 0.4 }, new DateTime(2013, 6, 11), 45, new string[] { "AI FP", "BN FP", "CAP FP" })
-
-                //new JsonBasket("basketBNP", new string[] { "1", "2", "3" }, new double[] { 0.5, 0.3, 0.2 }, new DateTime(2018, 9, 6), 8, new string[] {"BNP", "AXA", "ACCOR" })            
+                new VanillaCall("vanillaBNP", new Share("BNP", "AC FP"), new DateTime(2018, 9, 6), 8),
+                new JsonBasket("Simu basket AI BN CAP", new string[] { "AI FP     ", "BN FP     ", "CAP FP    " }, new double[] { 0.3, 0.3, 0.4 }, new DateTime(2013, 6, 11), 9, new string[] { "AI FP", "BN FP", "CAP FP" }),
+                new JsonBasket("Hist basket AI BN CAP", new string[] { "AI FP     ", "BN FP     ", "CAP FP    " }, new double[] { 0.3, 0.3, 0.4 }, new DateTime(2013, 6, 11), 45, new string[] { "AI FP", "BN FP", "CAP FP" }),
+                new JsonBasket("basketBNP", new string[] { "1", "2", "3" }, new double[] { 0.5, 0.3, 0.2 }, new DateTime(2018, 9, 6), 8, new string[] {"BNP", "AXA", "ACCOR" })            
             };
 
-            File.WriteAllText(@"test.json", JsonConvert.SerializeObject(objects, settings));
+            File.WriteAllText(file, JsonConvert.SerializeObject(objects, settings));
+        }
 
 
-            var serialized = File.ReadAllText(@"test.json");
+        public List<FinancialComputation> initAvailableOptions(string file)
+        {
+
+            var serialized = File.ReadAllText(file);
             var results = JsonConvert.DeserializeObject<List<IOption>>(serialized, settings);
 
             var finalRes = new List<FinancialComputation>();

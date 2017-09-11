@@ -41,9 +41,6 @@ namespace FBT
         public MainWindowViewModel()
         {
             
-
-        var test = new ParseTextFileInitializer();
-
             pattern = new Pattern();
             EnableRun = false;
             
@@ -59,7 +56,9 @@ namespace FBT
 
             //var init = new HardCodeInitializer();
             var init = new ParseTextFileInitializer();
-            optionList = init.initAvailableOptions();
+            init.generateJson(@"test2.json");
+
+            optionList = init.initAvailableOptions(@"test2.json");
             SelectedOption = optionList[0];
 
             #endregion Public Buttons

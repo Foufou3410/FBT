@@ -9,7 +9,7 @@ namespace FBT.Model.Initializer
     public class HardCodeInitializer : IInitializer
     {
         #region Public Methods
-        public List<FinancialComputation> initAvailableOptions()
+        public List<FinancialComputation> initAvailableOptions(string filename)
         {
             var res = new List<FinancialComputation>();
 

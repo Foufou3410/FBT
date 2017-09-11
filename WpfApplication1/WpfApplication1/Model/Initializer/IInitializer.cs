@@ -6,6 +6,6 @@ namespace FBT.Model.Initializer
 {
     public interface IInitializer
     {
-        List<FinancialComputation> initAvailableOptions();
+        List<FinancialComputation> initAvailableOptions(string namefile);
     }
 }
