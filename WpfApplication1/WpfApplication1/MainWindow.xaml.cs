@@ -1,17 +1,22 @@
 ﻿using System;
 using System.Windows.Controls;
-using System.Windows.Media;
-using LiveCharts;
-using LiveCharts.Wpf;
+using System.Collections.Generic;
+using FBT;
+using System.Windows;
 
-namespace Wpf.CartesianChart.PointShapeLine
+namespace FBT
 {
-    public partial class PointShapeLineExample : UserControl
+    public partial class MainWindow : UserControl
     {
-        public PointShapeLineExample()
+ 
+        public MainWindow()
         {
+   
             InitializeComponent();
             this.DataContext = new MainWindowViewModel();
-        }   
+        }
+
+     
+
     }
 }
